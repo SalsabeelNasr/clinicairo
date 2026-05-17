@@ -7,6 +7,7 @@ import { WhatsAppButton } from "@/components/whatsapp-button";
 import { Link } from "@/i18n/navigation";
 import { getDoctorBySlug, listDoctors } from "@/lib/data/doctors";
 import { getVideosByDoctor } from "@/lib/data/videos";
+import { BRAND_NAME } from "@/lib/constants";
 import { ROUTES } from "@/lib/routes";
 
 type Props = { params: Promise<{ slug: string }> };
@@ -20,7 +21,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const doctor = getDoctorBySlug(slug);
   if (!doctor) return {};
   return {
-    title: `${doctor.name} | CureFit`,
+    title: `${doctor.name} | ${BRAND_NAME}`,
     description: doctor.bio,
   };
 }

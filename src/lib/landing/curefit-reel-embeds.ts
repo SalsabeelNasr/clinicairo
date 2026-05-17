@@ -1,5 +1,5 @@
 /**
- * Instagram reels/posts shown on the landing "Why CureFit" section.
+ * Instagram reels/posts shown on the landing "Why curefit" section.
  * `embedPath` must match Instagram’s embed URL: instagram.com/{embedPath}/embed
  */
 export type CurefitReelItem = {

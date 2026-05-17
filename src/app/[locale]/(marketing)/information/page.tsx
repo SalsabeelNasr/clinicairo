@@ -4,6 +4,7 @@ import { getTranslations } from "next-intl/server";
 import { InstagramReelsCarousel } from "@/components/landing/instagram-reels-carousel";
 import { TreatmentLogos } from "@/components/information/treatment-logos";
 import { WhatsAppButton } from "@/components/whatsapp-button";
+import { BRAND_NAME } from "@/lib/constants";
 import { INFORMATION_REEL_EMBEDS } from "@/lib/landing/curefit-reel-embeds";
 
 const SECTION_KEYS = [
@@ -24,7 +25,7 @@ const SECTION_KEYS = [
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("information");
   return {
-    title: `${t("pageTitle")} | CureFit`,
+    title: `${t("pageTitle")} | ${BRAND_NAME}`,
     description: t("pageLead"),
   };
 }

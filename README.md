@@ -1,4 +1,4 @@
-# CureFit
+# curefit
 
 Arabic-only marketing site for a weight-loss tele-clinic. Patients outside Egypt follow up with Egyptian specialists while using GLP-1 injections locally.
 
@@ -30,4 +30,4 @@ Open [http://localhost:3000](http://localhost:3000).
 ## Contact links
 
 - WhatsApp: +201148958347
-- Facebook: [Cure fit](https://www.facebook.com/profile.php?id=100076252099360)
+- Facebook: [curefit](https://www.facebook.com/profile.php?id=100076252099360)
