@@ -8,7 +8,7 @@ Derived from the site design, copy (`messages/ar.json`), and UI components.
 
 | Element | Guideline |
 |--------|-----------|
-| **Name** | **clinicairo** — always lowercase, one word. Never "Clinic Cairo", "CliniCairo", "ClinicCairo", or "curefit" |
+| **Name** | **clinicairo** — always lowercase, one word. Never "Clinic Cairo", "CliniCairo", or "ClinicCairo" |
 | **Logo** | `clinicairo` + solid **cyan dot** immediately after the word (like a period). Dot = primary brand cyan |
 | **Logo direction** | Always **LTR** (left-to-right), even on Arabic posts |
 | **What you do** | Remote weight-loss tele-clinic: Egyptian specialists supervise patients **outside Egypt** (Libya, Sudan, etc.) while they use GLP-1 injections locally |
