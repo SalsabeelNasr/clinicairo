@@ -4,6 +4,7 @@ import { useTranslations } from "next-intl";
 import { Link, usePathname } from "@/i18n/navigation";
 import { ROUTES } from "@/lib/routes";
 import { cn } from "@/lib/utils";
+import { BrandLogo } from "@/components/brand-logo";
 import { WhatsAppButton } from "@/components/whatsapp-button";
 
 function NavLinks({ onNavigate }: { onNavigate?: () => void }) {
@@ -50,9 +51,10 @@ export function SiteHeader() {
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4 sm:px-6">
         <Link
           href={ROUTES.home}
-          className="shrink-0 text-2xl font-black tracking-tight text-foreground sm:text-3xl"
+          className="shrink-0 text-2xl sm:text-3xl"
+          aria-label={t("brand")}
         >
-          {t("brand")}
+          <BrandLogo />
         </Link>
 
         <div className="hidden md:flex md:items-center md:gap-6">

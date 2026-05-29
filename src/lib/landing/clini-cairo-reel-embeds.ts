@@ -1,14 +1,14 @@
 /**
- * Instagram reels/posts shown on the landing "Why curefit" section.
+ * Instagram reels/posts shown on the landing "Why CliniCairo" section.
  * `embedPath` must match Instagram’s embed URL: instagram.com/{embedPath}/embed
  */
-export type CurefitReelItem = {
+export type CliniCairoReelItem = {
   canonicalUrl: string;
   /** `reel/SHORTCODE` or `p/SHORTCODE` */
   embedPath: string;
 };
 
-export const CUREFIT_REEL_EMBEDS: readonly CurefitReelItem[] = [
+export const LANDING_REEL_EMBEDS: readonly CliniCairoReelItem[] = [
   {
     canonicalUrl: "https://www.instagram.com/p/DWePwxVjwYg/",
     embedPath: "p/DWePwxVjwYg",
@@ -23,7 +23,7 @@ export const CUREFIT_REEL_EMBEDS: readonly CurefitReelItem[] = [
   },
 ] as const;
 
-export const INFORMATION_REEL_EMBEDS: readonly CurefitReelItem[] = [
+export const INFORMATION_REEL_EMBEDS: readonly CliniCairoReelItem[] = [
   {
     canonicalUrl: "https://www.instagram.com/reel/DYWdrBDDYPw/",
     embedPath: "reel/DYWdrBDDYPw",

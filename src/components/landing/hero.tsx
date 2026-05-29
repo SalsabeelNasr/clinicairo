@@ -36,21 +36,7 @@ export async function LandingHero() {
           className="object-cover"
           priority
         />
-        <div className="absolute inset-0 bg-white/90 lg:bg-transparent lg:bg-gradient-to-r lg:from-white/95 lg:via-white/80 lg:to-transparent lg:rtl:bg-gradient-to-l" />
-        
-        {/* Side Image */}
-        <div className="absolute inset-y-0 left-0 w-full opacity-30 lg:w-[45%] lg:opacity-100">
-          <div className="relative size-full">
-            <Image
-              src="/images/hero-side-image.png"
-              alt=""
-              fill
-              sizes="(max-width: 1023px) 100vw, 45vw"
-              className="object-cover object-left-bottom lg:object-contain lg:object-left-bottom"
-              priority
-            />
-          </div>
-        </div>
+        <div className="absolute inset-0 bg-white/20" />
       </div>
 
       <div className="mx-auto max-w-6xl px-4 sm:px-6 relative w-full py-12 lg:py-32">
