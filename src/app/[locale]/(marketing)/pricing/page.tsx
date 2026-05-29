@@ -1,6 +1,7 @@
 import { useTranslations } from "next-intl";
 import { Check, Stethoscope, Users, Zap } from "lucide-react";
 import { WhatsAppButton } from "@/components/whatsapp-button";
+import { formatApproxLyd } from "@/lib/utils";
 
 export default function PricingPage() {
   const t = useTranslations("pricing");
@@ -10,7 +11,7 @@ export default function PricingPage() {
       id: "guide",
       name: t("tiers.guide.name"),
       focus: t("tiers.guide.focus"),
-      price: t("tiers.guide.price"),
+      usdAmount: 40,
       strategy: t("tiers.guide.strategy"),
       features: [
         t("tiers.guide.features.0"),
@@ -23,7 +24,7 @@ export default function PricingPage() {
       id: "protocol",
       name: t("tiers.protocol.name"),
       focus: t("tiers.protocol.focus"),
-      price: t("tiers.protocol.price"),
+      usdAmount: 150,
       strategy: t("tiers.protocol.strategy"),
       features: [
         t("tiers.protocol.features.0"),
@@ -33,21 +34,6 @@ export default function PricingPage() {
         t("tiers.protocol.features.4"),
       ],
       popular: true,
-    },
-    {
-      id: "escape",
-      name: t("tiers.escape.name"),
-      focus: t("tiers.escape.focus"),
-      price: t("tiers.escape.price"),
-      strategy: t("tiers.escape.strategy"),
-      features: [
-        t("tiers.escape.features.0"),
-        t("tiers.escape.features.1"),
-        t("tiers.escape.features.2"),
-        t("tiers.escape.features.3"),
-        t("tiers.escape.features.4"),
-      ],
-      popular: false,
     },
   ];
 
@@ -81,7 +67,7 @@ export default function PricingPage() {
           </p>
         </div>
 
-        <div className="mt-16 grid grid-cols-1 gap-8 md:grid-cols-3">
+        <div className="mx-auto mt-16 grid max-w-4xl grid-cols-1 gap-8 md:grid-cols-2">
           {tiers.map((tier) => (
             <div
               key={tier.id}
@@ -103,9 +89,12 @@ export default function PricingPage() {
               </div>
 
               <div className="mb-8">
-                <div className="flex items-baseline gap-1">
+                <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
                   <span className="text-4xl font-black tracking-tight text-foreground">
-                    {tier.price}
+                    ${tier.usdAmount}
+                  </span>
+                  <span className="text-lg font-semibold text-muted-foreground">
+                    {formatApproxLyd(tier.usdAmount)}
                   </span>
                 </div>
                 <p className="text-sm font-medium text-muted-foreground">
