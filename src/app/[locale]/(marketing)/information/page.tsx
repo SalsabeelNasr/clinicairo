@@ -89,6 +89,7 @@ export default async function InformationPage() {
           <InstagramReelsCarousel
             items={INFORMATION_REEL_EMBEDS}
             messagesNamespace="information.videos"
+            showDisclaimer
           />
         </div>
       </section>

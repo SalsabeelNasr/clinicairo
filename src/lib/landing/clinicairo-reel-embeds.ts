@@ -1,43 +1,59 @@
 /**
- * Instagram reels/posts shown on the landing "Why clinicairo" section.
+ * Instagram reels/posts shown on the landing "Why CliniCairo" section.
  * `embedPath` must match Instagram’s embed URL: instagram.com/{embedPath}/embed
  */
-export type ClinicairoReelItem = {
+export type CliniCairoReelItem = {
   canonicalUrl: string;
-  /** `reel/SHORTCODE` or `p/SHORTCODE` */
-  embedPath: string;
+  source: "instagram" | "facebook";
+  /** For instagram: `reel/SHORTCODE` or `p/SHORTCODE`. For facebook: can be empty or same as canonicalUrl. */
+  embedRef: string;
 };
 
-export const LANDING_REEL_EMBEDS: readonly ClinicairoReelItem[] = [
+export const LANDING_REEL_EMBEDS: readonly CliniCairoReelItem[] = [
   {
-    canonicalUrl: "https://www.instagram.com/p/DWePwxVjwYg/",
-    embedPath: "p/DWePwxVjwYg",
+    canonicalUrl: "https://www.facebook.com/reel/1505157787827193",
+    source: "facebook",
+    embedRef: "1505157787827193",
   },
   {
-    canonicalUrl: "https://www.instagram.com/p/DV5dnMSgNml/",
-    embedPath: "p/DV5dnMSgNml",
-  },
-] as const;
-
-export const INFORMATION_REEL_EMBEDS: readonly ClinicairoReelItem[] = [
-  {
-    canonicalUrl: "https://www.instagram.com/reel/DYWdrBDDYPw/",
-    embedPath: "reel/DYWdrBDDYPw",
+    canonicalUrl:
+      "https://www.facebook.com/fananelrashaka/videos/1200199384415566/",
+    source: "facebook",
+    embedRef: "1200199384415566",
   },
   {
-    canonicalUrl: "https://www.instagram.com/reel/DWQ4gUij2Vt/",
-    embedPath: "reel/DWQ4gUij2Vt",
-  },
-  {
-    canonicalUrl: "https://www.instagram.com/reel/DX6LKGnCG1T/",
-    embedPath: "reel/DX6LKGnCG1T",
-  },
-  {
-    canonicalUrl: "https://www.instagram.com/reel/DXtcBPljBL4/",
-    embedPath: "reel/DXtcBPljBL4",
+    canonicalUrl: "https://www.facebook.com/reel/1280644600201638/",
+    source: "facebook",
+    embedRef: "1280644600201638",
   },
 ] as const;
 
-export function instagramEmbedSrc(embedPath: string): string {
-  return `https://www.instagram.com/${embedPath}/embed`;
+export const INFORMATION_REEL_EMBEDS: readonly CliniCairoReelItem[] = [
+  {
+    canonicalUrl: "https://www.facebook.com/reel/3989323871367839",
+    source: "facebook",
+    embedRef: "3989323871367839",
+  },
+  {
+    canonicalUrl: "https://www.facebook.com/reel/964945756283541/",
+    source: "facebook",
+    embedRef: "964945756283541",
+  },
+  {
+    canonicalUrl: "https://www.facebook.com/reel/971758708564246",
+    source: "facebook",
+    embedRef: "971758708564246",
+  },
+  {
+    canonicalUrl: "https://www.facebook.com/reel/4199264373665226/",
+    source: "facebook",
+    embedRef: "4199264373665226",
+  },
+] as const;
+
+export function videoEmbedSrc(item: CliniCairoReelItem): string {
+  if (item.source === "facebook") {
+    return `https://www.facebook.com/plugins/video.php?href=${encodeURIComponent(item.canonicalUrl)}&show_text=false`;
+  }
+  return `https://www.instagram.com/${item.embedRef}/embed`;
 }

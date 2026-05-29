@@ -1,4 +1,4 @@
-# clinicairo
+# CliniCairo
 
 Arabic-only marketing site for a weight-loss tele-clinic. Patients outside Egypt follow up with Egyptian specialists while using GLP-1 injections locally.
 

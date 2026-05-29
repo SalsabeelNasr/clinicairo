@@ -1,4 +1,4 @@
-# clinicairo — Brand Style & Social Media Guidelines
+# CliniCairo — Brand Style & Social Media Guidelines
 
 Derived from the site design, copy (`messages/ar.json`), and UI components.
 
@@ -8,8 +8,8 @@ Derived from the site design, copy (`messages/ar.json`), and UI components.
 
 | Element | Guideline |
 |--------|-----------|
-| **Name** | **clinicairo** — always lowercase, one word. Never "Clinic Cairo", "CliniCairo", or "ClinicCairo" |
-| **Logo** | `clinicairo` + solid **cyan dot** immediately after the word (like a period). Dot = primary brand cyan |
+| **Name** | **CliniCairo** — always capitalized as shown. Never "Clinic Cairo", "CliniCairo", or "ClinicCairo" |
+| **Logo** | `CliniCairo` + solid **cyan dot** immediately after the word (like a period). Dot = primary brand cyan |
 | **Logo direction** | Always **LTR** (left-to-right), even on Arabic posts |
 | **What you do** | Remote weight-loss tele-clinic: Egyptian specialists supervise patients **outside Egypt** (Libya, Sudan, etc.) while they use GLP-1 injections locally |
 | **Arabic descriptor** | عيادة إنقاص الوزن عن بُعد |
@@ -58,7 +58,7 @@ Derived from the site design, copy (`messages/ar.json`), and UI components.
 - **Captions:** Smaller, muted gray
 - **CTAs:** Semibold, inside **pill-shaped (fully rounded)** buttons
 
-**RTL rule:** Arabic posts are **right-to-left**. Keep **clinicairo●** logo LTR in a corner or header strip.
+**RTL rule:** Arabic posts are **right-to-left**. Keep **CliniCairo●** logo LTR in a corner or header strip.
 
 ---
 
@@ -95,7 +95,7 @@ Derived from the site design, copy (`messages/ar.json`), and UI components.
 ## 5. Logo usage
 
 ```
-clinicairo●   ← dot = #06b6d4, ~45% of cap height
+CliniCairo●   ← dot = #06b6d4, ~45% of cap height
 ```
 
 - Minimum clear space: height of the "C" around the logo
@@ -162,13 +162,13 @@ clinicairo●   ← dot = #06b6d4, ~45% of cap height
 - Headline: bold Arabic, 1 line
 - Body: 2–3 short lines, gray text
 - Bottom: cyan pill CTA — `تواصل واتساب`
-- Corner: clinicairo● (LTR)
+- Corner: CliniCairo● (LTR)
 
 ### Template B — Carousel (3–5 slides, 1:1 or 4:5)
 
 1. Hook question (pain point)
 2. Why it matters
-3. How clinicairo helps
+3. How CliniCairo helps
 4. Social proof ("+6,000 حالة ناجحة")
 5. CTA slide — cyan background, white text
 
@@ -213,7 +213,7 @@ clinicairo●   ← dot = #06b6d4, ~45% of cap height
 
 ## 11. Pre-publish checklist
 
-- [ ] Logo: **clinicairo●** (correct spelling + cyan dot)
+- [ ] Logo: **CliniCairo●** (correct spelling + cyan dot)
 - [ ] Primary accent: **#06b6d4** only
 - [ ] Arabic RTL; logo stays LTR
 - [ ] Correct aspect ratio for platform (4:5, 1:1, or 9:16)

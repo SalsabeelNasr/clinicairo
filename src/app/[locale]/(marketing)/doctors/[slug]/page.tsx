@@ -27,6 +27,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function DoctorDetailPage({ params }: Props) {
+  notFound();
+  /*
   const { slug } = await params;
   const doctor = getDoctorBySlug(slug);
   const t = await getTranslations("doctors");
@@ -97,4 +99,5 @@ export default async function DoctorDetailPage({ params }: Props) {
       </div>
     </div>
   );
+  */
 }

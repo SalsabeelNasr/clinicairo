@@ -9,7 +9,7 @@ const ITEMS = [
   { key: "ai", Icon: Bot },
 ] as const;
 
-export async function WhyClinicairo() {
+export async function WhyCliniCairo() {
   const t = await getTranslations("landing.why");
 
   return (
@@ -44,7 +44,10 @@ export async function WhyClinicairo() {
         </div>
 
         <div className="mt-12 border-t border-border/50 pt-10 sm:mt-20 sm:pt-16">
-          <InstagramReelsCarousel items={LANDING_REEL_EMBEDS} />
+          <InstagramReelsCarousel
+            items={LANDING_REEL_EMBEDS}
+            showDisclaimer
+          />
         </div>
       </div>
     </section>
