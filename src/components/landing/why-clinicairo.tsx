@@ -1,7 +1,7 @@
 import { getTranslations } from "next-intl/server";
 import { Stethoscope, Users, Bot } from "lucide-react";
 import { InstagramReelsCarousel } from "@/components/landing/instagram-reels-carousel";
-import { LANDING_REEL_EMBEDS } from "@/lib/landing/clini-cairo-reel-embeds";
+import { LANDING_REEL_EMBEDS } from "@/lib/landing/clinicairo-reel-embeds";
 
 const ITEMS = [
   { key: "leadership", Icon: Stethoscope },
@@ -9,7 +9,7 @@ const ITEMS = [
   { key: "ai", Icon: Bot },
 ] as const;
 
-export async function WhyCliniCairo() {
+export async function WhyClinicairo() {
   const t = await getTranslations("landing.why");
 
   return (

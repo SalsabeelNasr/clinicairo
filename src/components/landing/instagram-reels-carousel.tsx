@@ -1,13 +1,13 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import type { CliniCairoReelItem } from "@/lib/landing/clini-cairo-reel-embeds";
-import { instagramEmbedSrc } from "@/lib/landing/clini-cairo-reel-embeds";
+import type { ClinicairoReelItem } from "@/lib/landing/clinicairo-reel-embeds";
+import { instagramEmbedSrc } from "@/lib/landing/clinicairo-reel-embeds";
 import { HorizontalScrollCarousel } from "@/components/ui/horizontal-scroll-carousel";
 import { cn } from "@/lib/utils";
 
 type Props = {
-  items: readonly CliniCairoReelItem[];
+  items: readonly ClinicairoReelItem[];
   className?: string;
   messagesNamespace?: "landing.why.videos" | "information.videos";
 };

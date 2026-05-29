@@ -1,4 +1,4 @@
-export const BRAND_NAME = "CliniCairo";
+export const BRAND_NAME = "clinicairo";
 
 export const WHATSAPP_NUMBER = "201140988255";
 export const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}`;

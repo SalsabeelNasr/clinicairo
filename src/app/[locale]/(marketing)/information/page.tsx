@@ -5,7 +5,7 @@ import { InstagramReelsCarousel } from "@/components/landing/instagram-reels-car
 import { TreatmentLogos } from "@/components/information/treatment-logos";
 import { WhatsAppButton } from "@/components/whatsapp-button";
 import { BRAND_NAME } from "@/lib/constants";
-import { INFORMATION_REEL_EMBEDS } from "@/lib/landing/clini-cairo-reel-embeds";
+import { INFORMATION_REEL_EMBEDS } from "@/lib/landing/clinicairo-reel-embeds";
 
 const SECTION_KEYS = [
   "why",
