@@ -1,0 +1,29 @@
+---
+description: Global localization rules for numbers and dates
+globs: **/*.{ts,tsx}
+alwaysApply: true
+---
+
+# Localization Rules
+
+- **English Numerals Everywhere**: All numbers, amounts, and dates must use English (Latin) numerals (`0-9`), even in RTL/Arabic mode.
+- **Intl API**: When using `toLocaleString` or `toLocaleDateString` for Arabic:
+  - For numbers: Always use `en-US` or `toLocaleString('en-US')`.
+  - For dates with Arabic text: Use the `u-nu-latn` extension (e.g., `ar-EG-u-nu-latn` or `ar-LY-u-nu-latn`) to keep Arabic text but use Latin numerals.
+- **Currency**: Currency symbols and labels can be localized, but the amounts must remain in English numerals.
+
+## Examples
+
+```typescript
+// ❌ BAD: Forces Arabic numerals in RTL
+value.toLocaleString(lang === 'ar' ? 'ar-EG' : 'en-US')
+
+// ✅ GOOD: Always uses English numerals
+value.toLocaleString('en-US')
+
+// ❌ BAD: Forces Arabic numerals in dates
+date.toLocaleDateString('ar-EG')
+
+// ✅ GOOD: Arabic text with English numerals
+date.toLocaleDateString('ar-EG-u-nu-latn')
+```

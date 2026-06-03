@@ -1,4 +1,5 @@
 import { getTranslations } from "next-intl/server";
+import { Lock } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { FACEBOOK_URL, INSTAGRAM_URL, WHATSAPP_URL } from "@/lib/constants";
 import { ROUTES } from "@/lib/routes";
@@ -35,6 +36,14 @@ export async function SiteFooter() {
                 {t("terms")}
               </Link>
             </div>
+            {/* Discreet staff entry point — patients never log in (spec §1). */}
+            <Link
+              href={ROUTES.staff}
+              className="inline-flex items-center gap-1.5 text-xs text-muted-foreground/70 transition-colors hover:text-foreground"
+            >
+              <Lock className="size-3" aria-hidden />
+              {t("staffLogin")}
+            </Link>
           </div>
 
           <div className="flex items-center gap-3">

@@ -1,0 +1,54 @@
+# Supabase free-tier keep-alive (spec §13).
+#
+# Free Supabase projects pause after ~7 days with no real DB query (dashboard
+# visits / cached calls do NOT count). This Action runs twice weekly and does a
+# trivial write to the `heartbeat` table — deleting existing rows first so the
+# table never grows — which resets the inactivity timer.
+#
+# This is a DEV/pre-launch trick only. Before onboarding real patients, move to
+# Supabase Pro ($25/mo) for daily backups (the decisive reason — see §13).
+#
+# Requires two repository secrets (Settings → Secrets and variables → Actions):
+#   SUPABASE_URL                 e.g. https://xxxx.supabase.co
+#   SUPABASE_SERVICE_ROLE_KEY    service_role key (server-side only; never commit)
+#
+# The `heartbeat` table is created by the Phase 2 schema migration:
+#   create table public.heartbeat (id bigint generated always as identity primary key, beat_at timestamptz not null default now());
+# Until that migration is applied this workflow is harmless (it will no-op/fail
+# the curl and report, without touching anything else).
+
+name: keep-alive
+
+on:
+  schedule:
+    - cron: "0 6 * * 1,4" # Mon & Thu, 06:00 UTC
+  workflow_dispatch: {}
+
+jobs:
+  heartbeat:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping Supabase (rolling single-row heartbeat)
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        run: |
+          set -euo pipefail
+          if [ -z "${SUPABASE_URL:-}" ] || [ -z "${SUPABASE_SERVICE_ROLE_KEY:-}" ]; then
+            echo "::warning::SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY not set — skipping keep-alive."
+            exit 0
+          fi
+
+          base="${SUPABASE_URL%/}/rest/v1/heartbeat"
+          auth=(-H "apikey: ${SUPABASE_SERVICE_ROLE_KEY}" -H "Authorization: Bearer ${SUPABASE_SERVICE_ROLE_KEY}")
+
+          # Rolling delete: remove all existing rows so the table stays tiny.
+          curl -fsS -X DELETE "${base}?id=gt.0" "${auth[@]}" -H "Prefer: count=none" >/dev/null
+
+          # Trivial insert (beat_at defaults to now()).
+          curl -fsS -X POST "${base}" "${auth[@]}" \
+            -H "Content-Type: application/json" \
+            -H "Prefer: return=minimal" \
+            -d '{}' >/dev/null
+
+          echo "Heartbeat written ✓"

@@ -1,0 +1,154 @@
+"use client"
+
+import { useState } from "react"
+import Link from "next/link"
+import { useAppTranslations } from "@/lib/useAppTranslations"
+import { getAppointmentTypeLabel } from "../appointmentTypes"
+import { Button } from "@/components/Button"
+import { SearchInput } from "@/components/SearchInput"
+import { useWaitlist } from "../hooks/useWaitlist"
+import { RiAddLine, RiPhoneLine, RiCalendarLine, RiUserLine } from "@remixicon/react"
+import { ListSkeleton } from "@/components/skeletons"
+import type { WaitlistEntry } from "../types"
+
+interface WaitlistTabProps {
+  clinicId: string
+  doctorId?: string
+  onBook?: (entry: WaitlistEntry) => void
+  onAddToWaitlist?: () => void
+}
+
+function WaitlistTable({
+  entries,
+  loading,
+  onBook,
+  t,
+}: {
+  entries: WaitlistEntry[]
+  loading: boolean
+  onBook: (entry: WaitlistEntry) => void
+  t: ReturnType<typeof useAppTranslations>
+}) {
+  if (loading) {
+    return (
+      <div className="rounded-lg border border-gray-200 p-4  ">
+        <ListSkeleton rows={6} />
+      </div>
+    )
+  }
+
+  if (entries.length === 0) {
+    return (
+      <div className="rounded-lg border border-gray-200 bg-white py-12 text-center  ">
+        <p className="text-sm text-gray-500 ">No patients in waiting list</p>
+      </div>
+    )
+  }
+
+  return (
+    <div className="space-y-3">
+      {entries.map((entry) => (
+        <div
+          key={entry.id}
+          className="card-surface flex items-center gap-4 px-5 py-4"
+        >
+          <div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-gray-100 ">
+            <RiUserLine className="size-5 text-gray-500 " aria-hidden />
+          </div>
+          <div className="min-w-0 flex-1">
+            <div className="flex flex-wrap items-center gap-2">
+              <Link
+                href={`/patients/${entry.patientId}`}
+                className="font-medium text-gray-900 hover:text-primary-600  "
+              >
+                {entry.patientName}
+              </Link>
+              {entry.appointmentType && (
+                <span className="rounded-full bg-gray-200 px-2 py-0.5 text-xs font-medium text-gray-700  ">
+                  {getAppointmentTypeLabel(entry.appointmentType, t.appointments)}
+                </span>
+              )}
+            </div>
+            <div className="mt-1 flex items-center gap-1.5 text-sm text-gray-600 ">
+              <RiPhoneLine className="size-4 shrink-0" aria-hidden />
+              <span>{entry.patientPhone}</span>
+            </div>
+            {(entry.preferredTimeWindow && entry.preferredTimeWindow !== "any") || (entry.preferredDays && entry.preferredDays.length > 0) ? (
+              <div className="mt-0.5 flex items-center gap-1.5 text-xs text-gray-500 ">
+                {entry.preferredTimeWindow && entry.preferredTimeWindow !== "any" && (
+                  <span className="flex items-center gap-1">
+                    <RiCalendarLine className="size-3 shrink-0" />
+                    Prefers: {entry.preferredTimeWindow}
+                  </span>
+                )}
+                {entry.preferredDays && entry.preferredDays.length > 0 && (
+                  <>
+                    {entry.preferredTimeWindow && entry.preferredTimeWindow !== "any" && <span className="text-gray-300 ">·</span>}
+                    <span>Days: {entry.preferredDays.join(", ")}</span>
+                  </>
+                )}
+              </div>
+            ) : null}
+            {entry.notes && (
+              <div className="mt-1 flex items-center gap-1.5 text-sm text-gray-600 ">
+                <span className="line-clamp-1 overflow-hidden text-ellipsis italic">&quot;{entry.notes}&quot;</span>
+              </div>
+            )}
+          </div>
+          <div className="shrink-0">
+            <Button variant="primary" size="sm" onClick={() => onBook(entry)} className="btn-card-action">
+              {t.appointments.book}
+            </Button>
+          </div>
+        </div>
+      ))}
+    </div>
+  )
+}
+
+export function WaitlistTab({ clinicId, doctorId, onBook, onAddToWaitlist }: WaitlistTabProps) {
+  const t = useAppTranslations()
+  const [searchQuery, setSearchQuery] = useState("")
+  
+  const { entries, loading } = useWaitlist({
+    clinicId,
+    status: "active", // Always show only active entries
+    query: searchQuery,
+  })
+  
+  const handleBook = (entry: WaitlistEntry) => {
+    if (onBook) {
+      onBook(entry)
+    }
+  }
+  
+  return (
+    <div className="space-y-4">
+      <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 w-full">
+        <SearchInput
+          placeholder={t.appointments.searchWaitlist}
+          value={searchQuery}
+          onSearchChange={setSearchQuery}
+          className="flex-1 min-w-0"
+        />
+        {onAddToWaitlist && (
+          <Button
+            onClick={onAddToWaitlist}
+            variant="secondary"
+            className="shrink-0 inline-flex items-center gap-2 rtl:flex-row-reverse"
+          >
+            <RiAddLine className="size-4 shrink-0" />
+            {t.appointments.addToWaitlist}
+          </Button>
+        )}
+      </div>
+      
+      <WaitlistTable 
+        entries={entries} 
+        loading={loading} 
+        onBook={handleBook}
+        t={t}
+      />
+    </div>
+  )
+}

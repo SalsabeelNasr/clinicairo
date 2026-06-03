@@ -20,7 +20,7 @@ Derived from the site design, copy (`messages/ar.json`), and UI components.
 
 | Role | Hex | Usage |
 |------|-----|--------|
-| **Primary (Cyan)** | `#06b6d4` | Logo dot, buttons, highlights, icons, links, accent blocks |
+| **Primary (Cyan)** | `#0ab7d5` | Logo dot, buttons, highlights, icons, links, accent blocks |
 | **Primary on dark** | `#ffffff` | Text/icons on cyan backgrounds |
 | **Background** | `#ffffff` | Default canvas — clean, clinical, airy |
 | **Headline text** | `#0f172a` (slate-900) | Titles, bold statements |
@@ -95,7 +95,7 @@ Derived from the site design, copy (`messages/ar.json`), and UI components.
 ## 5. Logo usage
 
 ```
-CliniCairo●   ← dot = #06b6d4, ~45% of cap height
+CliniCairo●   ← dot = #0ab7d5, ~45% of cap height
 ```
 
 - Minimum clear space: height of the "C" around the logo
@@ -194,7 +194,7 @@ CliniCairo●   ← dot = #06b6d4, ~45% of cap height
 | **Primary CTA** | WhatsApp — `تواصل واتساب` / `تواصل الآن` / `ابدأ رحلة إنقاص الوزن` |
 | **WhatsApp** | +201140988255 |
 | **Facebook** | https://www.facebook.com/profile.php?id=61589603983562 |
-| **CTA button** | Rounded pill, `#06b6d4` fill, white text, soft cyan shadow |
+| **CTA button** | Rounded pill, `#0ab7d5` fill, white text, soft cyan shadow |
 
 ---
 
@@ -214,7 +214,7 @@ CliniCairo●   ← dot = #06b6d4, ~45% of cap height
 ## 11. Pre-publish checklist
 
 - [ ] Logo: **CliniCairo●** (correct spelling + cyan dot)
-- [ ] Primary accent: **#06b6d4** only
+- [ ] Primary accent: **#0ab7d5** only
 - [ ] Arabic RTL; logo stays LTR
 - [ ] Correct aspect ratio for platform (4:5, 1:1, or 9:16)
 - [ ] Safe zone respected on Stories/Reels

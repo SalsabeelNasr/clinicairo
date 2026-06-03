@@ -25,6 +25,10 @@
       ],
       "cta": "ابدأ رحلة إنقاص الوزن",
       "imageAlt": "كشف طبي عن بُعد لإنقاص الوزن",
+      "pricingHint": {
+        "startingAt": "تبدأ من",
+        "perMonth": "شهرياً"
+      },
       "stats": {
         "support": "دعم ومتابعة فردية",
         "noHiddenFees": "شفافية كاملة في التكاليف",
@@ -290,8 +294,104 @@
     "information": "معلومات عن الحقن",
     "pricing": "الأسعار والخطط",
     "terms": "الشروط والأحكام",
+    "staffLogin": "دخول موظفين",
     "whatsappAria": "تواصل عبر واتساب",
     "facebookAria": "صفحة فيسبوك CliniCairo",
     "instagramAria": "حساب إنستغرام CliniCairo"
+  },
+  "app": {
+    "nav": {
+      "dashboard": "لوحة التحكم",
+      "patients": "المرضى",
+      "appointments": "المواعيد",
+      "accounting": "الحسابات",
+      "leads": "العملاء المحتملون",
+      "tasks": "المهام",
+      "settings": "الإعدادات"
+    },
+    "common": {
+      "expandSidebar": "توسيع القائمة الجانبية",
+      "collapseSidebar": "طي القائمة الجانبية",
+      "signOut": "تسجيل الخروج",
+      "openMenu": "فتح القائمة",
+      "closeMenu": "إغلاق القائمة",
+      "search": "بحث"
+    },
+    "auth": {
+      "staffPortal": "بوابة الطاقم",
+      "signInTitle": "تسجيل الدخول",
+      "signInSubtitle": "ادخل إلى لوحة إدارة العيادة.",
+      "email": "البريد الإلكتروني",
+      "emailPlaceholder": "doctor@clinicairo.com",
+      "password": "كلمة المرور",
+      "rememberMe": "تذكّرني",
+      "forgotPassword": "نسيت كلمة المرور؟",
+      "signIn": "تسجيل الدخول",
+      "signingIn": "جارٍ تسجيل الدخول…",
+      "or": "أو",
+      "demoMode": "الدخول التجريبي (بيانات وهمية)",
+      "emailRequired": "البريد الإلكتروني مطلوب.",
+      "emailInvalid": "صيغة البريد الإلكتروني غير صحيحة.",
+      "passwordRequired": "كلمة المرور مطلوبة.",
+      "passwordMinLength": "كلمة المرور يجب أن تكون 6 أحرف على الأقل.",
+      "brandTagline": "عيادة إنقاص الوزن عن بُعد — متابعة طبية متخصصة.",
+      "mockNotice": "وضع تجريبي: المصادقة الحقيقية عبر Supabase قيد الإعداد."
+    },
+    "roles": {
+      "owner": "المالك",
+      "assistant": "مساعد",
+      "doctor": "طبيب",
+      "nutritionist": "أخصائي تغذية",
+      "coach": "مدرب لياقة"
+    },
+    "patientStatus": {
+      "lead": "محتمل",
+      "active": "نشط",
+      "paused": "موقوف مؤقتاً",
+      "lapsed": "منتهٍ",
+      "inactive": "غير نشط"
+    },
+    "comingSoon": "قيد الإنشاء — سيتم بناء هذه الوحدة في مرحلة لاحقة من الخطة.",
+    "pages": {
+      "dashboard": {
+        "title": "لوحة التحكم",
+        "subtitle": "نظرة عامة على العيادة."
+      },
+      "patients": {
+        "title": "المرضى",
+        "subtitle": "قائمة المرضى والبحث.",
+        "searchPlaceholder": "ابحث بالاسم أو رقم الهاتف…",
+        "empty": "لا يوجد مرضى مطابقون.",
+        "loading": "جارٍ التحميل…",
+        "count": "{count} مريض",
+        "colName": "الاسم",
+        "colPhone": "الهاتف",
+        "colAge": "العمر",
+        "colLocation": "المدينة",
+        "colStatus": "الحالة",
+        "redFlags": "تنبيهات طبية"
+      },
+      "appointments": {
+        "title": "المواعيد",
+        "subtitle": "الحجز اليدوي ومزامنة تقويم Google."
+      },
+      "accounting": {
+        "title": "الحسابات",
+        "subtitle": "الاشتراكات والمدفوعات والمصروفات (بعملات متعددة دون تحويل)."
+      },
+      "leads": {
+        "title": "العملاء المحتملون",
+        "subtitle": "إدارة العملاء المحتملين وتحويلهم إلى مرضى."
+      },
+      "tasks": {
+        "title": "المهام",
+        "subtitle": "تذكيرات واستثناءات المساعد."
+      },
+      "settings": {
+        "title": "الإعدادات",
+        "subtitle": "قواعد العمل وهوية العيادة (للمالك فقط).",
+        "ownerOnly": "الإعدادات متاحة للمالك/المدير فقط."
+      }
+    }
   }
 }

@@ -1,10 +1,12 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/forms";
+
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-ibm-plex-arabic), ui-sans-serif, system-ui, sans-serif;
-  --font-heading: var(--font-ibm-plex-arabic), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-outfit), var(--font-ibm-plex-arabic), ui-sans-serif, system-ui, sans-serif;
+  --font-heading: var(--font-outfit), var(--font-ibm-plex-arabic), ui-sans-serif, system-ui, sans-serif;
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
   --color-secondary: var(--secondary);
@@ -19,6 +21,94 @@
   --color-card: var(--card);
   --color-card-foreground: var(--card-foreground);
   --color-destructive: var(--destructive);
+
+  /* CliniCairo brand: cyan primary scale (500 = #0ab7d5, the only hero color).
+     Exposes primary-50..950 so ported CliniCairo components keep their primary-* classes. */
+  --color-primary-50: #ecfeff;
+  --color-primary-100: #cffafe;
+  --color-primary-200: #a5f3fc;
+  --color-primary-300: #67e8f9;
+  --color-primary-400: #22d3ee;
+  --color-primary-500: #0ab7d5;
+  --color-primary-600: #0ab7d5; /* primary action color (buttons use bg-primary-600) */
+  --color-primary-700: #0795af; /* hover — darker shade of #0ab7d5 */
+  --color-primary-800: #155e75;
+  --color-primary-900: #164e63;
+  --color-primary-950: #083344;
+
+  /* Brand extras */
+  --color-panel: #f0f8ff; /* light panel background */
+  --color-whatsapp: #25d366; /* WhatsApp actions only */
+
+  /* Arabic font alias used by some ported components */
+  --font-arabic: var(--font-ibm-plex-arabic), ui-sans-serif, system-ui, sans-serif;
+
+  /* ---- TailAdmin design tokens ---- */
+  /* Gray scale (overrides Tailwind defaults to TailAdmin's tones) */
+  --color-gray-25: #fcfcfd;
+  --color-gray-50: #f9fafb;
+  --color-gray-100: #f2f4f7;
+  --color-gray-200: #e4e7ec;
+  --color-gray-300: #d0d5dd;
+  --color-gray-400: #98a2b3;
+  --color-gray-500: #667085;
+  --color-gray-600: #475467;
+  --color-gray-700: #344054;
+  --color-gray-800: #1d2939;
+  --color-gray-900: #101828;
+  --color-gray-950: #0c111d;
+
+  /* Semantic (badges, statuses) */
+  --color-success-50: #ecfdf3;
+  --color-success-100: #d1fae5;
+  --color-success-500: #12b76a;
+  --color-success-600: #039855;
+  --color-success-700: #047857;
+  --color-error-50: #fef3f2;
+  --color-error-100: #fee2e2;
+  --color-error-500: #f04438;
+  --color-error-600: #d92d20;
+  --color-error-700: #b91c1c;
+  --color-warning-50: #fffaeb;
+  --color-warning-100: #fef3c7;
+  --color-warning-500: #f79009;
+  --color-warning-600: #dc6803;
+  --color-warning-700: #b45309;
+  --color-blue-50: #eff6ff;
+  --color-blue-100: #dbeafe;
+  --color-blue-700: #1d4ed8;
+  --color-indigo-50: #eef2ff;
+  --color-indigo-100: #e0e7ff;
+  --color-indigo-700: #4338ca;
+
+  /* Typography scale (TailAdmin title-* / theme-*) */
+  --text-title-sm: 1.875rem;
+  --text-title-sm--line-height: 2.375rem;
+  --text-title-md: 2.25rem;
+  --text-title-md--line-height: 2.75rem;
+  --text-title-lg: 3rem;
+  --text-title-lg--line-height: 3.75rem;
+  --text-theme-sm: 0.875rem;
+  --text-theme-sm--line-height: 1.25rem;
+  --text-theme-xs: 0.75rem;
+  --text-theme-xs--line-height: 1.125rem;
+
+  /* Card/elevation shadows (TailAdmin) */
+  --shadow-theme-xs: 0px 1px 2px 0px rgba(16, 24, 40, 0.05);
+  --shadow-theme-sm: 0px 1px 3px 0px rgba(16, 24, 40, 0.1), 0px 1px 2px 0px rgba(16, 24, 40, 0.06);
+  --shadow-theme-md: 0px 4px 8px -2px rgba(16, 24, 40, 0.1), 0px 2px 4px -2px rgba(16, 24, 40, 0.06);
+
+  /* Ported CliniCairo component animations (Radix dialog/dropdown/popover/drawer) */
+  --animate-hide: hide 150ms cubic-bezier(0.16, 1, 0.3, 1);
+  --animate-slideDownAndFade: slideDownAndFade 150ms cubic-bezier(0.16, 1, 0.3, 1);
+  --animate-slideLeftAndFade: slideLeftAndFade 150ms cubic-bezier(0.16, 1, 0.3, 1);
+  --animate-slideUpAndFade: slideUpAndFade 150ms cubic-bezier(0.16, 1, 0.3, 1);
+  --animate-slideRightAndFade: slideRightAndFade 150ms cubic-bezier(0.16, 1, 0.3, 1);
+  --animate-dialogOverlayShow: dialogOverlayShow 150ms cubic-bezier(0.16, 1, 0.3, 1);
+  --animate-dialogContentShow: dialogContentShow 150ms cubic-bezier(0.16, 1, 0.3, 1);
+  --animate-drawerSlideLeftAndFade: drawerSlideLeftAndFade 300ms cubic-bezier(0.16, 1, 0.3, 1);
+  --animate-drawerSlideRightAndFade: drawerSlideRightAndFade 300ms cubic-bezier(0.16, 1, 0.3, 1);
+
   --radius-sm: calc(var(--radius) * 0.6);
   --radius-md: calc(var(--radius) * 0.8);
   --radius-lg: var(--radius);
@@ -30,7 +120,7 @@
   --foreground: oklch(0.15 0.02 250);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.15 0.02 250);
-  --primary: #06b6d4;
+  --primary: #0ab7d5;
   --primary-foreground: #ffffff;
   --secondary: oklch(0.99 0.005 260);
   --secondary-foreground: oklch(0.2 0.1 260);
@@ -41,7 +131,7 @@
   --destructive: oklch(0.55 0.2 25);
   --border: oklch(0.96 0 0);
   --input: oklch(0.96 0 0);
-  --ring: #06b6d4;
+  --ring: #0ab7d5;
   --radius: 0.5rem;
 }
 
@@ -51,7 +141,7 @@
   }
 
   html[dir="rtl"] {
-    font-family: var(--font-ibm-plex-arabic), ui-sans-serif, system-ui, sans-serif !important;
+    font-family: var(--font-outfit), var(--font-ibm-plex-arabic), ui-sans-serif, system-ui, sans-serif;
   }
 
   * {
@@ -110,4 +200,669 @@
   50% {
     transform: translateX(-6px);
   }
+}
+
+/* ---- Ported CliniCairo keyframes (Radix dialog/dropdown/popover/drawer) ---- */
+@keyframes hide {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+@keyframes slideDownAndFade {
+  from { opacity: 0; transform: translateY(-6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes slideLeftAndFade {
+  from { opacity: 0; transform: translateX(6px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes slideUpAndFade {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes slideRightAndFade {
+  from { opacity: 0; transform: translateX(-6px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes dialogOverlayShow {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes dialogContentShow {
+  from { opacity: 0; transform: translate(-50%, -45%) scale(0.95); }
+  to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}
+@keyframes drawerSlideLeftAndFade {
+  from { opacity: 0; transform: translateX(100%); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes drawerSlideRightAndFade {
+  from { opacity: 0; transform: translateX(-100%); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+/* ---- Ported CliniCairo component/utility classes ---- */
+@layer components {
+  /* Shared card surface used by widget rows and list cards */
+  .card-surface {
+    @apply rounded-2xl border border-gray-100 bg-white p-5 shadow-sm transition-all hover:shadow-md;
+  }
+  .widget-row {
+    @apply flex items-center justify-between rounded-xl border border-gray-100 bg-white p-3 shadow-sm transition-colors hover:border-gray-200;
+  }
+  .page-content {
+    @apply space-y-6;
+  }
+
+  /* Shared app UI (leads, appointments, schedule rows) */
+  .app-page-header {
+    @apply flex items-center justify-between gap-3;
+  }
+
+  .app-page-title {
+    @apply text-3xl font-bold text-slate-900;
+  }
+
+  .app-page-description {
+    @apply text-sm text-slate-500;
+  }
+
+  .app-page-header__text {
+    @apply min-w-0 flex-1 space-y-0.5;
+  }
+
+  .app-page-header--stacked {
+    @apply flex-col items-start gap-4 sm:flex-row sm:items-start sm:justify-between;
+  }
+
+  .app-page-header__btn {
+    @apply inline-flex items-center gap-2 rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white transition hover:bg-slate-800;
+  }
+
+  .app-page-header__btn-icon {
+    @apply size-4 shrink-0;
+  }
+
+  .app-page {
+    @apply space-y-6 p-4 sm:p-6 lg:p-8;
+  }
+
+  /* Widgets (Dashboard) */
+  .app-widget {
+    @apply flex flex-col;
+  }
+
+  .app-widget__header {
+    @apply flex items-center justify-between gap-3 px-1 py-2 mb-2;
+  }
+
+  .app-widget__title {
+    @apply text-lg font-bold text-slate-900;
+  }
+
+  .app-widget__body {
+    @apply flex flex-col gap-3;
+  }
+
+  .app-widget__empty {
+    @apply py-10 text-center text-sm text-slate-500 rounded-2xl border border-dashed border-slate-200 bg-slate-50/50;
+  }
+
+  .app-toggle {
+    @apply inline-flex rounded-lg bg-slate-100 p-0.5 text-xs font-medium;
+  }
+
+  .app-toggle__btn {
+    @apply rounded-md px-3 py-1.5 transition-colors text-slate-500 hover:text-slate-900;
+  }
+
+  .app-toggle__btn--active {
+    @apply bg-white text-slate-900 shadow-sm;
+  }
+
+  /* Sidebar navigation */
+  .app-sidebar__nav {
+    @apply flex-1 overflow-y-auto py-6;
+  }
+
+  .app-sidebar__nav-list {
+    @apply space-y-1;
+  }
+
+  .app-sidebar__link {
+    @apply flex items-center rounded-lg text-base font-medium text-gray-700 transition-colors hover:bg-gray-100 hover:text-gray-900;
+  }
+
+  .app-sidebar__link--active {
+    @apply bg-primary-50 text-primary-700;
+  }
+
+  .app-sidebar__link--collapsed {
+    @apply w-full justify-center px-2 py-2.5;
+  }
+
+  .app-sidebar__link--expanded {
+    @apply gap-3 px-3 py-2.5;
+  }
+
+  .app-sidebar__link--mobile {
+    @apply justify-between px-3 py-2.5 text-sm;
+  }
+
+  .app-sidebar__link-label {
+    @apply flex-1;
+  }
+
+  .app-sidebar__link-icon {
+    @apply size-5 shrink-0;
+  }
+
+  .app-sidebar__profile-trigger {
+    @apply flex w-full items-center rounded-lg text-sm font-medium text-gray-700 transition-colors hover:bg-gray-100 hover:text-gray-900;
+  }
+
+  .app-sidebar__profile-trigger--collapsed {
+    @apply justify-center px-2 py-2.5;
+  }
+
+  .app-sidebar__profile-trigger--expanded {
+    @apply gap-3 px-3 py-2.5;
+  }
+
+  .app-sidebar__profile-name {
+    @apply truncate text-sm font-semibold text-gray-900;
+  }
+
+  .app-sidebar__profile-role {
+    @apply truncate text-xs text-gray-500;
+  }
+
+  [dir="rtl"] .app-sidebar__link {
+    @apply font-semibold;
+  }
+
+  [dir="rtl"] .app-sidebar__profile-trigger {
+    @apply font-semibold;
+  }
+
+  [dir="rtl"] .app-sidebar__profile-name {
+    @apply font-bold;
+  }
+
+  .app-toolbar {
+    @apply space-y-3;
+  }
+
+  .app-toolbar__hint {
+    @apply text-sm text-slate-500;
+  }
+
+  .app-search {
+    @apply relative w-full;
+  }
+
+  .app-search__icon {
+    @apply pointer-events-none absolute top-3 size-6 text-slate-400 start-3;
+  }
+
+  .app-search__input {
+    @apply w-full rounded-lg border border-slate-200 bg-white py-3 ps-12 pe-4 text-sm outline-none transition placeholder:text-slate-400 focus:ring-2 focus:ring-primary-100;
+  }
+
+  .app-search__spinner {
+    @apply absolute top-3 end-3;
+  }
+
+  .app-search__spinner-ring {
+    @apply block size-4 animate-spin rounded-full border-2 border-slate-300 border-t-primary-600;
+  }
+
+  .app-load-more {
+    @apply mt-6 flex justify-center;
+  }
+
+  .app-tabs {
+    @apply flex gap-8 border-b border-slate-200;
+  }
+
+  .app-tabs__btn {
+    @apply pb-3 font-medium text-slate-500 transition hover:text-slate-900;
+  }
+
+  .app-tabs__btn--active {
+    @apply border-b-2 border-primary-600 font-semibold text-primary-600;
+  }
+
+  .app-list {
+    @apply space-y-4;
+  }
+
+  .app-btn--ghost {
+    @apply shrink-0 rounded-lg px-4 py-2 text-sm font-medium text-primary-600 transition hover:bg-primary-50;
+  }
+
+  .app-nav-bar {
+    @apply mb-8 flex items-center justify-between rounded-2xl border border-gray-100 bg-white p-4 shadow-sm;
+  }
+
+  .app-nav-bar__btn {
+    @apply rounded-lg p-2 text-gray-500 transition-colors hover:bg-gray-100;
+  }
+
+  .app-nav-bar__content {
+    @apply flex items-center gap-4;
+  }
+
+  .app-nav-bar__date {
+    @apply font-medium text-gray-600;
+  }
+
+  .app-pill {
+    @apply inline-flex shrink-0 items-center rounded px-3 py-1.5 text-[13px] font-bold uppercase tracking-wider leading-none transition-colors;
+  }
+
+  .app-pill--primary {
+    @apply bg-slate-900 text-white;
+  }
+
+  .app-pill--success {
+    @apply bg-slate-100 text-slate-600;
+  }
+
+  .app-pill--warning {
+    @apply bg-slate-100 text-slate-600;
+  }
+
+  .app-pill--muted {
+    @apply text-slate-400 font-normal normal-case tracking-normal;
+  }
+
+  .app-pill--info {
+    @apply bg-slate-100 text-slate-600;
+  }
+
+  .app-pill--indigo {
+    @apply bg-slate-100 text-slate-600;
+  }
+
+  .app-pill--error {
+    @apply bg-rose-50 text-rose-600;
+  }
+
+  .app-empty-state {
+    @apply rounded-2xl border border-dashed border-gray-300 bg-white p-12 text-center text-sm text-gray-500;
+  }
+
+  .app-empty-state__text {
+    @apply text-slate-600;
+  }
+
+  .app-empty-state__action {
+    @apply mt-4 inline-flex items-center gap-2 rtl:flex-row-reverse;
+  }
+
+  .app-empty-state__icon {
+    @apply size-4 shrink-0;
+  }
+
+  /* Stats (Analytics) */
+  .app-stat {
+    @apply rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition-all hover:shadow-md md:p-6;
+  }
+
+  .app-stat__icon-box {
+    @apply flex size-12 items-center justify-center rounded-xl bg-slate-100 text-slate-800;
+  }
+
+  .app-stat__label {
+    @apply text-sm font-medium text-slate-500;
+  }
+
+  .app-stat__value {
+    @apply mt-2 text-2xl font-bold text-slate-900;
+  }
+
+  .app-btn {
+    @apply rounded-lg text-sm font-semibold transition-colors;
+  }
+
+  .app-btn--primary {
+    @apply rounded-lg text-sm font-semibold transition-colors bg-primary-600 text-white hover:bg-primary-700;
+  }
+
+  .app-btn--secondary {
+    @apply rounded-lg text-sm font-semibold transition-colors border border-gray-200 text-gray-700 hover:bg-gray-50;
+  }
+
+  .app-btn--join {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg bg-primary-600 px-6 py-2 text-sm font-semibold text-white transition-colors hover:bg-primary-700;
+  }
+
+  .app-btn--join__icon {
+    @apply size-4 shrink-0;
+  }
+
+  .app-icon-btn {
+    @apply rounded-lg p-2 text-gray-500 transition-colors hover:bg-gray-100;
+  }
+
+  .app-row {
+    @apply flex flex-col justify-between gap-4 rounded-2xl border border-slate-100 bg-white p-6 shadow-sm transition-all hover:shadow-md md:flex-row md:items-center;
+  }
+
+  .app-row--widget {
+    @apply p-3 gap-3 rounded-xl md:flex-row md:items-center border-slate-100/80 hover:border-primary-100/50;
+  }
+
+  .app-row--widget .app-row__time-start {
+    @apply text-lg font-bold;
+  }
+
+  .app-row--widget .app-row__info-title {
+    @apply text-lg font-bold;
+  }
+
+  .app-row--widget .app-row__info-subtitle {
+    @apply text-sm;
+  }
+
+  .app-row--widget .app-row__divider {
+    @apply h-8;
+  }
+
+  .app-row--widget .app-row__main {
+    @apply gap-3;
+  }
+
+  .app-row--widget .app-row__check {
+    @apply size-8;
+  }
+
+  .app-row--widget .app-row__check .size-5 {
+    @apply size-4;
+  }
+
+  .app-row--accent-primary {
+    @apply border-slate-200/60;
+  }
+
+  .app-row--accent-success {
+    @apply border-slate-200/60;
+  }
+
+  .app-row--accent-warning {
+    @apply border-slate-200/60;
+  }
+
+  .app-row--accent-muted {
+    @apply border-slate-100;
+  }
+
+  .app-row__main {
+    @apply flex min-w-0 flex-1 flex-wrap items-center gap-4;
+  }
+
+  .app-row__time {
+    @apply shrink-0 text-start;
+    direction: ltr;
+    unicode-bidi: isolate;
+  }
+
+  .app-row__time-start {
+    @apply text-lg font-bold tabular-nums text-slate-900;
+  }
+
+  .app-row__time-end {
+    @apply text-xs tabular-nums text-slate-400;
+  }
+
+  .app-row__divider {
+    @apply h-10 w-px shrink-0 bg-slate-200;
+  }
+
+  .app-row__info {
+    @apply min-w-0 flex-1 text-start;
+  }
+
+  .app-row__title-row {
+    @apply flex flex-wrap items-center gap-2;
+  }
+
+  .app-row__info-title {
+    @apply text-lg font-bold text-slate-900;
+  }
+
+  .app-row__info-subtitle {
+    @apply line-clamp-1 text-sm text-slate-500;
+  }
+
+  .app-row__chips {
+    @apply flex flex-wrap gap-2;
+  }
+
+  .app-row__type {
+    @apply text-xs font-semibold;
+  }
+
+  .app-row__type--primary {
+    @apply text-primary-600;
+  }
+
+  .app-row__type--success {
+    @apply text-success-600;
+  }
+
+  .app-row__type--warning {
+    @apply text-warning-600;
+  }
+
+  .app-row__type--muted {
+    @apply text-gray-600;
+  }
+
+  .app-row__status {
+    @apply flex flex-col items-end gap-0.5 text-xs text-gray-400 md:items-start;
+  }
+
+  .app-row__actions {
+    @apply flex items-center gap-3;
+  }
+
+  .app-row__actions--spread {
+    @apply w-full justify-between gap-4 sm:w-auto sm:justify-end sm:gap-8;
+  }
+
+  .app-row__check {
+    @apply flex size-9 shrink-0 items-center justify-center rounded-full transition-all;
+  }
+
+  .app-row__check--pending {
+    @apply bg-slate-50 text-slate-400 hover:bg-success-500 hover:text-white;
+  }
+
+  .app-row__check--done {
+    @apply bg-success-100 text-success-600;
+  }
+
+  .app-row__avatar {
+    @apply flex size-12 shrink-0 items-center justify-center rounded-full bg-slate-100 text-slate-400;
+  }
+
+  .app-row__avatar-icon {
+    @apply size-6;
+  }
+
+  .app-row__avatar-skeleton {
+    @apply size-12 shrink-0 rounded-full;
+  }
+
+  .app-row__meta {
+    @apply hidden text-start md:block;
+  }
+
+  .app-row__meta-primary {
+    direction: ltr;
+    unicode-bidi: isolate;
+    @apply text-sm font-medium text-slate-700;
+  }
+
+  .app-row__meta-secondary {
+    @apply text-xs text-slate-400;
+  }
+
+  .app-row__meta--skeleton {
+    @apply block space-y-1;
+  }
+
+  .app-row__skeleton-body {
+    @apply min-w-0 flex-1 space-y-2;
+  }
+
+  .app-skeleton-title {
+    @apply h-5 w-32;
+  }
+
+  .app-skeleton-chip {
+    @apply h-5 w-14 rounded-full;
+  }
+
+  .app-skeleton-subtitle {
+    @apply h-4 w-48;
+  }
+
+  .app-skeleton-phone {
+    @apply h-4 w-28;
+  }
+
+  .app-skeleton-date {
+    @apply h-3 w-36;
+  }
+
+  .app-skeleton-btn {
+    @apply h-9 w-24 rounded-lg;
+  }
+
+  .app-row__no-actions {
+    @apply text-sm italic text-slate-400;
+  }
+
+  .app-cancel-reasons {
+    @apply grid gap-2;
+  }
+
+  .app-cancel-reason {
+    @apply w-full cursor-pointer rounded-lg border border-slate-200 px-4 py-3 text-start text-sm font-medium text-slate-700 transition hover:border-primary-200 hover:bg-primary-50;
+  }
+
+  .app-cancel-reason--selected {
+    @apply border-primary-600 bg-primary-50 text-primary-700 ring-1 ring-primary-600;
+  }
+
+  /* Lead cards (leads page) */
+  .lead-card-grid {
+    @apply grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3;
+  }
+
+  .lead-card {
+    @apply rounded-2xl border border-gray-100 bg-white p-6 shadow-sm transition-shadow hover:shadow-md;
+  }
+
+  .lead-card__header {
+    @apply mb-4 flex items-start justify-between gap-3;
+  }
+
+  .lead-card__name {
+    @apply text-lg font-bold text-gray-900;
+  }
+
+  .lead-card__status {
+    @apply shrink-0 rounded-full px-3 py-1 text-xs font-medium;
+  }
+
+  .lead-card__status--new {
+    @apply bg-primary-50 text-primary-800;
+  }
+
+  .lead-card__status--contacted {
+    @apply bg-primary-100 text-primary-800;
+  }
+
+  .lead-card__status--qualified {
+    @apply bg-warning-50 text-warning-600;
+  }
+
+  .lead-card__status--booked {
+    @apply bg-primary-100 text-primary-800;
+  }
+
+  .lead-card__status--converted {
+    @apply bg-success-50 text-success-600;
+  }
+
+  .lead-card__status--lost {
+    @apply bg-gray-100 text-gray-700;
+  }
+
+  .lead-card__body {
+    @apply mb-6 space-y-3;
+  }
+
+  .lead-card__field {
+    @apply flex items-center gap-2.5 text-slate-500 text-sm;
+  }
+
+  .lead-card__label {
+    @apply font-semibold;
+  }
+
+  .lead-card__value {
+    font-family: var(--font-outfit), ui-sans-serif, system-ui, sans-serif;
+    @apply tabular-nums tracking-tighter;
+    direction: ltr;
+    unicode-bidi: isolate;
+  }
+
+  .lead-card__tags {
+    @apply flex flex-wrap gap-2;
+  }
+
+  .lead-card__tag {
+    @apply rounded px-2 py-1 bg-slate-100 text-slate-600 text-[13px] font-bold uppercase tracking-wider;
+  }
+
+  .lead-card__tag--alert {
+    @apply rounded px-2 py-1 bg-rose-50 text-rose-600 text-[13px] font-bold uppercase tracking-wider;
+  }
+
+  .lead-card__meta {
+    @apply text-sm text-slate-400;
+  }
+
+  .lead-card__actions {
+    @apply grid grid-cols-2 gap-2;
+  }
+
+  .lead-card__actions--single {
+    @apply grid-cols-1;
+  }
+
+  .lead-card__btn-primary {
+    @apply rounded-lg text-sm font-semibold transition-colors bg-primary-600 text-white hover:bg-primary-700 py-2;
+  }
+
+  .lead-card__btn-secondary {
+    @apply rounded-lg text-sm font-semibold transition-colors border border-gray-200 text-gray-700 hover:bg-gray-50 py-2;
+  }
+}
+
+/* Dynamic-style helpers (set via inline CSS vars) */
+.category-bar-item { width: var(--category-bar-width, 0%); }
+/* JS computes an absolute viewport X via getBoundingClientRect — must be physical `left`, not a logical prop (logical flips in RTL and mispositions the tooltip). */
+.tooltip-positioned { top: var(--tooltip-top, 0px); left: var(--tooltip-left, 0px); }
+.progress-bar-fill { width: var(--progress-width, 0%); }
+.drawer-overlay-animated { animation-duration: 400ms; animation-fill-mode: backwards; }
+.chart-label-text-anchor { text-anchor: middle; }
+
+@media (max-width: 1023px) {
+  [data-radix-popper-content-wrapper] { max-width: calc(100vw - 2rem) !important; }
+  [data-radix-dropdown-menu-sub-content] { max-width: calc(100vw - 2rem) !important; }
 }

@@ -1,0 +1,147 @@
+"use client"
+
+import { PageHeaderAction } from "@/components/shared/PageHeaderAction"
+import { RiAddLine } from "@remixicon/react"
+import { Button } from "@/components/Button"
+import { useAppTranslations } from "@/lib/useAppTranslations"
+import { useDebounce } from "@/lib/useDebounce"
+import { useRouter } from "next/navigation"
+import { useEffect, useState } from "react"
+import { createPatient, listPatients } from "./patients.api"
+import { AddPatientDrawer } from "./AddPatientDrawer"
+import { EmptyPatientsState } from "./EmptyPatientsState"
+import { PatientsCards } from "./PatientsCards"
+import { PatientsSkeleton } from "./PatientsSkeleton"
+import { PatientsToolbar } from "./PatientsToolbar"
+import { PatientsHeader } from "./components/PatientsHeader"
+import type { CreatePatientInput, PatientListItem, PatientStatus } from "./patients.types"
+import { useToast } from "@/hooks/useToast"
+
+const PAGE_SIZE = 10
+
+export function PatientsPage() {
+  const t = useAppTranslations()
+  const router = useRouter()
+  const { showToast } = useToast()
+  const [patients, setPatients] = useState<PatientListItem[]>([])
+  const [loading, setLoading] = useState(true)
+  const [searchQuery, setSearchQuery] = useState("")
+  const [page, setPage] = useState(1)
+  const [hasMore, setHasMore] = useState(false)
+  const [total, setTotal] = useState(0)
+  const [showAddDrawer, setShowAddDrawer] = useState(false)
+  const [activeTab, setActiveTab] = useState<"active" | "inactive">("active")
+
+  const debouncedSearch = useDebounce(searchQuery, 300)
+
+  // Determine status filter based on active tab
+  const statusFilter: PatientStatus = activeTab === "active" ? "active" : "inactive"
+
+  useEffect(() => {
+    setPage(1)
+    fetchPatients(1, debouncedSearch, statusFilter)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [debouncedSearch, activeTab])
+
+  const fetchPatients = async (pageNum: number, query?: string, status?: PatientStatus) => {
+    setLoading(true)
+    try {
+      const response = await listPatients({
+        page: pageNum,
+        pageSize: PAGE_SIZE,
+        query: query || undefined,
+        status: status,
+      })
+      if (pageNum === 1) {
+        setPatients(response.patients)
+      } else {
+        setPatients((prev) => [...prev, ...response.patients])
+      }
+      setHasMore(response.hasMore)
+      setTotal(response.total)
+      setPage(pageNum)
+    } catch (error) {
+      showToast("Failed to load patients", "error")
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const handleLoadMore = () => {
+    if (!loading && hasMore) {
+      fetchPatients(page + 1, debouncedSearch, statusFilter)
+    }
+  }
+
+  const handleAddPatient = async (data: CreatePatientInput) => {
+    try {
+      const newPatient = await createPatient(data)
+      showToast("Patient created successfully", "success")
+      // Refresh the list
+      setSearchQuery("")
+      await fetchPatients(1, "", statusFilter)
+      // Navigate to the new patient profile
+      router.push(`/patients/${newPatient.id}`)
+    } catch (error) {
+      showToast("Failed to create patient", "error")
+    }
+  }
+
+  const filteredCount = searchQuery ? patients.length : total
+
+  return (
+    <div className="app-page">
+      <header className="app-page-header">
+        <h1 className="app-page-title">{t.patients.title}</h1>
+        <PageHeaderAction icon={RiAddLine} onClick={() => setShowAddDrawer(true)}>
+          {t.patients.addPatient}
+        </PageHeaderAction>
+      </header>
+      <PatientsHeader
+        activeTab={activeTab}
+        onTabChange={setActiveTab}
+      />
+
+      <PatientsToolbar
+        searchQuery={searchQuery}
+        onSearchChange={setSearchQuery}
+        totalPatients={total}
+        filteredCount={filteredCount}
+        onAddPatient={() => setShowAddDrawer(true)}
+      />
+
+      {loading && patients.length === 0 ? (
+        <PatientsSkeleton />
+      ) : patients.length === 0 ? (
+        <EmptyPatientsState
+          hasSearchQuery={!!searchQuery}
+          onAddPatient={() => setShowAddDrawer(true)}
+        />
+      ) : (
+        <>
+          {/* Cards-always (mobile-first; spec §12) — the grid reflows on desktop. */}
+          <PatientsCards patients={patients} />
+
+          {hasMore && (
+            <div className="app-load-more">
+              <Button
+                variant="secondary"
+                onClick={handleLoadMore}
+                disabled={loading}
+                isLoading={loading}
+              >
+                {t.archive.loadMore}
+              </Button>
+            </div>
+          )}
+        </>
+      )}
+
+      <AddPatientDrawer
+        open={showAddDrawer}
+        onOpenChange={setShowAddDrawer}
+        onSubmit={handleAddPatient}
+      />
+    </div>
+  )
+}

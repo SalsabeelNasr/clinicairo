@@ -1,0 +1,69 @@
+"use client"
+
+import Link from "next/link"
+import { RiCalendarLine, RiPhoneLine } from "@remixicon/react"
+import { Button } from "@/components/Button"
+import { useAppTranslations } from "@/lib/useAppTranslations"
+import { getAppointmentTypeLabel } from "../appointmentTypes"
+import { Badge } from "@/components/Badge"
+import { formatSlotTime } from "../utils/slotFormatters"
+import type { Slot } from "../types"
+
+interface CancelledSlotRowProps {
+  slot: Slot
+  onFillSlot: (slot: Slot) => void
+}
+
+export function CancelledSlotRow({ slot, onFillSlot }: CancelledSlotRowProps) {
+  const t = useAppTranslations()
+  const startTime = formatSlotTime(slot.startAt)
+  const endTime = formatSlotTime(slot.endAt)
+  const timeRange = `${startTime} - ${endTime}`
+
+  return (
+    <div className="card-surface flex items-center gap-4 px-5 py-4 border-red-100  bg-red-50/30 ">
+      <div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-red-100 ">
+        <RiCalendarLine className="size-5 text-red-600 " aria-hidden />
+      </div>
+      <div className="min-w-0 flex-1">
+        <div className="flex flex-wrap items-center gap-2">
+          <span className="text-xs text-gray-600 ">{timeRange}</span>
+          <Badge color="red" size="xs">
+            Cancelled
+          </Badge>
+        </div>
+        {slot.patientName && (
+          <div className="mt-1 flex items-center gap-2 text-sm text-gray-600 ">
+            {slot.patientId ? (
+              <Link
+                href={`/patients/${slot.patientId}`}
+                className="font-medium hover:text-primary-600 "
+              >
+                {slot.patientName}
+              </Link>
+            ) : (
+              <span>{slot.patientName}</span>
+            )}
+            {slot.appointmentType && slot.appointmentType !== "flexible" && (
+              <>
+                <span className="text-gray-300 ">·</span>
+                <span>{getAppointmentTypeLabel(slot.appointmentType, t.appointments)}</span>
+              </>
+            )}
+          </div>
+        )}
+        {slot.patientPhone && (
+          <div className="mt-0.5 flex items-center gap-1.5 text-sm text-gray-600 ">
+            <RiPhoneLine className="size-4 shrink-0" aria-hidden />
+            <span>{slot.patientPhone}</span>
+          </div>
+        )}
+      </div>
+      <div className="shrink-0">
+        <Button variant="primary" size="sm" onClick={() => onFillSlot(slot)} className="btn-card-action inline-flex items-center gap-2 rtl:flex-row-reverse">
+          {t.appointments.fillSlot}
+        </Button>
+      </div>
+    </div>
+  )
+}
