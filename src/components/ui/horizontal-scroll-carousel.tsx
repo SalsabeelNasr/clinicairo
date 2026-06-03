@@ -22,8 +22,7 @@ type Props = {
   hideAffordancesFrom?: Breakpoint;
   scrollDir?: "ltr" | "auto";
   itemCount?: number;
-  messagesNamespace?: "landing.carousel" | "landing.why.videos" | "information.videos";
-  desktopArrows?: boolean;
+  messagesNamespace?: "landing.carousel";
 };
 
 function hideFromClass(bp: Breakpoint | undefined, base: string) {
@@ -40,7 +39,6 @@ export function HorizontalScrollCarousel({
   scrollDir = "auto",
   itemCount = 2,
   messagesNamespace = "landing.carousel",
-  desktopArrows = false,
 }: Props) {
   const t = useTranslations(messagesNamespace);
   const scrollerRef = useRef<HTMLDivElement>(null);
@@ -49,14 +47,8 @@ export function HorizontalScrollCarousel({
 
   const mobileOnly = (classes: string) => hideFromClass(hideAffordancesFrom, classes);
 
-  const desktopArrowClass = hideAffordancesFrom
-    ? `hidden ${hideAffordancesFrom}:flex`
-    : "hidden md:flex";
-
-  const prevLabel =
-    messagesNamespace === "landing.carousel" ? t("prev") : t("prevReel");
-  const nextLabel =
-    messagesNamespace === "landing.carousel" ? t("next") : t("nextReel");
+  const prevLabel = t("prev");
+  const nextLabel = t("next");
 
   const updateScrollState = useCallback(() => {
     const el = scrollerRef.current;
@@ -102,39 +94,6 @@ export function HorizontalScrollCarousel({
 
   return (
     <div className={cn("relative", className)}>
-      {desktopArrows && showAffordances && (
-        <>
-          <Button
-            type="button"
-            variant="outline"
-            size="icon"
-            className={cn(
-              desktopArrowClass,
-              "absolute start-0 top-1/2 z-10 -translate-y-1/2 bg-background shadow-md",
-              !canScrollStart && "pointer-events-none opacity-40",
-            )}
-            aria-label={prevLabel}
-            onClick={() => scrollByStep(-1)}
-          >
-            <ChevronLeft className="size-5 rtl:-scale-x-100" aria-hidden />
-          </Button>
-          <Button
-            type="button"
-            variant="outline"
-            size="icon"
-            className={cn(
-              desktopArrowClass,
-              "absolute end-0 top-1/2 z-10 -translate-y-1/2 bg-background shadow-md",
-              !canScrollEnd && "pointer-events-none opacity-40",
-            )}
-            aria-label={nextLabel}
-            onClick={() => scrollByStep(1)}
-          >
-            <ChevronRight className="size-5 rtl:-scale-x-100" aria-hidden />
-          </Button>
-        </>
-      )}
-
       {showAffordances && (
         <>
           <Button

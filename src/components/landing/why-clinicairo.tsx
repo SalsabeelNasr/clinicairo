@@ -1,7 +1,5 @@
 import { getTranslations } from "next-intl/server";
 import { Stethoscope, Users, Bot } from "lucide-react";
-import { InstagramReelsCarousel } from "@/components/landing/instagram-reels-carousel";
-import { LANDING_REEL_EMBEDS } from "@/lib/landing/clinicairo-reel-embeds";
 
 const ITEMS = [
   { key: "leadership", Icon: Stethoscope },
@@ -41,13 +39,6 @@ export async function WhyCliniCairo() {
               </p>
             </div>
           ))}
-        </div>
-
-        <div className="mt-12 border-t border-border/50 pt-10 sm:mt-20 sm:pt-16">
-          <InstagramReelsCarousel
-            items={LANDING_REEL_EMBEDS}
-            showDisclaimer
-          />
         </div>
       </div>
     </section>

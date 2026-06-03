@@ -1,11 +1,9 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import { getTranslations } from "next-intl/server";
-import { InstagramReelsCarousel } from "@/components/landing/instagram-reels-carousel";
 import { TreatmentLogos } from "@/components/information/treatment-logos";
 import { WhatsAppButton } from "@/components/whatsapp-button";
 import { BRAND_NAME } from "@/lib/constants";
-import { INFORMATION_REEL_EMBEDS } from "@/lib/landing/clinicairo-reel-embeds";
 
 const SECTION_KEYS = [
   "why",
@@ -80,19 +78,6 @@ export default async function InformationPage() {
 
         <TreatmentLogos />
       </div>
-
-      <section className="border-t border-border bg-muted/30 py-14 sm:py-20">
-        <div className="mx-auto max-w-6xl space-y-8 px-4 sm:px-6">
-          <h2 className="text-center text-2xl font-bold text-foreground sm:text-3xl md:text-start">
-            {t("videos.heading")}
-          </h2>
-          <InstagramReelsCarousel
-            items={INFORMATION_REEL_EMBEDS}
-            messagesNamespace="information.videos"
-            showDisclaimer
-          />
-        </div>
-      </section>
 
       <section className="bg-primary py-14 text-primary-foreground sm:py-20">
         <div className="mx-auto max-w-3xl space-y-6 px-4 text-center sm:px-6">

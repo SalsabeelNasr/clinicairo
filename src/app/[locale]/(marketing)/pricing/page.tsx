@@ -3,42 +3,36 @@ import { Check, Stethoscope, Users, Zap } from "lucide-react";
 import { WhatsAppButton } from "@/components/whatsapp-button";
 import { formatApproxLyd } from "@/lib/utils";
 
+const TIER_IDS = ["guide", "protocol", "complete"] as const;
+
+type TierId = (typeof TIER_IDS)[number];
+
+const TIER_CONFIG: Record<
+  TierId,
+  { usdAmount: number; featureCount: number; popular?: boolean }
+> = {
+  guide: { usdAmount: 50, featureCount: 4 },
+  protocol: { usdAmount: 120, featureCount: 7, popular: true },
+  complete: { usdAmount: 150, featureCount: 8 },
+};
+
 export default function PricingPage() {
   const t = useTranslations("pricing");
 
-  const tiers = [
-    {
-      id: "guide",
-      name: t("tiers.guide.name"),
-      focus: t("tiers.guide.focus"),
-      usdAmount: 50,
-      strategy: t("tiers.guide.strategy"),
-      features: [
-        t("tiers.guide.features.0"),
-        t("tiers.guide.features.1"),
-        t("tiers.guide.features.2"),
-        t("tiers.guide.features.3"),
-      ],
-      popular: false,
-    },
-    {
-      id: "protocol",
-      name: t("tiers.protocol.name"),
-      focus: t("tiers.protocol.focus"),
-      usdAmount: 150,
-      strategy: t("tiers.protocol.strategy"),
-      features: [
-        t("tiers.protocol.features.0"),
-        t("tiers.protocol.features.1"),
-        t("tiers.protocol.features.2"),
-        t("tiers.protocol.features.3"),
-        t("tiers.protocol.features.4"),
-        t("tiers.protocol.features.5"),
-        t("tiers.protocol.features.6"),
-      ],
-      popular: true,
-    },
-  ];
+  const tiers = TIER_IDS.map((id) => {
+    const { usdAmount, featureCount, popular } = TIER_CONFIG[id];
+    return {
+      id,
+      name: t(`tiers.${id}.name`),
+      focus: t(`tiers.${id}.focus`),
+      usdAmount,
+      strategy: t(`tiers.${id}.strategy`),
+      features: Array.from({ length: featureCount }, (_, i) =>
+        t(`tiers.${id}.features.${i}`),
+      ),
+      popular: popular ?? false,
+    };
+  });
 
   const whyItems = [
     { icon: Stethoscope },
@@ -70,7 +64,7 @@ export default function PricingPage() {
           </p>
         </div>
 
-        <div className="mx-auto mt-16 grid max-w-4xl grid-cols-1 gap-8 md:grid-cols-2">
+        <div className="mx-auto mt-16 grid max-w-6xl grid-cols-1 gap-8 lg:grid-cols-3">
           {tiers.map((tier) => (
             <div
               key={tier.id}
