@@ -50,7 +50,7 @@ export function DayNavigation({ currentDate, onDateChange }: DayNavigationProps)
   const cannotGoToPast = isToday
   
   return (
-    <nav className="app-nav-bar mb-0" aria-label="Day navigation">
+    <nav className="app-nav-bar !mb-0 shrink-0" aria-label="Day navigation">
       <button
         type="button"
         onClick={goToPreviousDay}

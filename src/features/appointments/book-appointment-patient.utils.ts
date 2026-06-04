@@ -1,5 +1,5 @@
 import type { Patient } from "@/features/patients/patients.types"
-import type { Slot, WaitlistEntry } from "./types"
+import type { Slot } from "./types"
 
 /** Patient shape expected by BookAppointmentDrawer / PatientSelector */
 export interface BookAppointmentInitialPatient {
@@ -19,19 +19,6 @@ export function toBookAppointmentInitialPatient(
     last_name: patient.last_name,
     phone: patient.phone,
     email: patient.email,
-  }
-}
-
-export function toBookAppointmentInitialPatientFromWaitlist(
-  entry: Pick<WaitlistEntry, "patientId" | "patientName" | "patientPhone">,
-): BookAppointmentInitialPatient {
-  const [first = "", ...rest] = entry.patientName.split(" ")
-  return {
-    id: entry.patientId,
-    first_name: first,
-    last_name: rest.join(" "),
-    phone: entry.patientPhone,
-    email: null,
   }
 }
 

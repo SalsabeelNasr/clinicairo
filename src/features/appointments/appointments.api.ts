@@ -9,13 +9,12 @@ import { activate as activatePatient } from "@/api/patients.api"
 import { shouldActivatePatientFromAppointment } from "@/features/patients/patientLifecycle"
 import { isAppointmentArchived } from "@/features/archive/archive.rules"
 import { logActivity } from "@/api/activity.api"
-import { removeByPatientId as removeWaitlistByPatientId } from "./waitlist/waitingList.api"
 import { getFollowUpRules } from "@/api/settings.api"
 import { createFollowUpTask, hasOpenFollowUpTask } from "@/features/tasks/tasks.api"
 import type { AppointmentStatus } from "@/features/patients/patientLifecycle"
 import type { ListAppointmentsParams, ListAppointmentsResponse, AppointmentListItem } from "./appointments.types"
 import { getAppointmentTypeIdForStorage } from "./appointmentTypes"
-import type { Appointment as AppointmentType, WaitlistEntry, Slot } from "./types"
+import type { Appointment as AppointmentType } from "./types"
 
 // Reschedule history tracking
 export interface RescheduleHistory {
@@ -438,12 +437,6 @@ export async function createAppointment(params: {
     patient_name: patientName,
   })
 
-  try {
-    await removeWaitlistByPatientId(patientId)
-  } catch (error) {
-    console.error("Failed to remove patient from waitlist:", error)
-  }
-
   await logActivity({
     clinicId,
     actorUserId: "user-001",
@@ -469,68 +462,6 @@ export async function createAppointment(params: {
     status: "scheduled",
     type: appointmentType,
     notes,
-    createdAt: created.created_at,
-  }
-}
-
-/**
- * Create appointment from waitlist entry
- */
-export async function createAppointmentFromWaitlist(params: {
-  waitlistEntry: WaitlistEntry
-  slot: Slot
-  clinicId: string
-  doctorId?: string
-}): Promise<AppointmentType> {
-  const { waitlistEntry, slot, clinicId, doctorId } = params
-  const startAt = new Date(slot.startAt)
-  const endAt = new Date(slot.endAt)
-  const durationMinutes = Math.round((endAt.getTime() - startAt.getTime()) / (1000 * 60))
-  const appointmentType = getAppointmentTypeIdForStorage(waitlistEntry.appointmentType)
-
-  const repo = await getAppointmentsRepository()
-  const created = await repo.createAppointment({
-    clinic_id: clinicId,
-    patient_id: waitlistEntry.patientId,
-    scheduled_at: slot.startAt,
-    status: "scheduled",
-    notes: waitlistEntry.notes ?? null,
-    doctor_id: doctorId ?? null,
-    type: appointmentType,
-    patient_name: waitlistEntry.patientName,
-  })
-
-  try {
-    await removeWaitlistByPatientId(waitlistEntry.patientId)
-  } catch (error) {
-    console.error("Failed to remove patient from waitlist:", error)
-  }
-
-  await logActivity({
-    clinicId,
-    actorUserId: "user-001",
-    actorName: "Dr. Ahmed Hassan",
-    actorRole: "doctor",
-    action: "book",
-    entityType: "appointment",
-    entityId: created.id,
-    entityLabel: `Appt: ${waitlistEntry.patientName}`,
-    message: `Booked appointment from waitlist for ${waitlistEntry.patientName}`,
-  })
-
-  return {
-    id: created.id,
-    patientId: waitlistEntry.patientId,
-    patientName: waitlistEntry.patientName,
-    patientPhone: waitlistEntry.patientPhone,
-    doctorId: doctorId ?? "",
-    clinicId,
-    startAt: slot.startAt,
-    endAt: slot.endAt,
-    durationMinutes,
-    status: "scheduled",
-    type: appointmentType,
-    notes: waitlistEntry.notes,
     createdAt: created.created_at,
   }
 }

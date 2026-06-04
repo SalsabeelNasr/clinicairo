@@ -35,24 +35,6 @@ export interface Appointment {
   createdAt: string
 }
 
-// Waiting List Entry
-export interface WaitlistEntry {
-  id: string
-  clinicId: string
-  patientId: string
-  patientName: string
-  patientPhone: string
-  requestedDoctorId?: string
-  appointmentType?: "new" | "followup" | "online"
-  preferredTimeWindow?: "any" | "morning" | "afternoon" | "evening"
-  preferredDays?: string[]
-  status: "active" | "offered" | "booked" | "snoozed" | "removed"
-  priority: "low" | "normal" | "high"
-  notes?: string
-  createdAt: string
-  updatedAt: string
-}
-
 // Doctor Availability
 export interface DoctorAvailability {
   id: string
@@ -72,19 +54,3 @@ export interface DoctorAvailability {
   updatedAt: string
 }
 
-// Appointment Approval Request
-export interface AppointmentApprovalRequest {
-  id: string
-  clinicId: string
-  patientId: string
-  patientName: string
-  patientPhone: string
-  doctorId?: string
-  appointmentType: string
-  requestedStartAt: string
-  requestedEndAt: string
-  source: "integration" | "online_booking"
-  status: "pending" | "approved" | "rejected"
-  notes?: string
-  createdAt: string
-}

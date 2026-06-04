@@ -54,15 +54,15 @@ export const DailyScheduleView = forwardRef<DailyScheduleViewRef, DailyScheduleV
   }
   
   return (
-    <div className="space-y-4">
+    <div className="flex flex-col gap-4">
       <DayNavigation currentDate={currentDate} onDateChange={setCurrentDate} />
-      
+
       {loading ? (
         <div className="rounded-lg border border-gray-200 p-4 ">
           <ListSkeleton rows={8} />
         </div>
       ) : (
-        <div className="app-list">
+        <div className="schedule-slots">
           {slots.length === 0 ? (
             <div className="app-empty-state">
               <p>No slots available for this day</p>

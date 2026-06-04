@@ -5,12 +5,14 @@ import { useRouter, useSearchParams } from "next/navigation"
 import { Button } from "@/components/Button"
 import { Input } from "@/components/Input"
 import { Label } from "@/components/Label"
-import { RiFlaskLine } from "@remixicon/react"
 import { useDemo } from "@/contexts/demo-context"
 import { useLocale } from "@/contexts/locale-context"
 import { useAppTranslations } from "@/lib/useAppTranslations"
 import { BrandLogo } from "@/components/brand-logo"
 import { LanguageToggle } from "@/components/shell/LanguageToggle"
+
+const DEMO_EMAIL = "test@clinicairo.com"
+const DEMO_PASSWORD = "password"
 
 function LoginPageContent() {
   const router = useRouter()
@@ -47,30 +49,32 @@ function LoginPageContent() {
     return Object.keys(newErrors).length === 0
   }
 
-  const handleDemoLogin = () => {
-    enableDemoMode()
-    router.push("/dashboard")
-  }
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
     if (!validateForm()) return
 
     setIsLoading(true)
-
-    // TODO(Phase 9): authenticate via Supabase Auth (provisioned team members only).
-    await new Promise((resolve) => setTimeout(resolve, 1000))
-    router.push("/dashboard")
+    try {
+      await new Promise((resolve) => setTimeout(resolve, 400))
+      if (email.trim().toLowerCase() !== DEMO_EMAIL || password !== DEMO_PASSWORD) {
+        setErrors({ password: t.auth.invalidCredentials })
+        return
+      }
+      enableDemoMode()
+      router.push("/dashboard")
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   return (
     <div className="relative flex min-h-screen rtl:flex-row-reverse">
-      <div className="absolute top-4 z-10 end-4">
-        <LanguageToggle align="end" />
-      </div>
       {/* Left side - Form */}
-      <div className="flex w-full flex-col justify-center px-4 py-12 sm:px-6 lg:w-1/2 lg:px-20 xl:px-24">
+      <div className="relative flex w-full flex-col justify-center px-4 py-12 sm:px-6 lg:w-1/2 lg:px-20 xl:px-24">
+        <div className="absolute top-4 z-10 end-4">
+          <LanguageToggle align="end" />
+        </div>
         <div className="mx-auto w-full max-w-sm lg:w-96">
           <BrandLogo className="text-2xl" />
 
@@ -159,25 +163,6 @@ function LoginPageContent() {
               >
                 {t.auth.signIn}
               </Button>
-
-              <div className="relative">
-                <div className="absolute inset-0 flex items-center">
-                  <div className="w-full border-t border-gray-300" />
-                </div>
-                <div className="relative flex justify-center text-sm">
-                  <span className="bg-white px-2 text-gray-500">{t.auth.or}</span>
-                </div>
-              </div>
-
-              <Button
-                type="button"
-                variant="light"
-                className="w-full"
-                onClick={handleDemoLogin}
-              >
-                <RiFlaskLine className="me-2 size-4" />
-                {t.auth.tryDemoMode}
-              </Button>
             </form>
           </div>
         </div>
@@ -186,9 +171,6 @@ function LoginPageContent() {
       {/* Right side - Branding */}
       <div className="relative hidden lg:block lg:w-1/2">
         <div className="absolute inset-0 bg-gradient-to-br from-primary-600 to-primary-900" />
-        <div className="absolute top-8 flex items-center gap-3 end-8">
-          <BrandLogo className="text-2xl text-white" />
-        </div>
       </div>
     </div>
   )

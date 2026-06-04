@@ -12,7 +12,7 @@ export async function getCurrentUser() {
 export async function requireAuth() {
   const user = await getCurrentUser()
   if (!user) {
-    return { id: "demo-user-id", email: "demo@clinicairo.com" }
+    return { id: "demo-user-id", email: "test@clinicairo.com" }
   }
   return user
 }

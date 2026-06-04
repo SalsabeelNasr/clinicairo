@@ -16,14 +16,13 @@ import {
 } from "./BookAppointmentSteps"
 import type { BookAppointmentFlowProps, PreSelectedSlot } from "./bookAppointmentFlow.types"
 
-export type { AppBookableService, PreSelectedSlot, WaitlistEntry } from "./bookAppointmentFlow.types"
+export type { AppBookableService, PreSelectedSlot } from "./bookAppointmentFlow.types"
 
 export function BookAppointmentFlow({
   initialPatient = null,
   showTitle = true,
   preSelectedSlot = null,
   rescheduleAppointmentId = null,
-  waitlistEntry = null,
   clinicId,
   doctorId,
   onBookingComplete,
@@ -36,13 +35,6 @@ export function BookAppointmentFlow({
     initialPatient,
     preSelectedSlot,
     rescheduleAppointmentId,
-    waitlistEntry: waitlistEntry
-      ? {
-          patientId: waitlistEntry.patientId,
-          patientName: waitlistEntry.patientName,
-          patientPhone: waitlistEntry.patientPhone,
-        }
-      : null,
     clinicId,
     doctorId,
     onBookingComplete,

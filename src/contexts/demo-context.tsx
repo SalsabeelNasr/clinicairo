@@ -6,6 +6,8 @@ import { mockQueries } from "@/data/mock/mock-queries"
 import * as mockData from "@/data/mock/mock-data"
 import { initializeRepositories, getBackendType, resetRepositories } from "@/lib/api/repository-factory"
 
+const DEMO_AUTH_STORAGE_KEY = "clinicairo-demo-authenticated"
+
 interface DemoContextType {
   isDemoMode: boolean
   enableDemoMode: () => void
@@ -21,18 +23,17 @@ export function DemoProvider({ children }: { children: React.ReactNode }) {
   // Initialize from localStorage to prevent flash of empty state
   const [isDemoMode, setIsDemoMode] = useState(() => {
     if (typeof window !== "undefined") {
-      return localStorage.getItem("demo-mode") === "true"
+      return localStorage.getItem(DEMO_AUTH_STORAGE_KEY) === "true"
     }
-    return true // Default to demo mode for development
+    return false
   })
 
   useEffect(() => {
-    const storedDemoMode = localStorage.getItem("demo-mode")
-    if (storedDemoMode === null) {
+    const storedDemoMode = localStorage.getItem(DEMO_AUTH_STORAGE_KEY)
+    if (storedDemoMode === "true") {
       setIsDemoMode(true)
-      localStorage.setItem("demo-mode", "true")
-    } else if (storedDemoMode === "true") {
-      setIsDemoMode(true)
+    } else {
+      setIsDemoMode(false)
     }
   }, [])
 
@@ -44,11 +45,12 @@ export function DemoProvider({ children }: { children: React.ReactNode }) {
 
   const enableDemoMode = useCallback(() => {
     setIsDemoMode(true)
-    localStorage.setItem("demo-mode", "true")
+    localStorage.setItem(DEMO_AUTH_STORAGE_KEY, "true")
   }, [])
 
   const disableDemoMode = useCallback(() => {
     setIsDemoMode(false)
+    localStorage.removeItem(DEMO_AUTH_STORAGE_KEY)
     localStorage.removeItem("demo-mode")
   }, [])
 

@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { DemoAuthGuard } from "@/components/auth/DemoAuthGuard";
 import { AppProviders } from "@/components/providers/AppProviders";
 import { AppShell } from "@/components/shell/AppShell";
 
@@ -7,7 +8,9 @@ import { AppShell } from "@/components/shell/AppShell";
 export default function AppLayout({ children }: { children: ReactNode }) {
   return (
     <AppProviders>
-      <AppShell>{children}</AppShell>
+      <DemoAuthGuard>
+        <AppShell>{children}</AppShell>
+      </DemoAuthGuard>
     </AppProviders>
   );
 }

@@ -11,6 +11,7 @@ import {
 } from "@remixicon/react"
 import { useUserClinic } from "@/contexts/user-clinic-context"
 import { useLocale } from "@/contexts/locale-context"
+import { useDemo } from "@/contexts/demo-context"
 import { useAppTranslations } from "@/lib/useAppTranslations"
 import { cx, focusRing } from "@/lib/utils"
 import { STAFF_ROLE_LABELS, type StaffRole } from "@/data/mock/users-clinics"
@@ -40,12 +41,14 @@ export function SidebarUserProfile({ mode, align = "start", children }: SidebarU
   const router = useRouter()
   const { currentUser, allUsers, setCurrentUser } = useUserClinic()
   const { isRtl, lang, setLanguage } = useLocale()
+  const { disableDemoMode } = useDemo()
   const t = useAppTranslations()
   const [isOpen, setIsOpen] = React.useState(false)
   const [mounted, setMounted] = React.useState(false)
 
   const handleSignOut = () => {
-    router.push("/")
+    disableDemoMode()
+    router.push("/login")
   }
 
   React.useEffect(() => {

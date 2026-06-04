@@ -37,25 +37,27 @@ function VisitNotePreview({ note }: { note: MockVisitNote }) {
 
   if (hasVisitNoteFile(note)) {
     return (
-      <div className="space-y-1">
-        <div className="flex items-center gap-2 text-sm font-medium text-gray-900">
-          <RiAttachmentLine className="size-4 shrink-0 text-primary-600" aria-hidden />
-          <span className="truncate">{getVisitNoteFileName(note)}</span>
+      <div className="flex items-center gap-3 rtl:flex-row-reverse">
+        <div className="shrink-0 text-primary-600">
+          <RiAttachmentLine className="size-5" aria-hidden />
         </div>
-        {note.note_file_size != null && (
-          <p className="text-theme-xs text-gray-500" dir="ltr">
-            {formatNoteFileSize(note.note_file_size)}
-          </p>
-        )}
-        <Button
-          variant="ghost"
-          size="sm"
-          className="h-7 gap-1 px-2 text-theme-xs font-semibold text-primary-600"
-          onClick={() => downloadVisitNoteFile(note)}
-        >
-          <RiDownloadLine className="size-3.5" aria-hidden />
-          {t.profile.downloadVisitNoteFile}
-        </Button>
+        <div className="min-w-0">
+          <p className="truncate text-sm font-bold text-gray-800">{getVisitNoteFileName(note)}</p>
+          {note.note_file_size != null && (
+            <p className="mt-0.5 text-theme-xs text-gray-500" dir="ltr">
+              {formatNoteFileSize(note.note_file_size)}
+            </p>
+          )}
+          <Button
+            variant="ghost"
+            size="sm"
+            className="mt-1 h-7 gap-1 px-0 text-xs font-bold text-primary-600 underline underline-offset-2"
+            onClick={() => downloadVisitNoteFile(note)}
+          >
+            <RiDownloadLine className="size-3.5" aria-hidden />
+            {t.profile.downloadVisitNoteFile}
+          </Button>
+        </div>
       </div>
     )
   }
@@ -105,41 +107,42 @@ function VisitNoteRow({
   return (
     <div
       className={cn(
-        "flex items-start gap-2 px-3 py-3 rtl:flex-row-reverse",
-        isLatest && "border-b border-gray-100",
+        "rounded-xl border border-gray-100 bg-white p-4 shadow-sm",
+        isLatest && "border-primary-100 bg-primary-50/20",
       )}
     >
-      <div className="min-w-0 flex-1">
-        {isLatest && (
-          <span className="app-pill app-pill--primary mb-2 inline-block text-[10px]">
-            {t.profile.currentVisitNote}
-          </span>
-        )}
-        <VisitNotePreview note={note} />
-        <div className="mt-2 flex flex-wrap items-center gap-2">
+      <div className="mb-3 flex items-start justify-between gap-3 rtl:flex-row-reverse">
+        <div className="flex flex-wrap items-center gap-2">
+          {isLatest ? (
+            <span className="app-pill app-pill--primary text-[10px]">
+              {t.profile.currentVisitNote}
+            </span>
+          ) : (
+            <span className="text-theme-xs font-medium text-gray-400">
+              {hasVisitNoteFile(note) ? t.profile.visitNoteModeFile : t.profile.visitNoteModeText}
+            </span>
+          )}
           {showTrackFilters && (
             <span className="app-pill app-pill--muted text-[10px]">
               {trackLabel(note.track, lang, t.profile.trackFilterAll)}
             </span>
           )}
-          {hasVisitNoteFile(note) ? (
-            <span className="app-pill app-pill--primary text-[10px]">
-              {t.profile.visitNoteModeFile}
-            </span>
-          ) : (
-            <span className="app-pill app-pill--muted text-[10px]">
-              {t.profile.visitNoteModeText}
-            </span>
-          )}
-          <span className="text-xs font-medium text-gray-600">
+        </div>
+        <div className="flex shrink-0 items-start gap-2 rtl:flex-row-reverse">
+          <span className="text-theme-xs text-gray-400">
             {formatProfileDate(note.created_at, lang)}
           </span>
-          <span className="rounded-full bg-gray-200 px-2 py-0.5 text-xs font-medium text-gray-700">
+          <ProfileRowActions onEdit={onEdit} onDelete={onDelete} />
+        </div>
+      </div>
+      <div className="min-w-0">
+        <VisitNotePreview note={note} />
+        <div className="mt-3 flex flex-wrap items-center gap-2">
+          <span className="rounded-full bg-gray-100 px-2 py-0.5 text-xs font-medium text-gray-600">
             {formatRelativeTime(note.created_at)}
           </span>
         </div>
       </div>
-      <ProfileRowActions onEdit={onEdit} onDelete={onDelete} />
     </div>
   )
 }
@@ -179,12 +182,12 @@ export function VisitNotesHistory({
   }, [trackFilter, setExpanded])
 
   return (
-    <section className="flex flex-col overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-theme-xs">
-      <div className="shrink-0 flex flex-col gap-3 border-b border-gray-100 bg-gray-50/50 px-4 py-3">
+    <section className="flex flex-col rounded-2xl border border-gray-200 bg-white p-6 shadow-theme-xs">
+      <div className="mb-6 flex shrink-0 flex-col gap-3">
         <div className="flex items-center justify-between gap-2 rtl:flex-row-reverse">
           <div className="flex min-w-0 items-center gap-2 rtl:flex-row-reverse">
             <RiFileTextLine className="size-4 shrink-0 text-primary-500/70" aria-hidden />
-            <h2 className="text-xs font-bold uppercase tracking-widest text-gray-400">
+            <h2 className="text-sm font-bold text-gray-800">
               {t.profile.visitNotesHistory}
             </h2>
           </div>
@@ -214,10 +217,13 @@ export function VisitNotesHistory({
       </div>
 
       {!latest ? (
-        <div className="app-empty-state p-8">
+        <div className="app-empty-state space-y-3 p-8">
           <RiFileTextLine className="mx-auto mb-2 size-8 text-gray-300" aria-hidden />
           <p className="font-medium text-gray-700">{t.profile.noVisitNotesYet}</p>
           <p className="mt-1 text-theme-sm text-gray-500">{t.profile.addVisitNotesDesc}</p>
+          <Button variant="secondary" size="sm" className="mx-auto" onClick={onAddNote}>
+            {t.profile.logNewNote}
+          </Button>
         </div>
       ) : (
         <>
@@ -235,8 +241,9 @@ export function VisitNotesHistory({
             <>
               <div
                 className={cn(
+                  "mt-4 space-y-4",
                   historyExpanded &&
-                    "max-h-80 divide-y divide-gray-100 overflow-y-auto overscroll-contain",
+                    "max-h-96 overflow-y-auto overscroll-contain pe-1",
                 )}
               >
                 {historyExpanded &&

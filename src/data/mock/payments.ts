@@ -7,6 +7,8 @@ export interface MockPayment {
   id: string
   patient_id: string
   doctor_id: string | null
+  /** Links one-time assessment pay to a booked consultation. */
+  appointment_id: string | null
   type: SubscriptionTier
   amount: number
   currency: CurrencyCode
@@ -34,6 +36,7 @@ export const mockPayments: MockPayment[] = [
     uploaded_by: "user-003",
     verified_by: "user-001",
     verified_at: "2026-06-01T10:00:00.000Z",
+    appointment_id: null,
     credit_expires_at: null,
     created_at: "2026-06-01T09:30:00.000Z",
   },
@@ -50,6 +53,7 @@ export const mockPayments: MockPayment[] = [
     uploaded_by: "user-003",
     verified_by: "user-001",
     verified_at: "2026-06-01T11:00:00.000Z",
+    appointment_id: null,
     credit_expires_at: null,
     created_at: "2026-06-01T10:35:00.000Z",
   },
@@ -66,6 +70,7 @@ export const mockPayments: MockPayment[] = [
     uploaded_by: "user-003",
     verified_by: null,
     verified_at: null,
+    appointment_id: null,
     credit_expires_at: "2026-06-17",
     created_at: "2026-06-03T12:00:00.000Z",
   },

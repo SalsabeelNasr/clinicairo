@@ -42,3 +42,9 @@ export function canVerifyPayments(user: UserWithRole | null | undefined): boolea
   if (user.permissions?.includes("payments.verify")) return true
   return user.role === "owner"
 }
+
+export function canRecordPayments(user: UserWithRole | null | undefined): boolean {
+  if (!user) return false
+  if (user.permissions?.includes("payments.record")) return true
+  return user.role === "owner" || user.role === "assistant"
+}

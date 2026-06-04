@@ -20,7 +20,10 @@ import {
 import { usePatientPageData } from "./usePatientPageData"
 import { PatientPageHeader } from "./PatientPageHeader"
 import { PatientInformationCard } from "./PatientInformationCard"
-import { PatientComplaintSubscriptionCard } from "./PatientComplaintSubscriptionCard"
+import { getBillingGate } from "./billing.utils"
+import { canRecordPayments } from "@/lib/permissions"
+import { PatientBookingsSection } from "./PatientBookingsSection"
+import { RecordPaymentDrawer } from "./drawers/RecordPaymentDrawer"
 import { PatientInjectionsCard } from "./PatientInjectionsCard"
 import { PatientVitalsCard } from "./PatientVitalsCard"
 import { PatientPastMedicationsCard } from "./PatientPastMedicationsCard"
@@ -28,7 +31,6 @@ import { PatientLabResultsCard } from "./PatientLabResultsCard"
 import { ContraindicationsCard } from "./components/ContraindicationsCard"
 import { PatientProfileMainNav } from "./PatientProfileMainNav"
 import { PatientPrescriptionsCard } from "./PatientPrescriptionsCard"
-import { AppointmentsPaymentsSectionCard } from "./cards/AppointmentsPaymentsSectionCard"
 import { PatientDietCard } from "./PatientDietCard"
 import { PatientFitnessCard } from "./PatientFitnessCard"
 import { AddWeightDrawer } from "./drawers/AddWeightDrawer"
@@ -80,6 +82,15 @@ export function PatientProfilePage({ patientId }: { patientId: string }) {
   const [editingDietId, setEditingDietId] = useState<string | null>(null)
   const [editingTrainingPlanId, setEditingTrainingPlanId] = useState<string | null>(null)
   const [bookAppointmentOpen, setBookAppointmentOpen] = useState(false)
+  const [recordPaymentOpen, setRecordPaymentOpen] = useState(false)
+
+  const billingGate = useMemo(() => {
+    if (!data.patient) return { kind: "no_coverage" as const }
+    return getBillingGate(data.patient, data.subscription, data.payments)
+  }, [data.patient, data.subscription, data.payments])
+
+  const canBook = billingGate.kind === "ok"
+  const canRecord = canRecordPayments(currentUser)
 
   const careTeam = useMemo(() => {
     if (!data.patient) return {}
@@ -208,6 +219,7 @@ export function PatientProfilePage({ patientId }: { patientId: string }) {
         upcomingAppointment={data.upcomingAppointment}
         lastAppointment={data.lastAppointment}
         meetUrl={data.upcomingAppointment?.online_call_link}
+        subscriptionStatusLabel={subStatus}
         onUpdatePatient={data.handleUpdatePatient}
       />
 
@@ -276,17 +288,6 @@ export function PatientProfilePage({ patientId }: { patientId: string }) {
       {mainTab === "treatment" && (
         <div className="space-y-4">
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:items-start">
-            <PatientInjectionsCard
-              injections={data.injections}
-              onAdd={() => openInjectionDrawer(null)}
-              onEdit={(id) => openInjectionDrawer(id)}
-              onDelete={async (id) => {
-                await data.handleDeleteInjection(id)
-                closeDrawerIfEditing("injection", editingInjectionId, id)
-                showToast(t.profile.doseDeleted, "success")
-              }}
-            />
-
             <PatientPrescriptionsCard
               prescriptions={data.prescriptions}
               onAdd={() => openPrescriptionDrawer(null)}
@@ -295,6 +296,17 @@ export function PatientProfilePage({ patientId }: { patientId: string }) {
                 await data.handleDeletePrescription(id)
                 closeDrawerIfEditing("rx", editingRxId, id)
                 showToast(t.profile.prescriptionDeleted, "success")
+              }}
+            />
+
+            <PatientInjectionsCard
+              injections={data.injections}
+              onAdd={() => openInjectionDrawer(null)}
+              onEdit={(id) => openInjectionDrawer(id)}
+              onDelete={async (id) => {
+                await data.handleDeleteInjection(id)
+                closeDrawerIfEditing("injection", editingInjectionId, id)
+                showToast(t.profile.doseDeleted, "success")
               }}
             />
           </div>
@@ -341,29 +353,28 @@ export function PatientProfilePage({ patientId }: { patientId: string }) {
       )}
 
       {mainTab === "bookings" && (
-        <div className="space-y-6">
-          <PatientComplaintSubscriptionCard
-            careTeam={careTeam}
-            subscription={data.subscription}
-            latestPayment={data.latestPayment}
-            tierLabel={tier}
-            statusLabel={subStatus}
-            onVerifyPayment={
-              data.latestPayment?.status === "submitted"
-                ? async () => {
-                    await data.handleVerifyPayment(data.latestPayment!.id, currentUser.id)
-                    showToast(t.profile.paymentVerified, "success")
-                  }
-                : undefined
+        <PatientBookingsSection
+          careTeam={careTeam}
+          subscription={data.subscription}
+          payments={data.payments}
+          tierLabel={tier}
+          statusLabel={subStatus}
+          gate={billingGate}
+          data={data}
+          canRecordPayment={canRecord}
+          onRecordPayment={() => setRecordPaymentOpen(true)}
+          onVerifyPayment={async (paymentId) => {
+            await data.handleVerifyPayment(paymentId, currentUser.id)
+            showToast(t.profile.paymentVerified, "success")
+          }}
+          onAddAppointment={() => {
+            if (!canBook) {
+              showToast(t.profile.bookingBlockedBody, "error")
+              return
             }
-          />
-
-          <AppointmentsPaymentsSectionCard
-            data={data}
-            defaultExpanded
-            onAddAppointment={() => setBookAppointmentOpen(true)}
-          />
-        </div>
+            setBookAppointmentOpen(true)
+          }}
+        />
       )}
 
       <AddWeightDrawer
@@ -553,10 +564,24 @@ export function PatientProfilePage({ patientId }: { patientId: string }) {
         }}
       />
 
+      <RecordPaymentDrawer
+        open={recordPaymentOpen}
+        onOpenChange={setRecordPaymentOpen}
+        patientId={patient.id}
+        doctorId={patient.doctor_id}
+        uploadedBy={currentUser.id}
+        appointments={data.appointments}
+        onSubmit={async (payload) => {
+          await data.handleRecordPayment(payload)
+          showToast(t.profile.paymentRecorded, "success")
+        }}
+      />
+
       <PatientBookAppointmentDrawer
         open={bookAppointmentOpen}
         onClose={() => setBookAppointmentOpen(false)}
         patient={patient}
+        canBook={canBook}
         onBookingComplete={() => {
           data.refresh()
           showToast(t.profile.appointmentBooked, "success")

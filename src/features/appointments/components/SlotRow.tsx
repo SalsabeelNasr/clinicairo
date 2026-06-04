@@ -4,6 +4,7 @@ import { useState } from "react"
 import { useAppTranslations } from "@/lib/useAppTranslations"
 import { getAppointmentTypeLabel } from "../appointmentTypes"
 import Link from "next/link"
+import { Badge } from "@/components/Badge"
 import { RiPhoneLine, RiCalendarLine, RiCloseLine, RiMore2Fill, RiUserLine } from "@remixicon/react"
 import { formatSlotTime } from "../utils/slotFormatters"
 import { updateStatus } from "../appointments.api"
@@ -15,20 +16,12 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/Dropdown"
-import { cn } from "@/lib/utils"
 import type { Slot } from "../types"
 
 interface SlotRowProps {
   slot: Slot
   onReschedule?: (slot: Slot) => void
   onCancel?: () => void
-}
-
-const STATUS_PILL: Record<string, string> = {
-  booked: "app-pill--muted",
-  scheduled: "app-pill--muted",
-  completed: "app-pill--success",
-  cancelled: "app-pill--muted",
 }
 
 export function SlotRow({ slot, onReschedule, onCancel }: SlotRowProps) {
@@ -39,6 +32,7 @@ export function SlotRow({ slot, onReschedule, onCancel }: SlotRowProps) {
 
   const startTime = formatSlotTime(slot.startAt)
   const endTime = formatSlotTime(slot.endAt)
+  const timeRange = `${startTime} - ${endTime}`
 
   const handleConfirmCancel = async (reason: AppointmentCancelReason) => {
     if (!slot.appointmentId) return
@@ -71,51 +65,40 @@ export function SlotRow({ slot, onReschedule, onCancel }: SlotRowProps) {
   }
 
   return (
-    <article className="app-row">
-      <div className="app-row__main">
-        <div className="app-row__time">
-          <p className="app-row__time-start">{startTime}</p>
+    <article className="schedule-slot">
+      <div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-primary-50">
+        <RiUserLine className="size-5 text-primary-600" aria-hidden />
+      </div>
+      <div className="min-w-0 flex-1">
+        <div className="flex flex-wrap items-center gap-2">
+          {slot.patientId ? (
+            <Link href={`/patients/${slot.patientId}`} className="app-entity-name hover:text-primary-600">
+              {slot.patientName}
+            </Link>
+          ) : (
+            <span className="app-entity-name">{slot.patientName ?? timeRange}</span>
+          )}
+          <Badge color="indigo" size="xs">
+            {t.appointments.scheduled}
+          </Badge>
         </div>
-        <div className="app-row__divider" aria-hidden />
-        <div className="app-row__info">
-          <div className="app-row__title-row">
-            {slot.patientId ? (
-              <Link
-                href={`/patients/${slot.patientId}`}
-                className="app-row__info-title hover:text-primary-600"
-              >
-                {slot.patientName}
-              </Link>
-            ) : (
-              <h3 className="app-row__info-title">
-                {slot.patientName ?? startTime}
-              </h3>
-            )}
-            <div className="app-row__chips">
-              {slot.appointmentType && slot.appointmentType !== "flexible" && (
-                <span className="app-pill app-pill--info">
-                  {getAppointmentTypeLabel(slot.appointmentType, t.appointments)}
-                </span>
-              )}
-              <span
-                className={cn("app-pill", STATUS_PILL[slot.state] || "app-pill--muted")}
-              >
-                {t.appointments.scheduled}
-              </span>
-            </div>
-          </div>
-          {slot.patientPhone && (
-            <p className="app-row__info-subtitle">
-              <span className="inline-flex items-center gap-1" dir="ltr">
-                <RiPhoneLine className="size-3.5 text-slate-400" aria-hidden />
-                {slot.patientPhone.replace(/\s/g, "")}
-              </span>
-            </p>
+        <div className="mt-1 flex flex-wrap items-center gap-2 text-xs text-gray-600">
+          <span>{timeRange}</span>
+          {slot.appointmentType && slot.appointmentType !== "flexible" && (
+            <>
+              <span className="text-gray-300">·</span>
+              <span>{getAppointmentTypeLabel(slot.appointmentType, t.appointments)}</span>
+            </>
           )}
         </div>
+        {slot.patientPhone && (
+          <div className="mt-0.5 flex items-center gap-1.5 text-sm text-gray-600">
+            <RiPhoneLine className="size-4 shrink-0" aria-hidden />
+            <span dir="ltr">{slot.patientPhone.replace(/\s/g, "")}</span>
+          </div>
+        )}
       </div>
-
-      <div className="app-row__actions">
+      <div className="shrink-0">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <button type="button" className="app-icon-btn" aria-label="Actions">
@@ -132,18 +115,18 @@ export function SlotRow({ slot, onReschedule, onCancel }: SlotRowProps) {
               </DropdownMenuItem>
             )}
             {onReschedule && slot.appointmentId && (
-              <DropdownMenuItem onClick={handleReschedule}>
-                <RiCalendarLine className="me-2 size-4" />
-                {t.appointments.rescheduleAppointment}
+              <DropdownMenuItem onClick={handleReschedule} className="flex items-center gap-2">
+                <RiCalendarLine className="size-4 shrink-0" />
+                <span>{t.appointments.rescheduleAppointment}</span>
               </DropdownMenuItem>
             )}
             {slot.appointmentId && (
               <DropdownMenuItem
-                className="text-error-600 focus:bg-error-50 focus:text-error-600"
+                className="flex items-center gap-2 text-error-600 focus:bg-error-50 focus:text-error-600"
                 onClick={() => setShowCancelModal(true)}
               >
-                <RiCloseLine className="me-2 size-4" />
-                  {t.common.cancel}
+                <RiCloseLine className="size-4 shrink-0" />
+                <span>{t.common.cancel}</span>
               </DropdownMenuItem>
             )}
           </DropdownMenuContent>
@@ -155,7 +138,7 @@ export function SlotRow({ slot, onReschedule, onCancel }: SlotRowProps) {
         onClose={() => setShowCancelModal(false)}
         onConfirm={handleConfirmCancel}
         patientName={slot.patientName}
-        appointmentTime={`${startTime} - ${endTime}`}
+        appointmentTime={timeRange}
         isLoading={isCancelling}
       />
     </article>

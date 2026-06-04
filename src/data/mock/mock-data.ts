@@ -24,11 +24,6 @@ export {
 } from "./records"
 export { mockAppointments, mockDoctorAvailability } from "./appointments"
 export {
-  mockWaitingListEntries,
-  mockApprovalRequests,
-} from "./waitlist"
-export type { WaitingListEntry, AppointmentApprovalRequest } from "./waitlist"
-export {
   mockPrescriptions,
   mockPatientPrescriptionFiles,
   mockPastMedications,
@@ -59,7 +54,6 @@ import {
   mockAttachments,
 } from "./records"
 import { mockAppointments, mockDoctorAvailability } from "./appointments"
-import { mockWaitingListEntries, mockApprovalRequests } from "./waitlist"
 import {
   mockPrescriptions,
   mockPatientPrescriptionFiles,
@@ -91,10 +85,6 @@ export const mockData = {
   labResults: mockLabResults,
   attachments: mockAttachments,
   leads: mockLeads,
-  // Legacy waitlist data remains only so dormant TabibDesk waitlist files compile.
-  // Phase 2 removes the waitlist module from appointments entirely.
-  waitingListEntries: mockWaitingListEntries,
-  approvalRequests: mockApprovalRequests,
   doctorAvailability: mockDoctorAvailability,
   prescriptions: mockPrescriptions,
   patientPrescriptionFiles: mockPatientPrescriptionFiles,

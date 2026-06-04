@@ -17,7 +17,7 @@ export function PatientProfileMainNav({ activeTab, onTabChange }: PatientProfile
 
   return (
     <nav
-      className="flex flex-wrap gap-2 border-b border-gray-200 pb-3"
+      className="-mx-1 flex gap-2 overflow-x-auto border-b border-gray-200 px-1 pb-3 overscroll-x-contain [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
       aria-label={labels.profile}
     >
       {MAIN_TABS.map((tab) => (
@@ -26,7 +26,7 @@ export function PatientProfileMainNav({ activeTab, onTabChange }: PatientProfile
           type="button"
           onClick={() => onTabChange(tab)}
           className={cn(
-            "app-pill text-sm",
+            "app-pill shrink-0 text-sm",
             activeTab === tab ? "app-pill--primary" : "app-pill--muted",
           )}
         >

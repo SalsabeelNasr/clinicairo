@@ -20,15 +20,6 @@ interface PreSelectedSlot {
   appointmentType?: string
 }
 
-interface WaitlistEntry {
-  id: string
-  patientId: string
-  patientName: string
-  patientPhone: string
-  appointmentType?: string
-  notes?: string
-}
-
 interface BookAppointmentDrawerProps {
   open: boolean
   onClose: () => void
@@ -36,7 +27,6 @@ interface BookAppointmentDrawerProps {
   preSelectedSlot?: PreSelectedSlot | null
   initialPatient?: BookAppointmentInitialPatient | null
   rescheduleAppointmentId?: string | null
-  waitlistEntry?: WaitlistEntry | null
   clinicId?: string
   doctorId?: string
 }
@@ -48,7 +38,6 @@ export function BookAppointmentDrawer({
   preSelectedSlot = null,
   initialPatient = null,
   rescheduleAppointmentId = null,
-  waitlistEntry = null,
   clinicId,
   doctorId,
 }: BookAppointmentDrawerProps) {
@@ -63,11 +52,9 @@ export function BookAppointmentDrawer({
 
   const title = preSelectedSlot
     ? t.appointments.fillSlot
-    : waitlistEntry
-      ? t.appointments.bookFromWaitlist
-      : rescheduleAppointmentId
-        ? t.appointments.rescheduleAppointment
-        : t.appointments.bookAppointment
+    : rescheduleAppointmentId
+      ? t.appointments.rescheduleAppointment
+      : t.appointments.bookAppointment
 
   return (
     <Drawer open={open} onOpenChange={onClose}>
@@ -85,7 +72,6 @@ export function BookAppointmentDrawer({
               initialPatient={initialPatient}
               preSelectedSlot={preSelectedSlot}
               rescheduleAppointmentId={rescheduleAppointmentId}
-              waitlistEntry={waitlistEntry}
               clinicId={clinicId}
               doctorId={doctorId}
               onCancel={onClose}

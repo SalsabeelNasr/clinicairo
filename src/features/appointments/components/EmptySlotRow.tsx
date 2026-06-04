@@ -18,7 +18,7 @@ export function EmptySlotRow({ slot, onFillSlot }: EmptySlotRowProps) {
   const timeRange = `${startTime} - ${endTime}`
 
   return (
-    <div className="card-surface flex items-center gap-4 px-5 py-4">
+    <div className="schedule-slot">
       <div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-gray-100 ">
         <RiCalendarLine className="size-5 text-gray-500 " aria-hidden />
       </div>

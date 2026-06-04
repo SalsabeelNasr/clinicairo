@@ -19,6 +19,7 @@ interface PatientPageHeaderProps {
   upcomingAppointment: HeaderAppointment | null
   lastAppointment: HeaderAppointment | null
   meetUrl?: string | null
+  subscriptionStatusLabel?: string | null
   onUpdatePatient: (updates: Partial<Patient>) => Promise<void>
 }
 
@@ -27,6 +28,7 @@ export function PatientPageHeader({
   upcomingAppointment,
   lastAppointment,
   meetUrl,
+  subscriptionStatusLabel,
   onUpdatePatient,
 }: PatientPageHeaderProps) {
   const t = useAppTranslations()
@@ -50,6 +52,11 @@ export function PatientPageHeader({
             {patient.age != null && (
               <span className="app-pill app-pill--muted shrink-0">
                 {patient.age}y · {patient.gender}
+              </span>
+            )}
+            {subscriptionStatusLabel && patient.subscription_status && (
+              <span className="app-pill app-pill--primary shrink-0 text-[10px]">
+                {subscriptionStatusLabel}
               </span>
             )}
           </div>

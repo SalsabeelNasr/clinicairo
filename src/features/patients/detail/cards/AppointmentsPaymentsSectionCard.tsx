@@ -13,17 +13,19 @@ interface AppointmentsPaymentsSectionCardProps {
   data: PatientPageData
   defaultExpanded?: boolean
   onAddAppointment?: () => void
+  canBook?: boolean
 }
 
 export function AppointmentsPaymentsSectionCard({
   data,
   defaultExpanded,
   onAddAppointment,
+  canBook = true,
 }: AppointmentsPaymentsSectionCardProps) {
   const t = useAppTranslations()
   const { lang } = useLocale()
   const tabs = t.profile.tabs
-  const isEmpty = data.appointments.length === 0 && data.payments.length === 0
+  const isEmpty = data.appointments.length === 0
 
   const parts: string[] = []
   if (data.upcomingAppointment) {
@@ -33,12 +35,6 @@ export function AppointmentsPaymentsSectionCard({
   } else if (data.appointments[0]) {
     parts.push(
       `${t.profile.teleStrip.lastAppointment}: ${formatProfileDateTime(data.appointments[0].scheduled_at, lang)}`,
-    )
-  }
-  if (data.payments.length > 0 && data.payments[0]) {
-    const p = data.payments[0]
-    parts.push(
-      `${t.profile.section.payments}: ${p.amount.toLocaleString("en-US")} ${p.currency}`,
     )
   }
   if (data.appointments.length > 0) {
@@ -61,7 +57,11 @@ export function AppointmentsPaymentsSectionCard({
         ) : undefined
       }
     >
-      <AppointmentsPaymentsTab data={data} />
+      <AppointmentsPaymentsTab
+        data={data}
+        onAddAppointment={onAddAppointment}
+        canBook={canBook}
+      />
     </ProfileSectionCard>
   )
 }

@@ -161,9 +161,10 @@ const DropdownMenuItem = React.forwardRef<
     shortcut?: string
     hint?: string
   }
->(({ className, shortcut, hint, children, ...props }, forwardedRef) => (
+>(({ className, shortcut, hint, children, asChild, ...props }, forwardedRef) => (
   <DropdownMenuPrimitives.Item
     ref={forwardedRef}
+    asChild={asChild}
     className={cx(
       // base
       "group/DropdownMenuItem relative flex cursor-pointer select-none items-center rounded py-1.5 pl-2 pr-1 outline-none transition-colors data-[state=checked]:font-semibold sm:text-sm",
@@ -179,20 +180,18 @@ const DropdownMenuItem = React.forwardRef<
     )}
     {...props}
   >
-    {children}
-    {hint && (
-      <span
-        className={cx("ml-auto pl-2 text-sm text-gray-400 ")}
-      >
-        {hint}
-      </span>
-    )}
-    {shortcut && (
-      <span
-        className={cx("ml-auto pl-2 text-sm text-gray-400 ")}
-      >
-        {shortcut}
-      </span>
+    {asChild ? (
+      children
+    ) : (
+      <>
+        {children}
+        {hint && (
+          <span className={cx("ml-auto pl-2 text-sm text-gray-400 ")}>{hint}</span>
+        )}
+        {shortcut && (
+          <span className={cx("ml-auto pl-2 text-sm text-gray-400 ")}>{shortcut}</span>
+        )}
+      </>
     )}
   </DropdownMenuPrimitives.Item>
 ))

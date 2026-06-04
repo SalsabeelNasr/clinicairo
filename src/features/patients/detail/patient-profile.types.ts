@@ -21,10 +21,3 @@ export const ROLE_DEFAULT_VISIT_TRACK: Record<StaffRole, VisitNoteTrackFilter> =
   coach: "coaching",
 }
 
-export type ProfileDrawer =
-  | "task"
-  | "prescription"
-  | "weight"
-  | "file"
-  | "visit_note"
-  | null

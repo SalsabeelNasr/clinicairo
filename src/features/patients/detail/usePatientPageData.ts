@@ -32,7 +32,12 @@ import type {
   CreatePastProcedurePayload,
 } from "@/features/prescriptions/prescriptions.types"
 import { buildPastHistoryItems } from "./past-history.utils"
-import { listPaymentsByPatient, verifyPayment } from "./payments-profile.api"
+import {
+  listPaymentsByPatient,
+  recordPayment,
+  verifyPayment,
+  type RecordPaymentPayload,
+} from "./payments-profile.api"
 import type { DietFormPayload } from "./patient-diet.types"
 import type { TrainingPlanFormPayload } from "./patient-training-plan.types"
 import type { PrescriptionFormPayload } from "./patient-prescription.types"
@@ -323,6 +328,18 @@ export function usePatientPageData(patientId: string) {
   const handleVerifyPayment = useCallback(
     async (paymentId: string, verifierId: string) => {
       await verifyPayment(paymentId, verifierId)
+      if (patient) {
+        const updated = await getPatientById(patient.id)
+        if (updated) setPatient(updated)
+      }
+      refresh()
+    },
+    [patient, refresh],
+  )
+
+  const handleRecordPayment = useCallback(
+    async (payload: RecordPaymentPayload) => {
+      await recordPayment(payload)
       refresh()
     },
     [refresh],
@@ -777,6 +794,7 @@ export function usePatientPageData(patientId: string) {
     handleUpdateWeight,
     handleDeleteWeight,
     handleVerifyPayment,
+    handleRecordPayment,
     handleAddAttachment,
     handleAddLabResult,
     handleUpdateLabResult,

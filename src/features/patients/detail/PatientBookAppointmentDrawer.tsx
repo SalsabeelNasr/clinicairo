@@ -10,21 +10,25 @@ interface PatientBookAppointmentDrawerProps {
   open: boolean
   onClose: () => void
   patient: Patient
+  canBook?: boolean
   onBookingComplete?: () => void
 }
 
-/** BookAppointmentDrawer with patient pre-selected (TabibDesk patient-profile pattern). */
+/** BookAppointmentDrawer with patient pre-selected; gated by verified prepay rules. */
 export function PatientBookAppointmentDrawer({
   open,
   onClose,
   patient,
+  canBook = true,
   onBookingComplete,
 }: PatientBookAppointmentDrawerProps) {
   const { currentUser, currentClinic } = useUserClinic()
 
+  if (!canBook) return null
+
   return (
     <BookAppointmentDrawer
-      open={open}
+      open={open && canBook}
       onClose={onClose}
       initialPatient={toBookAppointmentInitialPatient(patient)}
       clinicId={currentClinic?.id ?? DEMO_CLINIC_ID}

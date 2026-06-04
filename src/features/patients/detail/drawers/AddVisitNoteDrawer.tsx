@@ -259,7 +259,7 @@ export function AddVisitNoteDrawer({
             </div>
           )}
         </DrawerBody>
-        <DrawerFooter>
+        <DrawerFooter className="sticky bottom-0 border-t border-gray-100 bg-white pb-[max(1rem,env(safe-area-inset-bottom))]">
           <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
             {t.common.cancel}
           </Button>

@@ -59,7 +59,6 @@ export function FitnessTab({ data }: FitnessTabProps) {
             {t.profile.downloadTrainingPdf}
           </Button>
         </div>
-      </div>
     </div>
   )
 }

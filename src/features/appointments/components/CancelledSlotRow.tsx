@@ -21,7 +21,7 @@ export function CancelledSlotRow({ slot, onFillSlot }: CancelledSlotRowProps) {
   const timeRange = `${startTime} - ${endTime}`
 
   return (
-    <div className="card-surface flex items-center gap-4 px-5 py-4 border-red-100  bg-red-50/30 ">
+    <div className="schedule-slot border-red-100 bg-red-50/30">
       <div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-red-100 ">
         <RiCalendarLine className="size-5 text-red-600 " aria-hidden />
       </div>

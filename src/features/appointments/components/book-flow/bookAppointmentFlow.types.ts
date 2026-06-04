@@ -30,15 +30,6 @@ export interface PreSelectedSlot {
   appointmentType?: string
 }
 
-export interface WaitlistEntry {
-  id: string
-  patientId: string
-  patientName: string
-  patientPhone: string
-  appointmentType?: string
-  notes?: string
-}
-
 export type BookFlowStep = "patient" | "service" | "datetime" | "confirmation" | "success"
 
 export interface BookAppointmentFlowProps {
@@ -49,7 +40,6 @@ export interface BookAppointmentFlowProps {
   isEmbedded?: boolean
   preSelectedSlot?: PreSelectedSlot | null
   rescheduleAppointmentId?: string | null
-  waitlistEntry?: WaitlistEntry | null
   clinicId?: string
   doctorId?: string
   onBookingComplete?: () => void

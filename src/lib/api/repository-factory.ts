@@ -35,7 +35,7 @@ export function getBackendType(): BackendType {
     process.env?.NEXT_PUBLIC_SUPABASE_ANON_KEY
   )
   if (typeof window !== "undefined") {
-    const isDemoMode = localStorage.getItem("demo-mode") === "true"
+    const isDemoMode = localStorage.getItem("clinicairo-demo-authenticated") === "true"
     if (isDemoMode) return "mock"
   }
   return isSupabaseConfigured ? "supabase" : "mock"

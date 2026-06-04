@@ -4,7 +4,6 @@ export type ActivityEntityType =
   | "task"
   | "payment"
   | "invoice"
-  | "waitlist"
   | "settings"
   | "auth";
 

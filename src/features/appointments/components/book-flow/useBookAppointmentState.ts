@@ -18,7 +18,6 @@ export interface UseBookAppointmentStateParams {
   initialPatient: Patient | null
   preSelectedSlot: PreSelectedSlot | null
   rescheduleAppointmentId: string | null
-  waitlistEntry: { patientId: string; patientName: string; patientPhone: string } | null
   clinicId?: string
   doctorId?: string
   onBookingComplete?: () => void
@@ -30,7 +29,6 @@ export function useBookAppointmentState(params: UseBookAppointmentStateParams) {
     initialPatient,
     preSelectedSlot,
     rescheduleAppointmentId,
-    waitlistEntry,
     clinicId,
     doctorId,
     onBookingComplete,
