@@ -19,6 +19,7 @@ import {
   TASK_STATUS_KEYS,
 } from "./tasks.utils"
 import type { TaskListItem } from "./tasks.types"
+import type { StaffRole } from "@/data/mock/users-clinics"
 import { cx } from "@/lib/utils"
 
 interface TasksTableProps {
@@ -27,7 +28,7 @@ interface TasksTableProps {
   onAssign: (task: TaskListItem) => void
   onSnooze?: (task: TaskListItem, days: number) => void
   onNextAttempt?: (task: TaskListItem) => void
-  role: "doctor" | "assistant" | "manager"
+  role: StaffRole
 }
 
 export function TasksTable({
@@ -45,7 +46,7 @@ export function TasksTable({
       {tasks.map((task) => {
         const overdue = isOverdue(task.dueDate)
         const isDone = task.status === "done"
-        const canAssign = role === "doctor" || role === "assistant" || role === "manager"
+        const canAssign = ["owner", "assistant", "doctor", "nutritionist", "coach"].includes(role)
         const waPhone = task.patientPhone ? task.patientPhone.replace(/[^\d]/g, "") : undefined
         const waHref = waPhone
           ? `https://wa.me/${waPhone}?text=${encodeURIComponent("Hello, this is CliniCairo clinic following up. When is a good time to talk?")}`
@@ -157,7 +158,7 @@ export function TasksTable({
                 )}>
                   {task.patientName ? (
                     <>
-                      {t.table.patient}: <Link href={`/patients/${task.patientId}`} className="font-medium hover:text-primary-600  transition-colors">{task.patientName}</Link> → {task.description || task.title}
+                      {t.table.patient}: <Link href={`/patients/${task.patientId}`} className="app-entity-name">{task.patientName}</Link> → {task.description || task.title}
                     </>
                   ) : (
                     task.description || task.title

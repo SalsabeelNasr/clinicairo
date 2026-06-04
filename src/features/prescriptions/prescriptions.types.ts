@@ -59,3 +59,19 @@ export interface CreatePastMedicationPayload {
   takenTo?: string | null
   notes?: string
 }
+
+export interface PastProcedure {
+  id: string
+  patientId: string
+  name: string
+  procedureDate: string
+  notes?: string | null
+  createdAt: string
+}
+
+export interface CreatePastProcedurePayload {
+  patientId: string
+  name: string
+  procedureDate: string
+  notes?: string
+}

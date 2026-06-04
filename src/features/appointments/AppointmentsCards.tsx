@@ -2,7 +2,7 @@
 
 import { Badge } from "@/components/Badge"
 import { getBadgeColor } from "@/lib/badgeColors"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/Card"
+import { Card, CardContent, CardDescription, CardHeader } from "@/components/Card"
 import { Button } from "@/components/Button"
 import {
   RiCalendarLine,
@@ -94,7 +94,7 @@ export function AppointmentsCards({
               {!readOnly && onFillSlot && (
                 <div className="shrink-0">
                   <Button
-                    variant="primary"
+                    variant="action"
                     className="btn-card-action inline-flex items-center gap-2 rtl:flex-row-reverse"
                     onClick={() => onFillSlot(appointment)}
                   >
@@ -112,10 +112,8 @@ export function AppointmentsCards({
           <CardHeader>
             <div className="flex items-start justify-between">
               <div className="flex-1">
-                <Link href={`/patients/${appointment.patient_id}`}>
-                  <CardTitle className="cursor-pointer text-lg text-primary-600 hover:text-primary-700  ">
-                    {appointment.patient_name}
-                  </CardTitle>
+                <Link href={`/patients/${appointment.patient_id}`} className="app-entity-name">
+                  {appointment.patient_name}
                 </Link>
                 <CardDescription className="mt-1">
                   <Badge color={getBadgeColor(getStatusBadgeVariant(appointment.status))} size="xs">
@@ -179,7 +177,7 @@ export function AppointmentsCards({
                 {(appointment.status === "scheduled" || appointment.status === "confirmed") && (
                     <>
                       <Button
-                        variant="primary"
+                        variant="action"
                         className="btn-card-action flex-1"
                         onClick={() => onReschedule(appointment)}
                       >

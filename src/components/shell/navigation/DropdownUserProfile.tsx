@@ -3,17 +3,17 @@
 import * as React from "react"
 import { useRouter } from "next/navigation"
 import {
-  RiUserSettingsLine,
   RiLogoutBoxRLine,
   RiArrowDownSLine,
   RiArrowUpSLine,
-  RiUser3Line,
   RiGlobalLine,
+  RiSwitchLine,
 } from "@remixicon/react"
 import { useUserClinic } from "@/contexts/user-clinic-context"
 import { useLocale } from "@/contexts/locale-context"
 import { useAppTranslations } from "@/lib/useAppTranslations"
 import { cx, focusRing } from "@/lib/utils"
+import { STAFF_ROLE_LABELS, type StaffRole } from "@/data/mock/users-clinics"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -42,7 +42,6 @@ export function SidebarUserProfile({ mode, align = "start", children }: SidebarU
   const { isRtl, lang, setLanguage } = useLocale()
   const t = useAppTranslations()
   const [isOpen, setIsOpen] = React.useState(false)
-  const [isSwitchUserOpen, setIsSwitchUserOpen] = React.useState(false)
   const [mounted, setMounted] = React.useState(false)
 
   const handleSignOut = () => {
@@ -56,9 +55,7 @@ export function SidebarUserProfile({ mode, align = "start", children }: SidebarU
   if (!mounted) return null
 
   const roleLabel =
-    currentUser.role === "doctor" ? t.common.doctor :
-    currentUser.role === "manager" ? t.common.manager :
-    t.common.assistant
+    STAFF_ROLE_LABELS[currentUser.role as StaffRole][lang]
 
   // Desktop modes (Expanded & Collapsed) use Dropdown
   if (mode === "dropdown" || mode === "collapsed") {
@@ -126,33 +123,6 @@ export function SidebarUserProfile({ mode, align = "start", children }: SidebarU
           <DropdownMenuGroup>
             <DropdownMenuSubMenu>
               <DropdownMenuSubMenuTrigger>
-                <RiUserSettingsLine className="size-4 shrink-0 me-2" aria-hidden="true" />
-                {t.common.switchUser}
-              </DropdownMenuSubMenuTrigger>
-              <DropdownMenuSubMenuContent>
-                {allUsers.map((user) => (
-                  <DropdownMenuItem
-                    key={user.id}
-                    onClick={() => setCurrentUser(user.id)}
-                    className={user.id === currentUser.id ? "bg-gray-100 " : ""}
-                  >
-                    <div className="flex items-center gap-2">
-                      <div className="flex size-6 items-center justify-center rounded-full bg-primary-100 text-xs font-medium text-primary-700  ">
-                        {user.avatar_initials}
-                      </div>
-                      <div className="flex flex-col">
-                        <span className="text-sm font-medium">{user.full_name}</span>
-                        <span className="text-xs text-gray-500 ">
-                          {user.role === "doctor" ? t.common.doctor : user.role === "manager" ? t.common.manager : t.common.assistant}
-                        </span>
-                      </div>
-                    </div>
-                  </DropdownMenuItem>
-                ))}
-              </DropdownMenuSubMenuContent>
-            </DropdownMenuSubMenu>
-            <DropdownMenuSubMenu>
-              <DropdownMenuSubMenuTrigger>
                 <RiGlobalLine className="size-4 shrink-0 me-2" aria-hidden="true" />
                 {lang === "ar" ? "اللغة" : "Language"}
               </DropdownMenuSubMenuTrigger>
@@ -167,6 +137,28 @@ export function SidebarUserProfile({ mode, align = "start", children }: SidebarU
                   <DropdownMenuRadioItem value="en" iconType="check">
                     English
                   </DropdownMenuRadioItem>
+                </DropdownMenuRadioGroup>
+              </DropdownMenuSubMenuContent>
+            </DropdownMenuSubMenu>
+
+            <DropdownMenuSubMenu>
+              <DropdownMenuSubMenuTrigger>
+                <RiSwitchLine className="size-4 shrink-0 me-2" aria-hidden="true" />
+                {lang === "ar" ? "تبديل المستخدم (ديمو)" : "Switch User (demo)"}
+              </DropdownMenuSubMenuTrigger>
+              <DropdownMenuSubMenuContent>
+                <DropdownMenuRadioGroup
+                  value={currentUser.id}
+                  onValueChange={(v) => setCurrentUser(v)}
+                >
+                  {allUsers.map((u) => (
+                    <DropdownMenuRadioItem key={u.id} value={u.id} iconType="check">
+                      <span className="font-medium">{u.full_name}</span>
+                      <span className="ms-1.5 text-xs text-gray-500">
+                        · {STAFF_ROLE_LABELS[u.role as StaffRole][lang]}
+                      </span>
+                    </DropdownMenuRadioItem>
+                  ))}
                 </DropdownMenuRadioGroup>
               </DropdownMenuSubMenuContent>
             </DropdownMenuSubMenu>
@@ -216,40 +208,6 @@ export function SidebarUserProfile({ mode, align = "start", children }: SidebarU
 
       {isOpen && (
         <div className="flex flex-col gap-0.5 ps-3 pt-1">
-          {/* Switch User Toggle */}
-          <button
-            onClick={() => setIsSwitchUserOpen(!isSwitchUserOpen)}
-            className="flex w-full items-center justify-between rounded-md px-3 py-2 text-sm text-gray-700 hover:bg-gray-100  "
-          >
-            <div className="flex items-center gap-2">
-              <RiUserSettingsLine className="size-4" />
-              <span>{t.common.switchUser}</span>
-            </div>
-            <RiArrowDownSLine className={cx("size-4 transition-transform", isSwitchUserOpen && "rotate-180")} />
-          </button>
-          
-          {isSwitchUserOpen && (
-            <div className="flex flex-col gap-1 ps-8 py-1">
-              {allUsers.map((user) => (
-                <button
-                  key={user.id}
-                  onClick={() => setCurrentUser(user.id)}
-                  className={cx(
-                    "flex items-center gap-2 rounded-md px-2 py-1.5 text-xs transition-colors",
-                    user.id === currentUser.id
-                      ? "bg-primary-50 text-primary-700  "
-                      : "text-gray-600 hover:bg-gray-100  "
-                  )}
-                >
-                  <div className="flex size-5 items-center justify-center rounded-full bg-primary-100 text-[10px] font-bold text-primary-700  ">
-                    {user.avatar_initials}
-                  </div>
-                  <span>{user.full_name}</span>
-                </button>
-              ))}
-            </div>
-          )}
-
           {/* Language */}
           <div className="flex items-center gap-2 px-3 py-2 text-sm text-gray-700">
             <RiGlobalLine className="size-4" />
@@ -271,9 +229,34 @@ export function SidebarUserProfile({ mode, align = "start", children }: SidebarU
             </div>
           </div>
 
+          {/* Demo: switch user */}
+          <div className="px-3 py-1.5">
+            <p className="mb-1 flex items-center gap-1 text-xs text-gray-500">
+              <RiSwitchLine className="size-3.5" />
+              {lang === "ar" ? "تبديل المستخدم (ديمو)" : "Switch user (demo)"}
+            </p>
+            <div className="flex flex-col gap-0.5">
+              {allUsers.map((u) => (
+                <button
+                  key={u.id}
+                  onClick={() => setCurrentUser(u.id)}
+                  className={cx(
+                    "rounded-md px-2 py-1 text-start text-xs transition-colors",
+                    currentUser.id === u.id
+                      ? "bg-primary-50 text-primary-700 font-medium"
+                      : "text-gray-600 hover:bg-gray-100"
+                  )}
+                >
+                  {u.full_name}
+                  <span className="ms-1 text-gray-400">· {STAFF_ROLE_LABELS[u.role as StaffRole][lang]}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+
           <button
             onClick={handleSignOut}
-            className="flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm text-red-600 hover:bg-red-50  "
+            className="flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm text-red-600 hover:bg-red-50"
           >
             <RiLogoutBoxRLine className="size-4" />
             <span>{t.common.signOut}</span>

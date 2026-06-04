@@ -4,7 +4,7 @@ import { useState } from "react"
 import { useAppTranslations } from "@/lib/useAppTranslations"
 import { getAppointmentTypeLabel } from "../appointmentTypes"
 import Link from "next/link"
-import { RiPhoneLine, RiCalendarLine, RiCloseLine, RiMore2Fill } from "@remixicon/react"
+import { RiPhoneLine, RiCalendarLine, RiCloseLine, RiMore2Fill, RiUserLine } from "@remixicon/react"
 import { formatSlotTime } from "../utils/slotFormatters"
 import { updateStatus } from "../appointments.api"
 import { useToast } from "@/hooks/useToast"
@@ -123,6 +123,14 @@ export function SlotRow({ slot, onReschedule, onCancel }: SlotRowProps) {
             </button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-48 rounded-xl">
+            {slot.patientId && (
+              <DropdownMenuItem asChild>
+                <Link href={`/patients/${slot.patientId}`} className="flex items-center gap-2">
+                  <RiUserLine className="size-4" />
+                  <span>{t.common.view}</span>
+                </Link>
+              </DropdownMenuItem>
+            )}
             {onReschedule && slot.appointmentId && (
               <DropdownMenuItem onClick={handleReschedule}>
                 <RiCalendarLine className="me-2 size-4" />

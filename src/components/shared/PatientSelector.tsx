@@ -217,7 +217,7 @@ export function PatientSelector({
               <RiUserLine className="size-4 text-primary-600 " />
             </div>
             <div>
-              <p className="text-sm font-semibold text-gray-900 ">
+              <p className="app-entity-name">
                 {selectedPatient.first_name} {selectedPatient.last_name}
               </p>
               <p className="text-[11px] text-gray-500  font-medium">{selectedPatient.phone}</p>
@@ -262,7 +262,7 @@ export function PatientSelector({
                   className="w-full rounded-xl border border-gray-100 bg-white p-2.5 text-left transition-all hover:border-primary-200 hover:bg-primary-50/30   "
                 >
                   <div className="flex flex-col">
-                    <p className="text-sm font-bold text-gray-900 ">
+                    <p className="app-entity-name">
                       {patient.first_name} {patient.last_name}
                     </p>
                     <div className="mt-0.5 flex items-center gap-1.5 text-[11px] text-gray-500  font-medium">

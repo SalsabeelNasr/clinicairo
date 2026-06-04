@@ -30,10 +30,11 @@ import type {
   TaskStatus,
   CreateTaskPayload,
 } from "./tasks.types"
+import type { StaffRole } from "@/data/mock/users-clinics"
 import { cn } from "@/lib/utils"
 
 interface TasksPageProps {
-  role: "doctor" | "assistant" | "manager"
+  role: StaffRole
   currentUserId: string
   clinicId: string
   defaultSourceFilter?: TaskSource | "all"
@@ -58,7 +59,7 @@ export function TasksPage({
   const [assignTaskData, setAssignTaskData] = useState<TaskListItem | null>(null)
   const [statusFilter, setStatusFilter] = useState<TaskStatus | "all">("pending")
   const [scope, setScope] = useState<"mine" | "all">(
-    role === "assistant" || role === "manager" ? "all" : "mine"
+    role === "assistant" || role === "owner" ? "all" : "mine"
   )
 
   const pageSize = 20
@@ -260,6 +261,7 @@ export function TasksPage({
           {hasMore && (
             <div className="app-load-more">
               <PageHeaderAction
+                pinToMobileTopbar={false}
                 onClick={() => setPage((p) => p + 1)}
                 disabled={loading}
               >

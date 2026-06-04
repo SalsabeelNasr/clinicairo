@@ -9,26 +9,23 @@ interface HomeQueueProps<T> {
   currentUserId: string
   /** Returns the owning staff id for an item (provider for appts, assignee for tasks). */
   getOwnerId: (item: T) => string
-  defaultFilter: "mine" | "all"
   renderCard: (item: T) => ReactNode
   labels: { mine: string; all: string; empty: string }
 }
 
 /**
- * Reusable filtered-queue widget for the Home page (spec §3.5).
- * Card-based list (NOT a table), mobile-first, with a mine/all filter whose
- * default is role-driven. Used for both Today's appointments and My tasks.
+ * Reusable filtered-queue widget for the Home page.
+ * Card-based list with a mine/all filter; defaults to all for every role.
  */
 export function HomeQueue<T>({
   title,
   items,
   currentUserId,
   getOwnerId,
-  defaultFilter,
   renderCard,
   labels,
 }: HomeQueueProps<T>) {
-  const [filter, setFilter] = useState<"mine" | "all">(defaultFilter)
+  const [filter, setFilter] = useState<"mine" | "all">("all")
 
   const shown =
     filter === "mine"

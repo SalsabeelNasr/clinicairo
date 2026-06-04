@@ -87,7 +87,7 @@ export function CancelAppointmentModal({
             <div className="rounded-lg bg-slate-50 p-3 text-start">
               <p className="text-sm text-slate-600">
                 {t.appointments.labelPatient}:{" "}
-                <span className="font-semibold text-slate-900">{patientName}</span>
+                <span className="app-entity-name">{patientName}</span>
               </p>
               {appointmentTime && (
                 <p className="mt-1 text-sm text-slate-600">

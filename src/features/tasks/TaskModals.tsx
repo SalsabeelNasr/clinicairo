@@ -13,7 +13,7 @@ import {
 import { Button } from "@/components/Button"
 import { Label } from "@/components/Label"
 import { Select } from "@/components/Select"
-import { mockUsers } from "@/data/mock/users-clinics"
+import { mockUsers, STAFF_ROLE_LABELS, type StaffRole } from "@/data/mock/users-clinics"
 import type { TaskListItem } from "./tasks.types"
 
 interface AssignModalProps {
@@ -57,18 +57,7 @@ export function AssignModal({
     }
   }
 
-  const getRoleLabel = (role: string) => {
-    switch (role) {
-      case "doctor":
-        return "Doctor"
-      case "assistant":
-        return "Assistant"
-      case "manager":
-        return "Manager"
-      default:
-        return role
-    }
-  }
+  const getRoleLabel = (role: StaffRole) => STAFF_ROLE_LABELS[role].en
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>

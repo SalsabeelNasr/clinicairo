@@ -5,8 +5,8 @@
  */
 
 // ---- CliniCairo demo entities (mock backend) ----
-export const DEMO_DOCTOR_ID = "demo-doctor-001";
-export const DEMO_CLINIC_ID = "demo-clinic-001";
+export const DEMO_DOCTOR_ID = "user-002";
+export const DEMO_CLINIC_ID = "clinic-001";
 export const DEFAULT_CURRENT_USER_ID = DEMO_DOCTOR_ID;
 export const DEFAULT_CURRENT_CLINIC_ID = DEMO_CLINIC_ID;
 
@@ -16,8 +16,8 @@ export const MAX_PAGE_SIZE = 100;
 /** Demo doctor entity (for demo mode and invoice display) */
 export const mockDoctor = {
   id: DEMO_DOCTOR_ID,
-  email: "doctor@clinicairo.com",
-  full_name: "د. أحمد القاضي",
+  email: "ahmed.kady@clinicairo.com",
+  full_name: "Dr. Ahmed El Kady",
   specialization: "إنقاص الوزن والغدد",
   biography: "استشاري السمنة وعلاج السكري ومتابعة الحقن",
   image_url: "/images/clinicairo-logo.png",

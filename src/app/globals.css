@@ -40,6 +40,11 @@
   --color-panel: #f0f8ff; /* light panel background */
   --color-whatsapp: #25d366; /* WhatsApp actions only */
 
+  /* Card row action buttons — equal padding, consistent height */
+  --spacing-action-btn: 0.625rem;
+  --size-action-btn: 2.25rem;
+  --min-width-action-btn-label: 5.75rem;
+
   /* Arabic font alias used by some ported components */
   --font-arabic: var(--font-ibm-plex-arabic), ui-sans-serif, system-ui, sans-serif;
 
@@ -255,11 +260,16 @@
 
   /* Shared app UI (leads, appointments, schedule rows) */
   .app-page-header {
-    @apply flex items-center justify-between gap-3;
+    @apply hidden items-center justify-between gap-3 lg:flex;
+  }
+
+  .app-page-header--stacked {
+    @apply flex-col items-start gap-4 max-lg:flex max-lg:items-start;
+    @apply lg:flex-row lg:items-start lg:justify-between;
   }
 
   .app-page-title {
-    @apply text-3xl font-bold text-slate-900;
+    @apply hidden text-3xl font-bold text-slate-900 lg:block;
   }
 
   .app-page-description {
@@ -270,8 +280,17 @@
     @apply min-w-0 flex-1 space-y-0.5;
   }
 
-  .app-page-header--stacked {
-    @apply flex-col items-start gap-4 sm:flex-row sm:items-start sm:justify-between;
+  .app-page-header--stacked .app-page-header__btn,
+  .app-page-header--stacked .app-page-header__btn-wrapper {
+    @apply hidden lg:inline-flex;
+  }
+
+  .app-topbar__action {
+    @apply inline-flex max-w-[45%] shrink-0 items-center gap-1.5 rounded-lg bg-slate-900 px-3 py-1.5 text-xs font-semibold text-white transition hover:bg-slate-800 disabled:opacity-50;
+  }
+
+  .app-topbar__action-icon {
+    @apply size-4 shrink-0;
   }
 
   .app-page-header__btn {
@@ -441,19 +460,20 @@
   }
 
   .app-nav-bar {
-    @apply mb-8 flex items-center justify-between rounded-2xl border border-gray-100 bg-white p-4 shadow-sm;
+    @apply mb-4 flex items-center justify-between rounded-xl border border-gray-100 bg-white p-2 shadow-sm;
+    @apply sm:mb-8 sm:rounded-2xl sm:p-4;
   }
 
   .app-nav-bar__btn {
-    @apply rounded-lg p-2 text-gray-500 transition-colors hover:bg-gray-100;
+    @apply rounded-lg p-1.5 text-gray-500 transition-colors hover:bg-gray-100 sm:p-2;
   }
 
   .app-nav-bar__content {
-    @apply flex items-center gap-4;
+    @apply flex items-center gap-2 sm:gap-4;
   }
 
   .app-nav-bar__date {
-    @apply font-medium text-gray-600;
+    @apply text-sm font-medium text-gray-600 sm:text-base;
   }
 
   .app-pill {
@@ -504,21 +524,69 @@
     @apply size-4 shrink-0;
   }
 
-  /* Stats (Analytics) */
-  .app-stat {
-    @apply rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition-all hover:shadow-md md:p-6;
+  /* Shared compact metric cards (accounting, analytics) */
+  .app-metric-grid {
+    @apply grid gap-2 sm:gap-3 md:gap-4;
   }
 
-  .app-stat__icon-box {
-    @apply flex size-12 items-center justify-center rounded-xl bg-slate-100 text-slate-800;
+  .app-metric-grid--3 {
+    @apply grid-cols-3;
   }
 
-  .app-stat__label {
-    @apply text-sm font-medium text-slate-500;
+  .app-metric-grid--4 {
+    @apply grid-cols-4;
   }
 
-  .app-stat__value {
-    @apply mt-2 text-2xl font-bold text-slate-900;
+  .app-metric-card {
+    @apply min-w-0 rounded-lg border border-slate-200 bg-white p-2 shadow-sm sm:rounded-xl sm:p-3 md:p-5;
+  }
+
+  .app-metric-card__heading {
+    @apply mb-1.5 block text-[10px] font-bold leading-tight text-slate-400 sm:mb-2 sm:text-xs;
+  }
+
+  .app-metric-card__heading--code {
+    @apply uppercase tracking-wide;
+  }
+
+  .app-metric-card__rows {
+    @apply space-y-1 sm:space-y-1.5 md:space-y-2;
+  }
+
+  .app-metric-card__row {
+    @apply flex items-center justify-between gap-1 text-[10px] leading-tight text-slate-500 sm:text-xs md:text-sm;
+  }
+
+  .app-metric-card__row-value {
+    @apply shrink-0 tabular-nums text-slate-700;
+  }
+
+  .app-metric-card__highlight {
+    @apply flex items-center justify-between gap-1 border-t border-slate-100 pt-1.5 text-[11px] font-bold leading-tight text-slate-900 sm:mt-0 sm:pt-2 sm:text-xs md:text-sm;
+  }
+
+  .app-metric-card__highlight-value {
+    @apply ms-auto shrink-0 tabular-nums;
+  }
+
+  .app-metric-card__value {
+    @apply text-sm font-bold tabular-nums leading-tight text-slate-900 sm:text-base md:text-lg;
+  }
+
+  .app-metric-card__delta {
+    @apply mt-1 inline-flex w-fit items-center gap-0.5 rounded-full px-1.5 py-0.5 text-[9px] font-medium sm:text-[10px];
+  }
+
+  .app-metric-card__delta--up {
+    @apply bg-success-50 text-success-600;
+  }
+
+  .app-metric-card__delta--down {
+    @apply bg-error-50 text-error-600;
+  }
+
+  .app-link--subtle {
+    @apply inline-flex items-center gap-1 text-xs font-normal text-slate-400 hover:text-slate-600 transition-colors;
   }
 
   .app-btn {
@@ -534,7 +602,11 @@
   }
 
   .app-btn--join {
-    @apply inline-flex items-center justify-center gap-2 rounded-lg bg-primary-600 px-6 py-2 text-sm font-semibold text-white transition-colors hover:bg-primary-700;
+    @apply inline-flex items-center justify-center gap-1.5 rounded-lg bg-primary-50 text-sm font-semibold leading-none text-primary-700 transition-colors hover:bg-primary-100;
+    padding: var(--spacing-action-btn);
+    min-height: var(--size-action-btn);
+    min-width: auto;
+    @apply lg:min-w-[var(--min-width-action-btn-label)];
   }
 
   .app-btn--join__icon {
@@ -542,22 +614,47 @@
   }
 
   .app-icon-btn {
-    @apply rounded-lg p-2 text-gray-500 transition-colors hover:bg-gray-100;
+    @apply inline-flex items-center justify-center rounded-lg leading-none text-gray-500 transition-colors hover:bg-gray-100;
+    padding: var(--spacing-action-btn);
+    min-height: var(--size-action-btn);
+    min-width: auto;
+  }
+
+  .app-icon-btn svg {
+    @apply !size-4 shrink-0;
+  }
+
+  .app-row__actions .app-btn--join,
+  .app-row__actions .app-icon-btn {
+    @apply shrink-0;
   }
 
   .app-row {
-    @apply flex flex-col justify-between gap-4 rounded-2xl border border-slate-100 bg-white p-6 shadow-sm transition-all hover:shadow-md md:flex-row md:items-center;
+    @apply grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-3 gap-y-3 rounded-2xl border border-slate-100 bg-white p-4 shadow-sm transition-all hover:shadow-md sm:p-6;
+    @apply md:flex md:flex-row md:items-center md:gap-6;
+  }
+
+  .app-row > .app-row__main {
+    @apply col-start-1 row-start-1 min-w-0;
+    @apply md:min-w-0 md:flex-1;
+  }
+
+  .app-row > .app-row__meta {
+    @apply col-start-1 row-start-2 block w-full text-start;
+    @apply md:col-auto md:row-auto md:w-auto md:shrink-0;
+  }
+
+  .app-row > .app-row__actions {
+    @apply col-start-2 row-span-full flex shrink-0 items-center gap-2 self-center;
+    @apply md:col-auto md:row-auto md:gap-3 md:self-center;
   }
 
   .app-row--widget {
-    @apply p-3 gap-3 rounded-xl md:flex-row md:items-center border-slate-100/80 hover:border-primary-100/50;
+    @apply gap-2 rounded-xl border-slate-100/80 p-3 hover:border-primary-100/50 sm:p-4;
+    @apply md:gap-3 md:p-3;
   }
 
   .app-row--widget .app-row__time-start {
-    @apply text-lg font-bold;
-  }
-
-  .app-row--widget .app-row__info-title {
     @apply text-lg font-bold;
   }
 
@@ -581,6 +678,62 @@
     @apply size-4;
   }
 
+  .app-row--widget .app-row__title-row {
+    @apply flex-row flex-wrap items-center gap-1.5;
+  }
+
+  .app-row--widget .app-row__info-title {
+    @apply w-auto min-w-0;
+  }
+
+  .app-row--widget .app-row__chips {
+    @apply w-auto;
+  }
+
+  .app-row--patient .app-row__divider {
+    @apply h-12 max-md:hidden;
+  }
+
+  .app-row--task .app-row__divider {
+    @apply h-12 max-md:hidden;
+  }
+
+  .app-row--task .app-row__check {
+    @apply size-10;
+  }
+
+  .app-row--task .app-row__main {
+    @apply max-md:items-start max-md:gap-2.5 md:gap-6;
+  }
+
+  .app-row--patient .app-row__main {
+    @apply max-md:items-start max-md:gap-2.5 md:gap-6;
+  }
+
+  .app-row--patient .app-row__avatar {
+    @apply max-md:size-10;
+  }
+
+  .app-row--patient .app-row__avatar-icon {
+    @apply max-md:size-5;
+  }
+
+  .app-row--patient .app-row__title-row {
+    @apply flex-row flex-wrap items-center gap-1.5;
+  }
+
+  .app-row--patient .app-row__chips {
+    @apply w-auto;
+  }
+
+  .app-row--patient .app-row__info .mt-2 {
+    @apply space-y-0.5;
+  }
+
+  .app-row--patient > .app-row__actions {
+    @apply max-md:row-span-full max-md:self-center;
+  }
+
   .app-row--accent-primary {
     @apply border-slate-200/60;
   }
@@ -598,7 +751,8 @@
   }
 
   .app-row__main {
-    @apply flex min-w-0 flex-1 flex-wrap items-center gap-4;
+    @apply flex min-w-0 flex-1 items-center gap-3;
+    @apply md:gap-4;
   }
 
   .app-row__time {
@@ -624,19 +778,30 @@
   }
 
   .app-row__title-row {
-    @apply flex flex-wrap items-center gap-2;
+    @apply flex flex-row flex-wrap items-center gap-1.5;
+  }
+
+  /* Primary entity name (patient, lead, etc.) — one size everywhere */
+  .app-entity-name {
+    @apply text-base font-semibold leading-snug text-slate-900;
+  }
+
+  a.app-entity-name {
+    @apply transition-colors hover:text-primary-600;
   }
 
   .app-row__info-title {
-    @apply text-lg font-bold text-slate-900;
+    @apply text-base font-semibold leading-snug text-slate-900;
   }
 
   .app-row__info-subtitle {
-    @apply line-clamp-1 text-sm text-slate-500;
+    @apply mt-0.5 line-clamp-2 text-sm text-slate-500;
+    @apply md:line-clamp-1 md:mt-0;
   }
 
   .app-row__chips {
-    @apply flex flex-wrap gap-2;
+    @apply flex w-auto flex-wrap gap-1.5;
+    @apply md:gap-2;
   }
 
   .app-row__type {
@@ -664,11 +829,23 @@
   }
 
   .app-row__actions {
-    @apply flex items-center gap-3;
+    @apply flex items-center gap-2;
   }
 
   .app-row__actions--spread {
-    @apply w-full justify-between gap-4 sm:w-auto sm:justify-end sm:gap-8;
+    @apply md:gap-8;
+  }
+
+  .app-row__amount {
+    @apply flex flex-col items-end gap-0.5 text-end;
+  }
+
+  .app-row__amount-primary {
+    @apply text-lg font-bold text-slate-900;
+  }
+
+  .app-row__amount-secondary {
+    @apply flex flex-wrap justify-end gap-2 text-[11px] font-bold uppercase tracking-tight text-slate-400;
   }
 
   .app-row__check {
@@ -696,7 +873,8 @@
   }
 
   .app-row__meta {
-    @apply hidden text-start md:block;
+    @apply block w-full space-y-0.5 text-start;
+    @apply md:w-auto md:space-y-0;
   }
 
   .app-row__meta-primary {
@@ -757,101 +935,6 @@
     @apply border-primary-600 bg-primary-50 text-primary-700 ring-1 ring-primary-600;
   }
 
-  /* Lead cards (leads page) */
-  .lead-card-grid {
-    @apply grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3;
-  }
-
-  .lead-card {
-    @apply rounded-2xl border border-gray-100 bg-white p-6 shadow-sm transition-shadow hover:shadow-md;
-  }
-
-  .lead-card__header {
-    @apply mb-4 flex items-start justify-between gap-3;
-  }
-
-  .lead-card__name {
-    @apply text-lg font-bold text-gray-900;
-  }
-
-  .lead-card__status {
-    @apply shrink-0 rounded-full px-3 py-1 text-xs font-medium;
-  }
-
-  .lead-card__status--new {
-    @apply bg-primary-50 text-primary-800;
-  }
-
-  .lead-card__status--contacted {
-    @apply bg-primary-100 text-primary-800;
-  }
-
-  .lead-card__status--qualified {
-    @apply bg-warning-50 text-warning-600;
-  }
-
-  .lead-card__status--booked {
-    @apply bg-primary-100 text-primary-800;
-  }
-
-  .lead-card__status--converted {
-    @apply bg-success-50 text-success-600;
-  }
-
-  .lead-card__status--lost {
-    @apply bg-gray-100 text-gray-700;
-  }
-
-  .lead-card__body {
-    @apply mb-6 space-y-3;
-  }
-
-  .lead-card__field {
-    @apply flex items-center gap-2.5 text-slate-500 text-sm;
-  }
-
-  .lead-card__label {
-    @apply font-semibold;
-  }
-
-  .lead-card__value {
-    font-family: var(--font-outfit), ui-sans-serif, system-ui, sans-serif;
-    @apply tabular-nums tracking-tighter;
-    direction: ltr;
-    unicode-bidi: isolate;
-  }
-
-  .lead-card__tags {
-    @apply flex flex-wrap gap-2;
-  }
-
-  .lead-card__tag {
-    @apply rounded px-2 py-1 bg-slate-100 text-slate-600 text-[13px] font-bold uppercase tracking-wider;
-  }
-
-  .lead-card__tag--alert {
-    @apply rounded px-2 py-1 bg-rose-50 text-rose-600 text-[13px] font-bold uppercase tracking-wider;
-  }
-
-  .lead-card__meta {
-    @apply text-sm text-slate-400;
-  }
-
-  .lead-card__actions {
-    @apply grid grid-cols-2 gap-2;
-  }
-
-  .lead-card__actions--single {
-    @apply grid-cols-1;
-  }
-
-  .lead-card__btn-primary {
-    @apply rounded-lg text-sm font-semibold transition-colors bg-primary-600 text-white hover:bg-primary-700 py-2;
-  }
-
-  .lead-card__btn-secondary {
-    @apply rounded-lg text-sm font-semibold transition-colors border border-gray-200 text-gray-700 hover:bg-gray-50 py-2;
-  }
 }
 
 /* Dynamic-style helpers (set via inline CSS vars) */

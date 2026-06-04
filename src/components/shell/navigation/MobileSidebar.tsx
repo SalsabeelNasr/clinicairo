@@ -11,8 +11,8 @@ import { usePathname } from "next/navigation"
 import Link from "next/link"
 import { Button } from "@/components/Button"
 import { Badge } from "@/components/Badge"
-import { Select } from "@/components/Select"
 import { useFeatures } from "@/features/settings/useFeatures"
+import { useLocale } from "@/contexts/locale-context"
 import { cx, focusRing } from "@/lib/utils"
 import {
   Drawer,
@@ -23,9 +23,10 @@ import {
   DrawerBody,
   DrawerClose,
 } from "@/components/Drawer"
-import { RiMenuLine, RiUser3Line, RiArrowDownSLine } from "@remixicon/react"
+import { RiMenuLine, RiUser3Line } from "@remixicon/react"
 import { DropdownUserProfile } from "./DropdownUserProfile"
 import { useUserClinic } from "@/contexts/user-clinic-context"
+import { STAFF_ROLE_LABELS, type StaffRole } from "@/data/mock/users-clinics"
 
 interface MobileSidebarProps {
   role: Role
@@ -34,8 +35,9 @@ interface MobileSidebarProps {
 export default function MobileSidebar({ role }: MobileSidebarProps) {
   const pathname = usePathname()
   const navigation = getNavigationForRole(role)
-  const { currentUser, currentClinic, allClinics, setCurrentClinic } = useUserClinic()
+  const { currentUser } = useUserClinic()
   const { effective } = useFeatures()
+  const { lang } = useLocale()
   const t = useAppTranslations()
 
   const [isRtl, setIsRtl] = useState(false)
@@ -45,9 +47,7 @@ export default function MobileSidebar({ role }: MobileSidebarProps) {
   }, [])
 
   const roleLabel =
-    currentUser.role === "doctor" ? t.common.doctor :
-    currentUser.role === "manager" ? t.common.manager :
-    t.common.assistant
+    STAFF_ROLE_LABELS[currentUser.role as StaffRole][lang]
 
   // Filter navigation based on feature flags
   const filteredNavigation = navigation.filter((item) => {
@@ -111,30 +111,6 @@ export default function MobileSidebar({ role }: MobileSidebarProps) {
             </nav>
 
             <div className="mt-auto space-y-4 pt-4 border-t border-gray-200 ">
-              {/* Clinic Switcher */}
-              <div>
-                <label className="mb-1.5 block text-xs font-medium text-gray-700 ">
-                  {t.common.clinic}
-                </label>
-                <div className="relative">
-                  <Select
-                    value={currentClinic.id}
-                    onChange={(e) => setCurrentClinic(e.target.value)}
-                    className="w-full appearance-none pe-8 text-sm"
-                  >
-                    {allClinics.map((clinic) => (
-                      <option key={clinic.id} value={clinic.id}>
-                        {clinic.name}
-                      </option>
-                    ))}
-                  </Select>
-                  <RiArrowDownSLine
-                    className="pointer-events-none absolute end-2 top-1/2 size-4 -translate-y-1/2 text-gray-500 "
-                    aria-hidden="true"
-                  />
-                </div>
-              </div>
-
               {/* User Profile */}
               <DropdownUserProfile mode="dropdown">
                 <button

@@ -1,7 +1,6 @@
 "use client"
 
 import { useMemo } from "react"
-import { RiUserHeartLine, RiUserAddLine, RiUserUnfollowLine, RiVipCrownLine } from "@remixicon/react"
 import {
   Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis,
 } from "recharts"
@@ -35,11 +34,11 @@ export default function AnalyticsPage() {
     <div className="app-page">
       <h1 className="app-page-title">{t.title}</h1>
 
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4 md:gap-6">
-        <StatCard icon={RiUserHeartLine} label={t.activePatients} value={196} />
-        <StatCard icon={RiVipCrownLine} label={t.tiers} value="140 / 56" />
-        <StatCard icon={RiUserAddLine} label={t.newThisMonth} value={32} delta={{ value: "12%", trend: "up" }} />
-        <StatCard icon={RiUserUnfollowLine} label={t.churned} value={4} delta={{ value: "1%", trend: "down" }} />
+      <div className="app-metric-grid app-metric-grid--4">
+        <StatCard label={t.activePatients} value={196} />
+        <StatCard label={t.tiers} value="140 / 56" />
+        <StatCard label={t.newThisMonth} value={32} delta={{ value: "12%", trend: "up" }} />
+        <StatCard label={t.churned} value={4} delta={{ value: "1%", trend: "down" }} />
       </div>
 
       <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm md:p-6">

@@ -8,12 +8,13 @@ import {
   DEFAULT_CURRENT_CLINIC_ID,
   type MockUser,
   type MockClinic,
+  type StaffRole,
 } from "@/data/mock/users-clinics"
 
 interface UserClinicContextType {
   currentUser: MockUser
   currentClinic: MockClinic
-  role: "doctor" | "assistant" | "manager"
+  role: StaffRole
   setCurrentUser: (userId: string) => void
   setCurrentClinic: (clinicId: string) => void
   allUsers: MockUser[]
@@ -24,41 +25,38 @@ const UserClinicContext = createContext<UserClinicContextType | undefined>(
   undefined
 )
 
+const LS_USER_KEY = "clinicairo-demo-user"
+const LS_CLINIC_KEY = "currentClinicId"
+
 export function UserClinicProvider({
   children,
 }: {
   children: React.ReactNode
 }) {
-  const [currentUserId, setCurrentUserId] = useState<string>(
-    DEFAULT_CURRENT_USER_ID
-  )
-  const [currentClinicId, setCurrentClinicId] = useState<string>(
-    DEFAULT_CURRENT_CLINIC_ID
-  )
+  const [currentUserId, setCurrentUserIdState] = useState<string>(DEFAULT_CURRENT_USER_ID)
+  const [currentClinicId, setCurrentClinicId] = useState<string>(DEFAULT_CURRENT_CLINIC_ID)
 
-  // Load from localStorage on mount
+  // Load persisted selections on mount
   useEffect(() => {
-    const savedUserId = localStorage.getItem("currentUserId")
-    const savedClinicId = localStorage.getItem("currentClinicId")
-    if (savedUserId) setCurrentUserId(savedUserId)
-    if (savedClinicId) setCurrentClinicId(savedClinicId)
+    const savedUser = localStorage.getItem(LS_USER_KEY)
+    if (savedUser && mockUsers.some((u) => u.id === savedUser)) {
+      setCurrentUserIdState(savedUser)
+    }
+    const savedClinic = localStorage.getItem(LS_CLINIC_KEY)
+    if (savedClinic) setCurrentClinicId(savedClinic)
   }, [])
 
-  const currentUser =
-    mockUsers.find((u) => u.id === currentUserId) || mockUsers[0]
-  const currentClinic =
-    mockClinics.find((c) => c.id === currentClinicId) || mockClinics[0]
+  const currentUser = mockUsers.find((u) => u.id === currentUserId) || mockUsers[0]
+  const currentClinic = mockClinics.find((c) => c.id === currentClinicId) || mockClinics[0]
 
   const setCurrentUser = (userId: string) => {
-    setCurrentUserId(userId)
-    localStorage.setItem("currentUserId", userId)
-    // Reload to reflect user change
-    window.location.reload()
+    setCurrentUserIdState(userId)
+    localStorage.setItem(LS_USER_KEY, userId)
   }
 
   const setCurrentClinic = (clinicId: string) => {
     setCurrentClinicId(clinicId)
-    localStorage.setItem("currentClinicId", clinicId)
+    localStorage.setItem(LS_CLINIC_KEY, clinicId)
   }
 
   return (

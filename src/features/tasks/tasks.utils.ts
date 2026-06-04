@@ -12,6 +12,11 @@ export const TASK_TYPE_KEYS: Record<TaskType, string> = {
   labs: "typeLabs",
   scan: "typeScan",
   billing: "typeBilling",
+  payment_verify: "typePaymentVerify",
+  no_show: "typeNoShow",
+  cold_lead: "typeColdLead",
+  renewal: "typeRenewal",
+  doctor_request: "typeDoctorRequest",
   other: "typeOther",
 }
 export const TASK_SOURCE_KEYS: Record<TaskSource, string> = {
@@ -63,6 +68,16 @@ export function getTypeLabel(type: TaskType): string {
       return "Scan"
     case "billing":
       return "Billing"
+    case "payment_verify":
+      return "Verify Payment"
+    case "no_show":
+      return "No-show"
+    case "cold_lead":
+      return "Cold Lead"
+    case "renewal":
+      return "Renewal"
+    case "doctor_request":
+      return "Doctor Request"
     case "other":
       return "Other"
     default:

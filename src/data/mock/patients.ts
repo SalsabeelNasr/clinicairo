@@ -14,8 +14,9 @@ export interface Patient {
   complaint: string | null
   job: string | null
   social_status: string | null
-  ai_diagnosis: string | null
-  ai_diagnosis_updated_at: string | null
+  source: string | null
+  subscription_tier: "assessment" | "tier_1" | "tier_2" | null
+  subscription_status: "active" | "paused" | "grace" | "lapsed" | "cancelled" | null
   is_diabetic: boolean | null
   is_hypertensive: boolean | null
   has_pancreatitis: boolean | null
@@ -33,6 +34,8 @@ export interface Patient {
   thyroid_status: string | null
   history_of_operation: any | null
   doctor_id: string | null
+  nutritionist_id: string | null
+  coach_id: string | null
   profile_id: string | null
   status: "inactive" | "active" | "lost"
   first_visit_at: string | null
@@ -53,33 +56,36 @@ export const mockPatients: Patient[] = [
     email: "fatima.mohamed@example.com",
     address: "15 Tahrir Square, Cairo, Egypt",
     height: 165,
-    complaint: "High blood pressure and occasional headaches",
-    job: "Teacher",
-    social_status: "Married",
-    ai_diagnosis: "Hypertension Stage 1 - well controlled with medication. Patient shows good adherence to treatment plan.",
-    ai_diagnosis_updated_at: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
+    complaint: "High blood pressure and occasional headaches. Seeking weight loss and long-term hypertension management.",
+    job: "Senior Teacher",
+    social_status: "Married with 3 children",
+    source: "meta_ad",
+    subscription_tier: "tier_1",
+    subscription_status: "active",
     is_diabetic: false,
     is_hypertensive: true,
     has_pancreatitis: false,
     is_pregnant: false,
     is_breastfeeding: false,
-    glp1a_previous_exposure: false,
+    glp1a_previous_exposure: true,
     has_rheumatoid: false,
     has_ihd: false,
     has_heart_failure: false,
-    has_gerd: false,
+    has_gerd: true,
     has_gastritis: false,
     has_hepatic: false,
-    has_anaemia: false,
+    has_anaemia: true,
     has_bronchial_asthma: false,
     thyroid_status: "Normal",
-    history_of_operation: null,
+    history_of_operation: ["Gallbladder removal (2018)", "C-section (2012, 2015, 2019)"],
     doctor_id: DEMO_DOCTOR_ID,
+    nutritionist_id: "user-004",
+    coach_id: "user-005",
     profile_id: null,
     status: "active",
-    first_visit_at: new Date(Date.now() - 90 * 24 * 60 * 60 * 1000).toISOString(),
-    last_visit_at: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
-    created_at: new Date(Date.now() - 90 * 24 * 60 * 60 * 1000).toISOString(),
+    first_visit_at: new Date(Date.now() - 120 * 24 * 60 * 60 * 1000).toISOString(),
+    last_visit_at: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
+    created_at: new Date(Date.now() - 120 * 24 * 60 * 60 * 1000).toISOString(),
     updated_at: new Date().toISOString(),
   },
   {
@@ -96,8 +102,9 @@ export const mockPatients: Patient[] = [
     complaint: "Type 2 Diabetes, joint pain",
     job: "Engineer",
     social_status: "Married",
-    ai_diagnosis: "Type 2 Diabetes Mellitus with good glycemic control (HbA1c: 6.8%). Mild osteoarthritis in knees.",
-    ai_diagnosis_updated_at: new Date(Date.now() - 14 * 24 * 60 * 60 * 1000).toISOString(),
+    source: "referral",
+    subscription_tier: "tier_2",
+    subscription_status: "active",
     is_diabetic: true,
     is_hypertensive: false,
     has_pancreatitis: false,
@@ -115,6 +122,8 @@ export const mockPatients: Patient[] = [
     thyroid_status: "Normal",
     history_of_operation: ["Appendectomy (2005)"],
     doctor_id: DEMO_DOCTOR_ID,
+    nutritionist_id: "user-004",
+    coach_id: "user-005",
     profile_id: null,
     status: "active",
     first_visit_at: new Date(Date.now() - 60 * 24 * 60 * 60 * 1000).toISOString(),
@@ -136,8 +145,9 @@ export const mockPatients: Patient[] = [
     complaint: "Weight management and fatigue",
     job: "Pharmacist",
     social_status: "Single",
-    ai_diagnosis: "Hypothyroidism with anemia. Patient requires iron supplementation and thyroid hormone optimization.",
-    ai_diagnosis_updated_at: new Date(Date.now() - 21 * 24 * 60 * 60 * 1000).toISOString(),
+    source: "instagram",
+    subscription_tier: "tier_1",
+    subscription_status: "grace",
     is_diabetic: false,
     is_hypertensive: false,
     has_pancreatitis: false,
@@ -155,6 +165,8 @@ export const mockPatients: Patient[] = [
     thyroid_status: "Hypothyroid",
     history_of_operation: null,
     doctor_id: DEMO_DOCTOR_ID,
+    nutritionist_id: "user-004",
+    coach_id: null,
     profile_id: null,
     status: "active",
     first_visit_at: new Date(Date.now() - 120 * 24 * 60 * 60 * 1000).toISOString(),
@@ -176,8 +188,9 @@ export const mockPatients: Patient[] = [
     complaint: "Asthma and seasonal allergies",
     job: "Accountant",
     social_status: "Married",
-    ai_diagnosis: "Bronchial Asthma - moderate persistent. Well controlled with current inhaler regimen.",
-    ai_diagnosis_updated_at: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString(),
+    source: "website",
+    subscription_tier: "assessment",
+    subscription_status: "active",
     is_diabetic: false,
     is_hypertensive: false,
     has_pancreatitis: false,
@@ -195,6 +208,8 @@ export const mockPatients: Patient[] = [
     thyroid_status: "Normal",
     history_of_operation: null,
     doctor_id: DEMO_DOCTOR_ID,
+    nutritionist_id: "user-004",
+    coach_id: null,
     profile_id: null,
     status: "active",
     first_visit_at: new Date(Date.now() - 45 * 24 * 60 * 60 * 1000).toISOString(),
@@ -216,8 +231,9 @@ export const mockPatients: Patient[] = [
     complaint: "GERD symptoms and weight management",
     job: "Marketing Specialist",
     social_status: "Single",
-    ai_diagnosis: "Gastroesophageal Reflux Disease (GERD). Recommend dietary modifications and PPI therapy.",
-    ai_diagnosis_updated_at: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString(),
+    source: "other",
+    subscription_tier: "tier_2",
+    subscription_status: "paused",
     is_diabetic: false,
     is_hypertensive: false,
     has_pancreatitis: false,
@@ -235,6 +251,8 @@ export const mockPatients: Patient[] = [
     thyroid_status: "Normal",
     history_of_operation: null,
     doctor_id: DEMO_DOCTOR_ID,
+    nutritionist_id: "user-004",
+    coach_id: "user-005",
     profile_id: null,
     status: "inactive",
     first_visit_at: null,

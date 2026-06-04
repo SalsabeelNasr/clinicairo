@@ -5,8 +5,17 @@ import {
   RiVideoChatLine,
   RiCheckLine,
   RiCheckboxBlankCircleLine,
+  RiMore2Fill,
+  RiUserLine,
 } from "@remixicon/react"
+import Link from "next/link"
 import { Badge } from "@/components/Badge"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/Dropdown"
 import { useLocale } from "@/contexts/locale-context"
 import { useUserClinic } from "@/contexts/user-clinic-context"
 import { HomeQueue } from "@/features/home/HomeQueue"
@@ -19,6 +28,7 @@ interface ApptItem {
   start: string // HH:MM, today
   end: string // HH:MM, today
   patient: string
+  patientId: string
   type: Track
   providerId: string
   providerName: string
@@ -30,20 +40,27 @@ interface TaskItem {
   title: string
   subject: string
   assigneeId: string
+  due: string
 }
 
 const APPTS: ApptItem[] = [
-  { id: "a1", start: "09:00", end: "09:30", patient: "سارة المبروك", type: "consultation", providerId: "user-001", providerName: "د. أحمد", meetUrl: "https://meet.google.com/abc-defg-hij" },
-  { id: "a2", start: "10:30", end: "11:00", patient: "خالد الورفلي", type: "consultation", providerId: "user-001", providerName: "د. أحمد", meetUrl: "https://meet.google.com/abc-defg-hij" },
-  { id: "a3", start: "11:15", end: "11:45", patient: "فاطمة الزروق", type: "nutrition", providerId: "user-003", providerName: "أ. ليلى", meetUrl: "https://meet.google.com/abc-defg-hij" },
-  { id: "a4", start: "13:00", end: "13:30", patient: "هالة بن عمر", type: "coaching", providerId: "user-002", providerName: "كابتن يوسف", meetUrl: "https://meet.google.com/abc-defg-hij" },
+  { id: "a1", start: "09:00", end: "09:30", patient: "سارة المبروك", patientId: "p1", type: "consultation", providerId: "user-001", providerName: "د. أحمد", meetUrl: "https://meet.google.com/abc-defg-hij" },
+  { id: "a2", start: "10:30", end: "11:00", patient: "خالد الورفلي", patientId: "p2", type: "consultation", providerId: "user-001", providerName: "د. أحمد", meetUrl: "https://meet.google.com/abc-defg-hij" },
+  { id: "a3", start: "11:15", end: "11:45", patient: "فاطمة الزروق", patientId: "p3", type: "nutrition", providerId: "user-003", providerName: "أ. ليلى", meetUrl: "https://meet.google.com/abc-defg-hij" },
+  { id: "a4", start: "13:00", end: "13:30", patient: "هالة بن عمر", patientId: "p4", type: "coaching", providerId: "user-002", providerName: "كابتن يوسف", meetUrl: "https://meet.google.com/abc-defg-hij" },
 ]
 
+const _today = new Date()
+const _fmt = (d: Date) => `${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`
+const TODAY_MD = _fmt(_today)
+const TOMORROW_MD = _fmt(new Date(_today.getTime() + 86_400_000))
+const DAY3_MD = _fmt(new Date(_today.getTime() + 2 * 86_400_000))
+
 const TASKS: TaskItem[] = [
-  { id: "t1", kind: "payment_verify", title: "", subject: "سارة المبروك", assigneeId: "user-001" },
-  { id: "t2", kind: "no_show", title: "", subject: "عبد السلام القذافي", assigneeId: "user-001" },
-  { id: "t3", kind: "cold_lead", title: "", subject: "ليد: منى ا.", assigneeId: "user-003" },
-  { id: "t4", kind: "renewal", title: "", subject: "خالد الورفلي", assigneeId: "user-002" },
+  { id: "t1", kind: "payment_verify", title: "", subject: "تأكيد دفعة: سارة المبروك", assigneeId: "user-001", due: TODAY_MD },
+  { id: "t2", kind: "no_show", title: "", subject: "إعادة جدولة: عبد السلام القذافي", assigneeId: "user-001", due: TODAY_MD },
+  { id: "t3", kind: "cold_lead", title: "", subject: "متابعة ليد: منى ا.", assigneeId: "user-003", due: TOMORROW_MD },
+  { id: "t4", kind: "renewal", title: "", subject: "تذكير تجديد: خالد الورفلي", assigneeId: "user-002", due: DAY3_MD },
 ]
 
 const T = {
@@ -55,6 +72,7 @@ const T = {
     emptyAppts: "لا مواعيد اليوم.",
     emptyTasks: "لا مهام حالياً.",
     join: "انضمام",
+    viewProfile: "عرض الملف الشخصي",
     track: { consultation: "كشف", nutrition: "تغذية", coaching: "لياقة" } as Record<Track, string>,
     taskKind: {
       payment_verify: "تأكيد دفعة",
@@ -72,6 +90,7 @@ const T = {
     emptyAppts: "No appointments today.",
     emptyTasks: "No tasks right now.",
     join: "Join",
+    viewProfile: "View Profile",
     track: { consultation: "Consult", nutrition: "Nutrition", coaching: "Fitness" } as Record<Track, string>,
     taskKind: {
       payment_verify: "Verify payment",
@@ -102,10 +121,6 @@ export default function HomePage() {
   const { currentUser } = useUserClinic()
   const t = T[lang]
 
-  // Role default: assistant + owner/manager → all; doctor/nutritionist/coach → mine (§3.5)
-  const defaultFilter: "mine" | "all" =
-    currentUser.role === "assistant" || currentUser.role === "manager" ? "all" : "mine"
-
   const appts = useMemo(() => [...APPTS].sort((a, b) => a.start.localeCompare(b.start)), [])
 
   return (
@@ -119,7 +134,6 @@ export default function HomePage() {
           items={appts}
           currentUserId={currentUser.id}
           getOwnerId={(a) => a.providerId}
-          defaultFilter={defaultFilter}
           labels={{ mine: t.mine, all: t.all, empty: t.emptyAppts }}
           renderCard={(a) => (
             <article key={a.id} className="app-row app-row--widget">
@@ -137,15 +151,62 @@ export default function HomePage() {
                 </div>
               </div>
               <div className="app-row__actions">
-                <a
-                  href={a.meetUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="app-btn--join"
-                >
-                  <RiVideoChatLine className="app-btn--join__icon" />
-                  {t.join}
-                </a>
+                <div className="hidden lg:flex items-center gap-2">
+                  <a
+                    href={a.meetUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="app-btn--join"
+                    title={t.join}
+                  >
+                    <RiVideoChatLine className="app-btn--join__icon" />
+                    <span>{t.join}</span>
+                  </a>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <button type="button" className="app-icon-btn" aria-label="Actions">
+                        <RiMore2Fill className="size-5" />
+                      </button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end" className="w-48 rounded-xl">
+                      <DropdownMenuItem asChild>
+                        <Link href={`/patients/${a.patientId}`} className="flex items-center gap-2">
+                          <RiUserLine className="size-4" aria-hidden />
+                          <span>{t.viewProfile}</span>
+                        </Link>
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </div>
+
+                <div className="lg:hidden">
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <button type="button" className="app-icon-btn" aria-label="Actions">
+                        <RiMore2Fill className="size-5" />
+                      </button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end" className="w-48 rounded-xl">
+                      <DropdownMenuItem asChild>
+                        <Link href={`/patients/${a.patientId}`} className="flex items-center gap-2">
+                          <RiUserLine className="size-4" aria-hidden />
+                          <span>{t.viewProfile}</span>
+                        </Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem asChild>
+                        <a
+                          href={a.meetUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center gap-2"
+                        >
+                          <RiVideoChatLine className="size-4 text-primary-600" aria-hidden />
+                          <span>{t.join}</span>
+                        </a>
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </div>
               </div>
             </article>
           )}
@@ -157,9 +218,9 @@ export default function HomePage() {
           items={TASKS}
           currentUserId={currentUser.id}
           getOwnerId={(task) => task.assigneeId}
-          defaultFilter={defaultFilter}
           labels={{ mine: t.mine, all: t.all, empty: t.emptyTasks }}
           renderCard={(task) => {
+            const overdue = task.due < TODAY_MD
             return (
               <article key={task.id} className="app-row app-row--widget">
                 <div className="app-row__main">
@@ -168,6 +229,14 @@ export default function HomePage() {
                   </div>
                   <div className="app-row__divider" aria-hidden />
                   <div className="app-row__info">
+                    <div className="mb-0.5">
+                      <span className={cn(
+                        "text-[10px] font-bold tabular-nums uppercase tracking-wider",
+                        overdue ? "text-error-600" : "text-slate-400"
+                      )}>
+                        {task.due}
+                      </span>
+                    </div>
                     <div className="app-row__title-row">
                       <h3 className="app-row__info-title">{task.subject}</h3>
                       <span className={cn("app-pill", taskPill[task.kind])}>{t.taskKind[task.kind]}</span>

@@ -189,7 +189,7 @@ export function ApprovalsDrawer({ open, onClose }: ApprovalsDrawerProps) {
                             <RiUserLine className="size-5 text-primary-600 " />
                           </div>
                           <div>
-                            <p className="font-medium text-gray-900 ">
+                            <p className="app-entity-name">
                               {request.patientName}
                             </p>
                             <p className="text-sm text-gray-600 ">
@@ -227,7 +227,7 @@ export function ApprovalsDrawer({ open, onClose }: ApprovalsDrawerProps) {
                       {/* Actions */}
                       <div className="flex flex-wrap gap-2 pt-2">
                         <Button
-                          variant="primary"
+                          variant="action"
                           size="sm"
                           onClick={() => handleApprove(request)}
                           className="flex-1 sm:flex-none"

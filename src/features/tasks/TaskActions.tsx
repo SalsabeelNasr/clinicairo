@@ -16,13 +16,14 @@ import {
   RiUserLine,
 } from "@remixicon/react"
 import type { TaskListItem } from "./tasks.types"
+import type { StaffRole } from "@/data/mock/users-clinics"
 
 interface TaskActionsProps {
   task: TaskListItem
   onMarkDone: () => void
   onSnooze: () => void
   onAssign: () => void
-  role: "doctor" | "assistant" | "manager"
+  role: StaffRole
 }
 
 export function TaskActions({
@@ -34,7 +35,7 @@ export function TaskActions({
 }: TaskActionsProps) {
   const canMarkDone = task.status === "pending"
   const canSnooze = false
-  const canAssign = role === "doctor"
+  const canAssign = role === "owner" || role === "assistant"
 
   if (!canMarkDone && !canSnooze && !canAssign) {
     return null

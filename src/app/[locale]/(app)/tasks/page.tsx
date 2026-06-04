@@ -11,6 +11,7 @@ import {
   RiStethoscopeLine,
   RiCheckLine,
   RiCheckboxBlankCircleLine,
+  RiMore2Fill,
   RiAddLine,
   RiCloseLine,
 } from "@remixicon/react"
@@ -18,6 +19,15 @@ import { useLocale } from "@/contexts/locale-context"
 import { useUserClinic } from "@/contexts/user-clinic-context"
 import { useToast } from "@/hooks/useToast"
 import { PageHeaderAction } from "@/components/shared/PageHeaderAction"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/Dropdown"
+import { AddTaskDrawer } from "@/features/tasks/AddTaskDrawer"
+import { createTask } from "@/features/tasks/tasks.api"
+import type { CreateTaskPayload, TaskType } from "@/features/tasks/tasks.types"
 import { cn } from "@/lib/utils"
 
 type Kind = "payment_verify" | "no_show" | "cold_lead" | "renewal" | "lab_chase" | "doctor_request"
@@ -32,13 +42,17 @@ interface Task {
   status: Status
 }
 
+const TODAY_ISO = new Date().toISOString().slice(0, 10)
+const TOMORROW_ISO = new Date(Date.now() + 86_400_000).toISOString().slice(0, 10)
+const DAY3_ISO = new Date(Date.now() + 2 * 86_400_000).toISOString().slice(0, 10)
+
 const SEED: Task[] = [
-  { id: "t1", kind: "payment_verify", subject: "سارة المبروك", assigneeId: "user-001", due: "2026-06-04", status: "pending" },
-  { id: "t2", kind: "no_show", subject: "عبد السلام القذافي", assigneeId: "user-001", due: "2026-06-04", status: "pending" },
-  { id: "t3", kind: "cold_lead", subject: "ليد: سعاد التارقي", assigneeId: "user-003", due: "2026-06-05", status: "pending" },
-  { id: "t4", kind: "renewal", subject: "خالد الورفلي", assigneeId: "user-002", due: "2026-06-06", status: "pending" },
-  { id: "t5", kind: "lab_chase", subject: "فاطمة الزروق", assigneeId: "user-001", due: "2026-06-03", status: "completed" },
-  { id: "t6", kind: "doctor_request", subject: "هالة بن عمر", assigneeId: "user-001", due: "2026-06-02", status: "ignored" },
+  { id: "t1", kind: "payment_verify", subject: "تأكيد دفعة: سارة المبروك - اشتراك الفئة الأولى", assigneeId: "user-001", due: TODAY_ISO, status: "pending" },
+  { id: "t2", kind: "no_show", subject: "إعادة جدولة: عبد السلام القذافي (تغيب عن الموعد)", assigneeId: "user-001", due: TODAY_ISO, status: "pending" },
+  { id: "t3", kind: "cold_lead", subject: "متابعة ليد: سعاد التارقي - استفسار برنامج التغذية", assigneeId: "user-003", due: TOMORROW_ISO, status: "pending" },
+  { id: "t4", kind: "renewal", subject: "تذكير تجديد: خالد الورفلي - باقة اللياقة البدنية", assigneeId: "user-002", due: DAY3_ISO, status: "pending" },
+  { id: "t5", kind: "lab_chase", subject: "متابعة تحاليل: فاطمة الزروق - نتائج فحص الدم", assigneeId: "user-001", due: "2026-06-03", status: "completed" },
+  { id: "t6", kind: "doctor_request", subject: "طلب طبيب: مراجعة ملاحظات زيارة هالة بن عمر", assigneeId: "user-001", due: "2026-06-02", status: "ignored" },
 ]
 
 const TT = {
@@ -66,6 +80,7 @@ const TT = {
       doctor_request: "طلب طبيب",
     } as Record<Kind, string>,
     statusLabel: { pending: "قيد التنفيذ", completed: "مكتملة", ignored: "متجاهلة" } as Record<Status, string>,
+    noActions: "لا توجد إجراءات",
   },
   en: {
     title: "Tasks",
@@ -91,6 +106,7 @@ const TT = {
       doctor_request: "Doctor request",
     } as Record<Kind, string>,
     statusLabel: { pending: "Pending", completed: "Completed", ignored: "Ignored" } as Record<Status, string>,
+    noActions: "No actions",
   },
 }
 
@@ -118,14 +134,24 @@ const statusPill: Record<Status, string> = {
   ignored: "app-pill--muted",
 }
 
+function mapTaskTypeToKind(type: TaskType): Kind {
+  if (type === "payment_verify") return "payment_verify"
+  if (type === "no_show") return "no_show"
+  if (type === "cold_lead") return "cold_lead"
+  if (type === "renewal") return "renewal"
+  if (type === "doctor_request") return "doctor_request"
+  return "doctor_request"
+}
+
 export default function TasksPage() {
   const { lang } = useLocale()
   const t = TT[lang]
   const { currentUser } = useUserClinic()
   const { showToast } = useToast()
   const [tasks, setTasks] = useState<Task[]>(SEED)
+  const [addDrawerOpen, setAddDrawerOpen] = useState(false)
   const [scope, setScope] = useState<"mine" | "all">(
-    currentUser.role === "assistant" || currentUser.role === "manager" ? "all" : "mine",
+    currentUser.role === "assistant" || currentUser.role === "owner" ? "all" : "mine",
   )
   const [statusFilter, setStatusFilter] = useState<Status | "all">("all")
 
@@ -142,6 +168,21 @@ export default function TasksPage() {
     showToast(msg, status === "completed" ? "success" : "info")
   }
 
+  const handleCreateTask = async (payload: CreateTaskPayload) => {
+    await createTask(payload)
+    const due = payload.dueDate ? payload.dueDate.slice(0, 10) : new Date().toISOString().slice(0, 10)
+    const newTask: Task = {
+      id: `ui-${Date.now()}`,
+      kind: mapTaskTypeToKind(payload.type),
+      subject: payload.title,
+      assigneeId: payload.assignedToUserId || currentUser.id,
+      due,
+      status: "pending",
+    }
+    setTasks((prev) => [newTask, ...prev])
+    showToast(t.add, "success")
+  }
+
   const statusChips: Array<Status | "all"> = ["all", "pending", "completed", "ignored"]
 
   return (
@@ -150,7 +191,7 @@ export default function TasksPage() {
         <div className="app-page-header__text">
           <h1 className="app-page-title">{t.title}</h1>
         </div>
-        <PageHeaderAction icon={RiAddLine} onClick={() => showToast(t.add, "info")}>
+        <PageHeaderAction icon={RiAddLine} onClick={() => setAddDrawerOpen(true)}>
           {t.add}
         </PageHeaderAction>
       </header>
@@ -198,9 +239,10 @@ export default function TasksPage() {
           {filtered.map((task) => {
             const Icon = kindIcon[task.kind]
             const isDone = task.status === "completed"
+            const overdue = !isDone && task.due < TODAY_ISO
 
             return (
-              <article key={task.id} className={cn("app-row", isDone && "opacity-75")}>
+              <article key={task.id} className={cn("app-row app-row--task", isDone && "opacity-75")}>
                 <div className="app-row__main">
                   <button
                     type="button"
@@ -216,6 +258,14 @@ export default function TasksPage() {
                   <div className="app-row__divider" aria-hidden />
 
                   <div className="app-row__info">
+                    <div className="mb-1">
+                      <span className={cn(
+                        "text-xs font-bold tabular-nums",
+                        overdue ? "text-error-600" : "text-slate-400"
+                      )}>
+                        {task.due}
+                      </span>
+                    </div>
                     <div className="app-row__title-row">
                       <h3 className={cn("app-row__info-title", isDone && "line-through text-slate-400")}>
                         {task.subject}
@@ -223,9 +273,6 @@ export default function TasksPage() {
                       <div className="app-row__chips">
                         <span className={cn("app-pill", kindPill[task.kind])}>
                           {t.kind[task.kind]}
-                        </span>
-                        <span className="app-pill app-pill--muted">
-                          {t.due}: {task.due}
                         </span>
                       </div>
                     </div>
@@ -237,33 +284,25 @@ export default function TasksPage() {
                 </div>
 
                 <div className="app-row__actions">
-                  {!isDone && (
-                    <>
-                      <button
-                        type="button"
-                        className="app-icon-btn text-success-600 hover:bg-success-50"
-                        onClick={() => setStatus(task.id, "completed", t.doneToast)}
-                        title={t.statusLabel.completed}
-                      >
-                        <RiCheckLine className="size-5" />
-                      </button>
-                      <button
-                        type="button"
-                        className="app-icon-btn text-slate-400 hover:bg-slate-100"
-                        onClick={() => setStatus(task.id, "ignored", t.ignoreToast)}
-                        title={t.statusLabel.ignored}
-                      >
-                        <RiCloseLine className="size-5" />
-                      </button>
-                    </>
+                  {isDone ? (
+                    <span className="app-row__no-actions">{t.statusLabel.completed}</span>
+                  ) : (
+                    <span className="app-row__no-actions">{t.noActions}</span>
                   )}
-                  {isDone && <span className="app-row__no-actions">{t.completed}</span>}
                 </div>
               </article>
             )
           })}
         </div>
       )}
+
+      <AddTaskDrawer
+        open={addDrawerOpen}
+        onOpenChange={setAddDrawerOpen}
+        onSubmit={handleCreateTask}
+        currentUserId={currentUser.id}
+        clinicId="clinic-001"
+      />
     </div>
   )
 }

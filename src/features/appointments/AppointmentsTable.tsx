@@ -19,6 +19,7 @@ import {
   RiCloseLine,
   RiVideoChatLine,
   RiEyeLine,
+  RiUserLine,
   RiUserAddLine,
   RiHistoryLine,
 } from "@remixicon/react"
@@ -87,7 +88,7 @@ export function AppointmentsTable({
                 <td className="px-4 py-4">
                   <Link
                     href={`/patients/${appointment.patient_id}`}
-                    className="font-medium text-gray-900 hover:text-primary-600  "
+                    className="app-entity-name"
                   >
                     {appointment.patient_name}
                   </Link>
@@ -128,6 +129,14 @@ export function AppointmentsTable({
                         </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end" className="w-48">
+                        <DropdownMenuItem asChild>
+                          <Link href={`/patients/${appointment.patient_id}`} className="flex items-center">
+                            <DropdownMenuIconWrapper className="mr-2">
+                              <RiUserLine className="size-4" />
+                            </DropdownMenuIconWrapper>
+                            {t.common.view}
+                          </Link>
+                        </DropdownMenuItem>
                         <DropdownMenuItem onClick={() => onViewDetails(appointment)}>
                           <DropdownMenuIconWrapper className="mr-2">
                             <RiEyeLine className="size-4" />

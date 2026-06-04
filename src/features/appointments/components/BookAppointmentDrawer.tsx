@@ -8,8 +8,8 @@ import {
   DrawerContent,
   DrawerHeader,
   DrawerTitle,
-  DrawerDescription,
 } from "@/components/Drawer"
+import type { BookAppointmentInitialPatient } from "../book-appointment-patient.utils"
 import { BookAppointmentFlow } from "./book-flow/BookAppointmentFlow"
 
 interface PreSelectedSlot {
@@ -18,14 +18,6 @@ interface PreSelectedSlot {
   startAt: string
   endAt: string
   appointmentType?: string
-}
-
-interface Patient {
-  id: string
-  first_name: string
-  last_name: string
-  phone: string
-  email: string | null
 }
 
 interface WaitlistEntry {
@@ -42,7 +34,7 @@ interface BookAppointmentDrawerProps {
   onClose: () => void
   onBookingComplete?: () => void
   preSelectedSlot?: PreSelectedSlot | null
-  initialPatient?: Patient | null
+  initialPatient?: BookAppointmentInitialPatient | null
   rescheduleAppointmentId?: string | null
   waitlistEntry?: WaitlistEntry | null
   clinicId?: string
@@ -69,7 +61,13 @@ export function BookAppointmentDrawer({
     onClose()
   }
 
-  const title = preSelectedSlot ? t.appointments.fillSlot : waitlistEntry ? t.appointments.bookFromWaitlist : t.appointments.rescheduleAppointment
+  const title = preSelectedSlot
+    ? t.appointments.fillSlot
+    : waitlistEntry
+      ? t.appointments.bookFromWaitlist
+      : rescheduleAppointmentId
+        ? t.appointments.rescheduleAppointment
+        : t.appointments.bookAppointment
 
   return (
     <Drawer open={open} onOpenChange={onClose}>
@@ -78,20 +76,22 @@ export function BookAppointmentDrawer({
           <DrawerTitle>{title}</DrawerTitle>
         </DrawerHeader>
         <DrawerBody>
-          <BookAppointmentFlow
-            showBackButton={false}
-            showTitle={false}
-            showHeader={false}
-            isEmbedded={true}
-            initialPatient={initialPatient}
-            preSelectedSlot={preSelectedSlot}
-            rescheduleAppointmentId={rescheduleAppointmentId}
-            waitlistEntry={waitlistEntry}
-            clinicId={clinicId}
-            doctorId={doctorId}
-            onCancel={onClose}
-            onBookingComplete={handleBookingComplete}
-          />
+          {open && (
+            <BookAppointmentFlow
+              showBackButton={false}
+              showTitle={false}
+              showHeader={false}
+              isEmbedded={true}
+              initialPatient={initialPatient}
+              preSelectedSlot={preSelectedSlot}
+              rescheduleAppointmentId={rescheduleAppointmentId}
+              waitlistEntry={waitlistEntry}
+              clinicId={clinicId}
+              doctorId={doctorId}
+              onCancel={onClose}
+              onBookingComplete={handleBookingComplete}
+            />
+          )}
         </DrawerBody>
       </DrawerContent>
     </Drawer>

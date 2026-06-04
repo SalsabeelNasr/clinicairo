@@ -1,6 +1,87 @@
-import type { Prescription, PastMedication } from "@/features/prescriptions/prescriptions.types"
+import type {
+  Prescription,
+  PastMedication,
+  PastProcedure,
+} from "@/features/prescriptions/prescriptions.types"
+import type { PatientPrescription } from "@/features/patients/detail/patient-prescription.types"
+
+const DEMO_PRESCRIPTION_PDF_URL =
+  "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf"
+
+export const mockPatientPrescriptionFiles: PatientPrescription[] = [
+  {
+    id: "rx-file-p1-002",
+    patient_id: "patient-001",
+    clinic_id: "clinic-001",
+    doctor_id: "user-001",
+    file_name: "prescription-hypertension-v2.pdf",
+    file_url: DEMO_PRESCRIPTION_PDF_URL,
+    file_size: 268_000,
+    mime_type: "application/pdf",
+    created_at: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
+    updated_at: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
+    version: 2,
+    is_active: true,
+  },
+  {
+    id: "rx-file-p1-001",
+    patient_id: "patient-001",
+    clinic_id: "clinic-001",
+    doctor_id: "user-001",
+    file_name: "prescription-uri-v1.pdf",
+    file_url: DEMO_PRESCRIPTION_PDF_URL,
+    file_size: 198_500,
+    mime_type: "application/pdf",
+    created_at: new Date(Date.now() - 60 * 24 * 60 * 60 * 1000).toISOString(),
+    updated_at: new Date(Date.now() - 60 * 24 * 60 * 60 * 1000).toISOString(),
+    version: 1,
+    is_active: false,
+  },
+  {
+    id: "rx-file-002",
+    patient_id: "patient-002",
+    clinic_id: "clinic-001",
+    doctor_id: "user-002",
+    file_name: "prescription-diabetes-mgmt-v1.pdf",
+    file_url: DEMO_PRESCRIPTION_PDF_URL,
+    file_size: 312_000,
+    mime_type: "application/pdf",
+    created_at: new Date(Date.now() - 14 * 24 * 60 * 60 * 1000).toISOString(),
+    updated_at: new Date(Date.now() - 14 * 24 * 60 * 60 * 1000).toISOString(),
+    version: 1,
+    is_active: true,
+  },
+]
 
 export const mockPrescriptions: Prescription[] = [
+  {
+    id: "prescription-p1-001",
+    clinicId: "clinic-001",
+    patientId: "patient-001",
+    doctorId: "user-001",
+    createdAt: new Date(Date.now() - 60 * 24 * 60 * 60 * 1000).toISOString(),
+    visitType: "in_clinic",
+    diagnosisText: "Hypertension and Obesity",
+    notesToPatient: "Focus on low sodium diet and increasing daily activity.",
+    items: [
+      {
+        id: "item-p1-001",
+        name: "Amlodipine 5mg",
+        strength: "5mg",
+        form: "Tablets",
+        sig: "Take 1 tablet daily in the morning",
+        duration: "90 days",
+      },
+      {
+        id: "item-p1-002",
+        name: "Omega-3",
+        strength: "1000mg",
+        form: "Capsules",
+        sig: "Take 1 capsule twice daily with meals",
+        duration: "60 days",
+      },
+    ],
+  },
   {
     id: "prescription-001",
     clinicId: "clinic-001",
@@ -144,5 +225,32 @@ export const mockPastMedications: PastMedication[] = [
     takenTo: null,
     notes: "Ongoing medication",
     createdAt: new Date(Date.now() - 365 * 24 * 60 * 60 * 1000).toISOString(),
+  },
+]
+
+export const mockPastProcedures: PastProcedure[] = [
+  {
+    id: "past-proc-001",
+    patientId: "patient-001",
+    name: "Gallbladder removal (laparoscopic)",
+    procedureDate: new Date(Date.now() - 2555 * 24 * 60 * 60 * 1000).toISOString(),
+    notes: "2018 — no complications",
+    createdAt: new Date(Date.now() - 2555 * 24 * 60 * 60 * 1000).toISOString(),
+  },
+  {
+    id: "past-proc-002",
+    patientId: "patient-001",
+    name: "C-section",
+    procedureDate: new Date(Date.now() - 2000 * 24 * 60 * 60 * 1000).toISOString(),
+    notes: "2012, 2015, 2019",
+    createdAt: new Date(Date.now() - 2000 * 24 * 60 * 60 * 1000).toISOString(),
+  },
+  {
+    id: "past-proc-003",
+    patientId: "patient-002",
+    name: "Appendectomy",
+    procedureDate: new Date(Date.now() - 7300 * 24 * 60 * 60 * 1000).toISOString(),
+    notes: "2005",
+    createdAt: new Date(Date.now() - 7300 * 24 * 60 * 60 * 1000).toISOString(),
   },
 ]

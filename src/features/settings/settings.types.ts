@@ -3,8 +3,10 @@
  * Central type system for feature flags, plans, and clinic settings
  */
 
+import type { StaffRole } from "@/data/mock/users-clinics"
+
 // Role type (shared across app)
-export type Role = "doctor" | "assistant" | "manager"
+export type Role = StaffRole
 
 // Plan tiers
 export type PlanTier = "solo" | "multi" | "more"

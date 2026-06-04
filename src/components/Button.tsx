@@ -79,6 +79,18 @@ const buttonVariants = tv({
         "disabled:text-gray-400",
         "disabled:",
       ],
+      action: [
+        // border
+        "border-transparent",
+        // text color
+        "text-primary-700 ",
+        // background color
+        "bg-primary-50 ",
+        // hover color
+        "hover:bg-primary-100 ",
+        // disabled
+        "disabled:bg-gray-100 disabled:text-gray-400",
+      ],
       destructive: [
         // text color
         "text-white",

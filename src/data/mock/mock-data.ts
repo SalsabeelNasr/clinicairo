@@ -18,21 +18,31 @@ export {
   mockLabFiles,
   mockLabResults,
 } from "./medical"
-export { mockTasks, mockPatientDiets } from "./tasks-diets"
+export { mockTasks, mockPatientDiets, mockPatientTrainingPlans } from "./tasks-diets"
 export {
-  mockTranscriptions,
   mockAttachments,
-  mockScanExtractions,
 } from "./records"
-export type { Transcription } from "./records"
 export { mockAppointments, mockDoctorAvailability } from "./appointments"
 export {
   mockWaitingListEntries,
   mockApprovalRequests,
 } from "./waitlist"
 export type { WaitingListEntry, AppointmentApprovalRequest } from "./waitlist"
-export { mockPrescriptions, mockPastMedications } from "./prescriptions"
+export {
+  mockPrescriptions,
+  mockPatientPrescriptionFiles,
+  mockPastMedications,
+  mockPastProcedures,
+} from "./prescriptions"
 export { mockLeads } from "./leads"
+export { mockClinicSettings } from "./clinic-settings"
+export { mockSubscriptions } from "./subscriptions"
+export { mockPayments } from "./payments"
+export { mockExpenses } from "./expenses"
+export { mockPayouts } from "./payouts"
+export { mockRefunds } from "./refunds"
+export { mockCareTeam } from "./care-team"
+export { mockVisitNotes } from "./visit-notes"
 
 import { mockDoctors } from "./constants"
 import { mockPatients } from "./patients"
@@ -44,16 +54,27 @@ import {
   mockLabFiles,
   mockLabResults,
 } from "./medical"
-import { mockTasks, mockPatientDiets } from "./tasks-diets"
+import { mockTasks, mockPatientDiets, mockPatientTrainingPlans } from "./tasks-diets"
 import {
-  mockTranscriptions,
   mockAttachments,
-  mockScanExtractions,
 } from "./records"
 import { mockAppointments, mockDoctorAvailability } from "./appointments"
 import { mockWaitingListEntries, mockApprovalRequests } from "./waitlist"
-import { mockPrescriptions, mockPastMedications } from "./prescriptions"
+import {
+  mockPrescriptions,
+  mockPatientPrescriptionFiles,
+  mockPastMedications,
+  mockPastProcedures,
+} from "./prescriptions"
 import { mockLeads } from "./leads"
+import { mockClinicSettings } from "./clinic-settings"
+import { mockSubscriptions } from "./subscriptions"
+import { mockPayments } from "./payments"
+import { mockExpenses } from "./expenses"
+import { mockPayouts } from "./payouts"
+import { mockRefunds } from "./refunds"
+import { mockCareTeam } from "./care-team"
+import { mockVisitNotes } from "./visit-notes"
 
 export const mockData = {
   doctors: mockDoctors,
@@ -65,15 +86,26 @@ export const mockData = {
   doctorNotes: mockDoctorNotes,
   tasks: mockTasks,
   patientDiets: mockPatientDiets,
+  patientTrainingPlans: mockPatientTrainingPlans,
   labFiles: mockLabFiles,
   labResults: mockLabResults,
-  transcriptions: mockTranscriptions,
   attachments: mockAttachments,
-  scanExtractions: mockScanExtractions,
   leads: mockLeads,
+  // Legacy waitlist data remains only so dormant TabibDesk waitlist files compile.
+  // Phase 2 removes the waitlist module from appointments entirely.
   waitingListEntries: mockWaitingListEntries,
   approvalRequests: mockApprovalRequests,
   doctorAvailability: mockDoctorAvailability,
   prescriptions: mockPrescriptions,
+  patientPrescriptionFiles: mockPatientPrescriptionFiles,
   pastMedications: mockPastMedications,
+  pastProcedures: mockPastProcedures,
+  clinicSettings: mockClinicSettings,
+  subscriptions: mockSubscriptions,
+  payments: mockPayments,
+  expenses: mockExpenses,
+  payouts: mockPayouts,
+  refunds: mockRefunds,
+  careTeam: mockCareTeam,
+  visitNotes: mockVisitNotes,
 }

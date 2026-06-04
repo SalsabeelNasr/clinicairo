@@ -261,7 +261,7 @@ export function AddToWaitlistFlow({ onComplete, onCancel }: AddToWaitlistFlowPro
                 </div>
                 <div>
                   <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400">Patient</p>
-                  <p className="text-sm font-bold text-gray-900">{selectedPatient?.first_name} {selectedPatient?.last_name}</p>
+                  <p className="app-entity-name">{selectedPatient?.first_name} {selectedPatient?.last_name}</p>
                 </div>
               </div>
 

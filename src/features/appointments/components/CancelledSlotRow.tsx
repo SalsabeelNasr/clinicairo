@@ -37,12 +37,12 @@ export function CancelledSlotRow({ slot, onFillSlot }: CancelledSlotRowProps) {
             {slot.patientId ? (
               <Link
                 href={`/patients/${slot.patientId}`}
-                className="font-medium hover:text-primary-600 "
+                className="app-entity-name"
               >
                 {slot.patientName}
               </Link>
             ) : (
-              <span>{slot.patientName}</span>
+              <span className="app-entity-name">{slot.patientName}</span>
             )}
             {slot.appointmentType && slot.appointmentType !== "flexible" && (
               <>
@@ -60,8 +60,15 @@ export function CancelledSlotRow({ slot, onFillSlot }: CancelledSlotRowProps) {
         )}
       </div>
       <div className="shrink-0">
-        <Button variant="primary" size="sm" onClick={() => onFillSlot(slot)} className="btn-card-action inline-flex items-center gap-2 rtl:flex-row-reverse">
-          {t.appointments.fillSlot}
+        <Button
+          variant="action"
+          size="sm"
+          onClick={() => onFillSlot(slot)}
+          className="btn-card-action inline-flex items-center gap-2 rtl:flex-row-reverse"
+          title={t.appointments.fillSlot}
+        >
+          <RiCalendarLine className="size-4 shrink-0" aria-hidden />
+          <span className="max-lg:hidden">{t.appointments.fillSlot}</span>
         </Button>
       </div>
     </div>

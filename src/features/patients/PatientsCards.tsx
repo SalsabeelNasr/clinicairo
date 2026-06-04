@@ -38,7 +38,7 @@ export function PatientsCards({ patients }: PatientsCardsProps) {
         const phone = patient.phone.replace(/\s/g, "")
 
         return (
-          <article key={patient.id} className="app-row">
+          <article key={patient.id} className="app-row app-row--patient">
             <div className="app-row__main">
               <div className="app-row__avatar">
                 <RiUserLine className="app-row__avatar-icon" aria-hidden />
@@ -49,24 +49,36 @@ export function PatientsCards({ patients }: PatientsCardsProps) {
                   <h3 className="app-row__info-title">
                     {patient.first_name} {patient.last_name}
                   </h3>
-                  <span className="app-pill app-pill--muted">{ageDisplay}</span>
+                  <div className="app-row__chips">
+                    <span className="app-pill app-pill--muted">{ageDisplay}</span>
+                  </div>
                 </div>
                 {patient.complaint && (
                   <p className="app-row__info-subtitle">{patient.complaint}</p>
                 )}
+                {/* Mobile meta: vertically aligned under complaint */}
+                <div className="mt-2 space-y-0.5 md:hidden">
+                  <p className="app-row__meta-primary">{phone}</p>
+                  <p className="app-row__meta-secondary">
+                    {t.patients.visited}{" "}
+                    {formatVisitDate(patient.lastAppointmentDate, lang)}
+                  </p>
+                </div>
               </div>
             </div>
 
-            <div className="app-row__actions app-row__actions--spread">
-              <div className="app-row__meta">
-                <p className="app-row__meta-primary">{phone}</p>
-                <p className="app-row__meta-secondary">
-                  {t.patients.visited} {formatVisitDate(patient.lastAppointmentDate, lang)}
-                </p>
-              </div>
-              <Link href={`/patients/${patient.id}`} className="app-btn--join">
+            <div className="app-row__meta hidden md:block">
+              <p className="app-row__meta-primary">{phone}</p>
+              <p className="app-row__meta-secondary">
+                {t.patients.visited}{" "}
+                {formatVisitDate(patient.lastAppointmentDate, lang)}
+              </p>
+            </div>
+
+            <div className="app-row__actions">
+              <Link href={`/patients/${patient.id}`} className="app-btn--join" title={t.common.view}>
                 <RiEyeLine className="app-btn--join__icon" aria-hidden />
-                {t.common.view}
+                <span className="max-lg:hidden">{t.common.view}</span>
               </Link>
             </div>
           </article>

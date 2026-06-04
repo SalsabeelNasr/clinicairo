@@ -1,4 +1,15 @@
-export type TaskType = "follow_up" | "appointment" | "labs" | "scan" | "billing" | "other"
+export type TaskType =
+  | "follow_up"
+  | "appointment"
+  | "labs"
+  | "scan"
+  | "billing"
+  | "payment_verify"
+  | "no_show"
+  | "cold_lead"
+  | "renewal"
+  | "doctor_request"
+  | "other"
 
 export type TaskStatus = "pending" | "done" | "cancelled"
 

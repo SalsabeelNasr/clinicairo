@@ -16,37 +16,76 @@ interface Task {
 
 export const mockTasks: Task[] = [
   {
-    id: "task-001",
+    id: "task-p1-001",
     patient_id: "patient-001",
-    title: "Follow-up Blood Pressure Check",
-    description: "Schedule appointment to monitor blood pressure after medication adjustment",
+    title: "Upload Blood Test Results",
+    description: "Please upload your latest CBC and Lipid panel results for review.",
+    type: "lab_test",
+    status: "pending",
+    due_date: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000).toISOString().split("T")[0],
+    completed_at: null,
+    ignored_at: null,
+    created_at: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(),
+    updated_at: null,
+  },
+  {
+    id: "task-p1-002",
+    patient_id: "patient-001",
+    title: "Daily Weight Log",
+    description: "Record your weight every morning before breakfast.",
     type: "follow_up",
     status: "pending",
-    due_date: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString().split("T")[0],
+    due_date: new Date().toISOString().split("T")[0],
     completed_at: null,
+    ignored_at: null,
+    created_at: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString(),
+    updated_at: null,
+  },
+  {
+    id: "task-p1-003",
+    patient_id: "patient-001",
+    title: "Review New Diet Plan",
+    description: "Review the updated high-protein diet plan shared by the nutritionist.",
+    type: "diet_review",
+    status: "completed",
+    due_date: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString().split("T")[0],
+    completed_at: new Date(Date.now() - 4 * 24 * 60 * 60 * 1000).toISOString(),
     ignored_at: null,
     created_at: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
     updated_at: null,
   },
   {
-    id: "task-002",
-    patient_id: "patient-002",
-    title: "HbA1c Test",
-    description: "Order HbA1c test to monitor diabetes control",
-    type: "lab_test",
+    id: "task-001",
+    patient_id: "patient-001",
+    title: "Verify Payment: Sarah Al-Mabrouk",
+    description: "Confirm receipt of Tier 1 subscription payment via bank transfer",
+    type: "payment_verify",
     status: "pending",
-    due_date: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split("T")[0],
+    due_date: new Date(Date.now() + 1 * 24 * 60 * 60 * 1000).toISOString().split("T")[0],
     completed_at: null,
     ignored_at: null,
-    created_at: new Date(Date.now() - 14 * 24 * 60 * 60 * 1000).toISOString(),
+    created_at: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(),
+    updated_at: null,
+  },
+  {
+    id: "task-002",
+    patient_id: "patient-002",
+    title: "Reschedule: Khalid Al-Warfali",
+    description: "Patient was a no-show for the consultation on Tuesday. Call to reschedule.",
+    type: "no_show",
+    status: "pending",
+    due_date: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000).toISOString().split("T")[0],
+    completed_at: null,
+    ignored_at: null,
+    created_at: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
     updated_at: null,
   },
   {
     id: "task-003",
-    patient_id: "patient-002",
-    title: "Diet Plan Review",
-    description: "Review and update meal plan based on recent weight loss progress",
-    type: "diet_review",
+    patient_id: "patient-003",
+    title: "Follow up: Mona A.",
+    description: "Cold lead from Facebook. Interested in the nutrition program.",
+    type: "cold_lead",
     status: "completed",
     due_date: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString().split("T")[0],
     completed_at: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
@@ -56,74 +95,70 @@ export const mockTasks: Task[] = [
   },
   {
     id: "task-004",
-    patient_id: "patient-003",
-    title: "Thyroid Function Test",
-    description: "Check TSH, T3, T4 levels",
-    type: "lab_test",
+    patient_id: "patient-004",
+    title: "Renewal Reminder: Halah Bin Omar",
+    description: "Monthly fitness coaching package expires in 5 days.",
+    type: "renewal",
     status: "pending",
-    due_date: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split("T")[0],
+    due_date: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000).toISOString().split("T")[0],
     completed_at: null,
     ignored_at: null,
-    created_at: new Date(Date.now() - 21 * 24 * 60 * 60 * 1000).toISOString(),
+    created_at: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
+    updated_at: null,
+  },
+  {
+    id: "task-005",
+    patient_id: "patient-005",
+    title: "Chase Labs: Fatima Al-Zarrouq",
+    description: "Blood test results pending from Al-Borg lab.",
+    type: "lab_chase",
+    status: "pending",
+    due_date: new Date(Date.now() + 1 * 24 * 60 * 60 * 1000).toISOString().split("T")[0],
+    completed_at: null,
+    ignored_at: null,
+    created_at: new Date(Date.now() - 4 * 24 * 60 * 60 * 1000).toISOString(),
     updated_at: null,
   },
 ]
 
-interface PatientDiet {
-  id: string
-  patient_id: string
-  diet_plan: string
-  created_at: string
-  updated_at: string
-  version: number
-  is_active: boolean
-}
+import type { PatientDiet } from "@/features/patients/detail/patient-diet.types"
+import type { PatientTrainingPlan } from "@/features/patients/detail/patient-training-plan.types"
+
+const DEMO_DIET_PDF_URL =
+  "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf"
 
 export const mockPatientDiets: PatientDiet[] = [
   {
+    id: "diet-p1-001",
+    patient_id: "patient-001",
+    file_name: "high-protein-hypertension-plan-v3.pdf",
+    file_url: DEMO_DIET_PDF_URL,
+    file_size: 245_000,
+    mime_type: "application/pdf",
+    created_at: new Date(Date.now() - 45 * 24 * 60 * 60 * 1000).toISOString(),
+    updated_at: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString(),
+    version: 3,
+    is_active: true,
+  },
+  {
+    id: "diet-p1-000",
+    patient_id: "patient-001",
+    file_name: "initial-weight-loss-plan-v2.pdf",
+    file_url: DEMO_DIET_PDF_URL,
+    file_size: 198_400,
+    mime_type: "application/pdf",
+    created_at: new Date(Date.now() - 90 * 24 * 60 * 60 * 1000).toISOString(),
+    updated_at: new Date(Date.now() - 60 * 24 * 60 * 60 * 1000).toISOString(),
+    version: 2,
+    is_active: false,
+  },
+  {
     id: "diet-001",
     patient_id: "patient-002",
-    diet_plan: `# Diabetes Management Diet Plan
-
-## Daily Targets
-- Calories: 1800-2000 kcal
-- Carbohydrates: 180-200g (distributed throughout the day)
-- Protein: 80-100g
-- Fats: 50-60g (focus on healthy fats)
-
-## Meal Structure
-
-### Breakfast (7:00 AM)
-- 2 boiled eggs
-- 2 slices whole grain toast
-- 1 cup green tea
-- Small apple
-
-### Mid-Morning Snack (10:00 AM)
-- Handful of almonds (10-12 pieces)
-- Small orange
-
-### Lunch (1:00 PM)
-- Grilled chicken breast (150g)
-- Large mixed salad with olive oil dressing
-- 1/2 cup brown rice
-- Steamed vegetables
-
-### Afternoon Snack (4:00 PM)
-- Greek yogurt (low-fat)
-- 1 tablespoon chia seeds
-
-### Dinner (7:00 PM)
-- Grilled fish (150g)
-- Roasted vegetables
-- Small portion quinoa
-- Green salad
-
-## Guidelines
-- Drink 8-10 glasses of water daily
-- Avoid sugary drinks and processed foods
-- Monitor blood glucose before and after meals
-- Exercise 30 minutes daily after meals`,
+    file_name: "diabetes-management-plan-v2.pdf",
+    file_url: DEMO_DIET_PDF_URL,
+    file_size: 312_000,
+    mime_type: "application/pdf",
     created_at: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString(),
     updated_at: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
     version: 2,
@@ -132,43 +167,51 @@ export const mockPatientDiets: PatientDiet[] = [
   {
     id: "diet-002",
     patient_id: "patient-005",
-    diet_plan: `# GERD Management Diet Plan
-
-## Foods to Avoid
-- Spicy foods
-- Citrus fruits
-- Tomato-based products
-- Chocolate
-- Caffeine
-- Carbonated drinks
-- Fried and fatty foods
-
-## Recommended Foods
-
-### Breakfast
-- Oatmeal with banana
-- Whole grain toast
-- Herbal tea
-
-### Lunch
-- Baked chicken or turkey
-- Steamed vegetables
-- Brown rice or quinoa
-- Green salad (no vinegar dressing)
-
-### Dinner (Early - by 6:00 PM)
-- Lean protein (fish/chicken)
-- Steamed vegetables
-- Small portion of pasta or rice
-
-## Eating Guidelines
-- Eat smaller, frequent meals
-- Avoid eating 2-3 hours before bedtime
-- Chew food thoroughly
-- Stay upright after meals
-- Keep a food diary to identify triggers`,
+    file_name: "gerd-management-plan-v1.pdf",
+    file_url: DEMO_DIET_PDF_URL,
+    file_size: 176_500,
+    mime_type: "application/pdf",
     created_at: new Date(Date.now() - 15 * 24 * 60 * 60 * 1000).toISOString(),
     updated_at: new Date(Date.now() - 15 * 24 * 60 * 60 * 1000).toISOString(),
+    version: 1,
+    is_active: true,
+  },
+]
+
+export const mockPatientTrainingPlans: PatientTrainingPlan[] = [
+  {
+    id: "training-p1-001",
+    patient_id: "patient-001",
+    file_name: "strength-conditioning-plan-v2.pdf",
+    file_url: DEMO_DIET_PDF_URL,
+    file_size: 284_000,
+    mime_type: "application/pdf",
+    created_at: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString(),
+    updated_at: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
+    version: 2,
+    is_active: true,
+  },
+  {
+    id: "training-p1-000",
+    patient_id: "patient-001",
+    file_name: "intro-mobility-plan-v1.pdf",
+    file_url: DEMO_DIET_PDF_URL,
+    file_size: 156_200,
+    mime_type: "application/pdf",
+    created_at: new Date(Date.now() - 60 * 24 * 60 * 60 * 1000).toISOString(),
+    updated_at: new Date(Date.now() - 45 * 24 * 60 * 60 * 1000).toISOString(),
+    version: 1,
+    is_active: false,
+  },
+  {
+    id: "training-001",
+    patient_id: "patient-004",
+    file_name: "monthly-coaching-plan-v1.pdf",
+    file_url: DEMO_DIET_PDF_URL,
+    file_size: 221_800,
+    mime_type: "application/pdf",
+    created_at: new Date(Date.now() - 14 * 24 * 60 * 60 * 1000).toISOString(),
+    updated_at: new Date(Date.now() - 14 * 24 * 60 * 60 * 1000).toISOString(),
     version: 1,
     is_active: true,
   },

@@ -504,6 +504,20 @@ const generateMockAppointments = (): Appointment[] => {
     },
     // Additional historical appointments for patient-001
     {
+      id: "apt-p1-future-001",
+      patient_id: "patient-001",
+      patient_name: "Fatima Mohamed",
+      scheduled_at: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
+      status: "scheduled",
+      type: "followup",
+      notes: "Monthly weight and BP review",
+      created_at: new Date().toISOString(),
+      doctor_id: "user-001",
+      doctor_full_name: "أحمد حسن",
+      clinic_id: "clinic-001",
+      clinic_name: "المعادي",
+    },
+    {
       id: "apt-031",
       patient_id: "patient-001",
       patient_name: "Fatima Mohamed",

@@ -57,6 +57,16 @@ export function useBookAppointmentState(params: UseBookAppointmentStateParams) {
   } | null>(null)
 
   useEffect(() => {
+    setSelectedPatient(initialPatient)
+    setCurrentStep(initialPatient ? "service" : "patient")
+    if (!initialPatient) {
+      setSelectedService(null)
+      setSelectedDate(null)
+      setSelectedSlot(null)
+    }
+  }, [initialPatient])
+
+  useEffect(() => {
     if (preSelectedSlot) {
       const doctor = mockUsers.find((u) => u.id === preSelectedSlot.doctorId)
       const clinic = mockClinics.find((c) => c.id === preSelectedSlot.clinicId)
@@ -202,7 +212,7 @@ export function useBookAppointmentState(params: UseBookAppointmentStateParams) {
           selectedSlot.starts_at,
           selectedSlot.ends_at
         )
-      } else if (preSelectedSlot || waitlistEntry) {
+      } else {
         const effectiveClinicId = preSelectedSlot?.clinicId || clinicId
         const effectiveDoctorId = preSelectedSlot?.doctorId || doctorId
         if (!effectiveClinicId || !effectiveDoctorId) throw new Error("Missing clinic or doctor ID")
@@ -220,8 +230,6 @@ export function useBookAppointmentState(params: UseBookAppointmentStateParams) {
           ),
           notes: undefined,
         })
-      } else {
-        throw new Error("Invalid booking state")
       }
       setCurrentStep("success")
       if (onBookingComplete) setTimeout(onBookingComplete, 1500)

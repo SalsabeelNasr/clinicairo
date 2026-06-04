@@ -2,13 +2,15 @@
 
 import { cx } from "@/lib/utils"
 import { SidebarProvider, useSidebar } from "@/contexts/sidebar-context"
+import { PageHeaderProvider } from "@/contexts/page-header-context"
 import { useUserClinic } from "@/contexts/user-clinic-context"
+import type { Role } from "@/lib/navigation"
 import { Sidebar } from "./Sidebar"
 import { Topbar } from "./Topbar"
 
 interface AppShellProps {
   children: React.ReactNode
-  role?: "doctor" | "assistant" | "manager" // Optional, will use current user's role if not provided
+  role?: Role // Optional, will use current user's role if not provided
 }
 
 function AppShellContent({ children, role: propRole }: AppShellProps) {
@@ -29,7 +31,7 @@ function AppShellContent({ children, role: propRole }: AppShellProps) {
           isCollapsed ? "lg:ps-16" : "lg:ps-72"
         )}
       >
-        <Topbar role={role as "doctor" | "assistant" | "manager"} />
+        <Topbar role={role} />
 
         {/* Main Content */}
         <main className="flex-1 overflow-y-auto w-full">
@@ -45,7 +47,9 @@ function AppShellContent({ children, role: propRole }: AppShellProps) {
 export function AppShell({ children, role }: AppShellProps) {
   return (
     <SidebarProvider>
-      <AppShellContent role={role}>{children}</AppShellContent>
+      <PageHeaderProvider>
+        <AppShellContent role={role}>{children}</AppShellContent>
+      </PageHeaderProvider>
     </SidebarProvider>
   )
 }

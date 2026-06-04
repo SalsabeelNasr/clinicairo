@@ -59,7 +59,7 @@ function WaitlistTable({
             <div className="flex flex-wrap items-center gap-2">
               <Link
                 href={`/patients/${entry.patientId}`}
-                className="font-medium text-gray-900 hover:text-primary-600  "
+                className="app-entity-name"
               >
                 {entry.patientName}
               </Link>
@@ -96,7 +96,7 @@ function WaitlistTable({
             )}
           </div>
           <div className="shrink-0">
-            <Button variant="primary" size="sm" onClick={() => onBook(entry)} className="btn-card-action">
+            <Button variant="action" size="sm" onClick={() => onBook(entry)} className="btn-card-action">
               {t.appointments.book}
             </Button>
           </div>

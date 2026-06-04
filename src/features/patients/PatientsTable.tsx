@@ -54,7 +54,7 @@ export function PatientsTable({ patients }: PatientsTableProps) {
                     <div>
                       <Link
                         href={`/patients/${patient.id}`}
-                        className="font-medium text-gray-900 hover:text-primary-600  "
+                        className="app-entity-name"
                       >
                         {patient.first_name} {patient.last_name}
                       </Link>

@@ -15,7 +15,7 @@ import { Input } from "@/components/Input"
 import { Label } from "@/components/Label"
 import { Select } from "@/components/Select"
 import { Textarea } from "@/components/Textarea"
-import { mockUsers } from "@/data/mock/users-clinics"
+import { mockUsers, STAFF_ROLE_LABELS, type StaffRole } from "@/data/mock/users-clinics"
 import { mockData } from "@/data/mock/mock-data"
 import { PatientSelector, type Patient } from "@/components/shared/PatientSelector"
 import type { CreateTaskPayload, TaskType } from "./tasks.types"
@@ -50,7 +50,7 @@ export function AddTaskDrawer({
   clinicId,
 }: AddTaskDrawerProps) {
   const t = useAppTranslations()
-  const { isRtl } = useLocale()
+  const { isRtl, lang } = useLocale()
   const [title, setTitle] = useState("")
   const [description, setDescription] = useState("")
   const [type, setType] = useState<TaskType>("follow_up")
@@ -174,7 +174,7 @@ export function AddTaskDrawer({
                   <option value="">{t.tasks.unassigned}</option>
                   {availableUsers.map((user) => (
                     <option key={user.id} value={user.id}>
-                      {user.full_name} ({user.role === "doctor" ? t.common.doctor : user.role === "assistant" ? t.common.assistant : t.common.manager})
+                      {user.full_name} ({STAFF_ROLE_LABELS[user.role as StaffRole][lang]})
                     </option>
                   ))}
                 </Select>

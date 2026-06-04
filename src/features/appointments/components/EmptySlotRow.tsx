@@ -26,7 +26,7 @@ export function EmptySlotRow({ slot, onFillSlot }: EmptySlotRowProps) {
         <span className="text-xs text-gray-600 ">{timeRange}</span>
       </div>
       <div className="shrink-0">
-        <Button variant="primary" size="sm" onClick={() => onFillSlot(slot)} className="btn-card-action inline-flex items-center gap-2 rtl:flex-row-reverse">
+        <Button variant="action" size="sm" onClick={() => onFillSlot(slot)} className="btn-card-action inline-flex items-center gap-2 rtl:flex-row-reverse">
           {t.appointments.fillSlot}
         </Button>
       </div>
